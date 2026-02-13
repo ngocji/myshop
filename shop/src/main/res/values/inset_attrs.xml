@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="insetContainerStyle" />
+    <declare-styleable name="InsetContainer">
+        <attr name="ins_statusbar_color" format="color" />
+        <attr name="ins_navigationbar_color" format="color" />
+        <attr name="ins_enable_light_status_bar" format="boolean" />
+        <attr name="ins_force_statusbar" format="boolean" />
+        <attr name="ins_force_navigationbar" format="boolean" />
+    </declare-styleable>
+</resources>
