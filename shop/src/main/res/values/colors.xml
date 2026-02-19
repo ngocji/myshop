@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary" />
-    <color name="colorAccent" />
+    <color name="colorPrimary">#137EFC</color>
+    <color name="colorAccent">#4BCB38</color>
+    <color name="colorBackground">#000403</color>
+    <color name="colorSecondaryBackground">#0DFFFFFF</color>
+    <color name="colorThirdBackground">#1AFFFFFF</color>
+    <color name="colorRipple">#0DFFFFFF</color>
+    <color name="colorInvertAccent">#5F6261</color>
+    <color name="colorWaring">#EB1501</color>
+    <color name="colorCancelable">#33FFFFFF</color>
+    <color name="colorCount">#29949494</color>
+    <color name="colorLine">#33FFFFFF</color>
 </resources>

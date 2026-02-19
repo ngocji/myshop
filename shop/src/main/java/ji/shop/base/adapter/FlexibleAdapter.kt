@@ -1,13 +1,23 @@
 package ji.shop.base.adapter
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-class FlexibleAdapter<T : ItemUI>(val items: MutableList<T>) : RecyclerView.Adapter<ItemUI>() {
+class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
+    RecyclerView.Adapter<ItemViewHolder>() {
     private val mTypeInstances = mutableMapOf<Int, T>()
     private val selectedItems = mutableSetOf<T>()
     private var mode = MULTI
     private val listeners = mutableSetOf<OnItemClickListener>()
+    private var diffUtilCallback: FlexibleDiffCallback<T>? = null
+
+
+    fun addAdjustSelected(position: Int) {
+        items.getOrNull(position)?.let {
+            selectedItems.add(it)
+        }
+    }
 
     fun addListener(listener: OnItemClickListener): FlexibleAdapter<T> {
         listeners.add(listener)
@@ -25,14 +35,14 @@ class FlexibleAdapter<T : ItemUI>(val items: MutableList<T>) : RecyclerView.Adap
 
     override fun getItemViewType(position: Int): Int {
         val item = mapViewTypeFrom(items[position])
-        return item.itemViewType
+        return item.getItemViewType()
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ItemUI {
-        return mTypeInstances[viewType]?.createViewHolder(parent, viewType)?.apply {
+    ): ItemViewHolder {
+        return mTypeInstances[viewType]?.createViewHolder(this, parent, viewType)?.apply {
             if (listeners.isNotEmpty()) {
                 itemView.setOnClickListener { view ->
                     val position = absoluteAdapterPosition
@@ -45,21 +55,21 @@ class FlexibleAdapter<T : ItemUI>(val items: MutableList<T>) : RecyclerView.Adap
             ?: throw IllegalStateException()
     }
 
-    override fun onBindViewHolder(holder: ItemUI, position: Int, payloads: List<Any?>) {
-        mapViewTypeFrom(items[position]).bindViewHolder(holder, position, payloads)
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int, payloads: List<Any?>) {
+        mapViewTypeFrom(items[position]).bindViewHolder(this, holder, position, payloads)
     }
 
-    override fun onBindViewHolder(holder: ItemUI, position: Int) {
-        mapViewTypeFrom(items[position]).bindViewHolder(holder, position, emptyList())
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        mapViewTypeFrom(items[position]).bindViewHolder(this, holder, position, emptyList())
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    private fun mapViewTypeFrom(item: T): ItemUI {
-        if (!mTypeInstances.containsKey(item.itemViewType)) {
-            mTypeInstances[item.itemViewType] = item
+    private fun mapViewTypeFrom(item: T): ItemUI<*> {
+        if (!mTypeInstances.containsKey(item.getItemViewType())) {
+            mTypeInstances[item.getItemViewType()] = item
         }
         return item
     }
@@ -69,6 +79,10 @@ class FlexibleAdapter<T : ItemUI>(val items: MutableList<T>) : RecyclerView.Adap
     }
 
     fun getSelectedItems() = selectedItems
+
+    fun getSelectedPositions() = selectedItems.mapNotNull { item ->
+        items.indexOf(item).takeIf { it != -1 }
+    }
 
     fun toggleSelection(position: Int): Boolean {
         val item = items.getOrNull(position) ?: return false
@@ -89,6 +103,36 @@ class FlexibleAdapter<T : ItemUI>(val items: MutableList<T>) : RecyclerView.Adap
 
         notifyItemChanged(position, Payload.SELECTION)
         return isSelected(position)
+    }
+
+    fun updateDataset(newItems: List<T>, useDiff: Boolean = true) {
+        if (useDiff) {
+            if (diffUtilCallback == null) {
+                diffUtilCallback = FlexibleDiffCallback(items, newItems)
+            }
+            diffUtilCallback?.also {
+                it.setItems(items, newItems)
+                val diffResult = DiffUtil.calculateDiff(it, false)
+                items = it.newList.toMutableList()
+                diffResult.dispatchUpdatesTo(this)
+            }
+            return
+        }
+
+        items = newItems.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun clearAdjustSelection() {
+        selectedItems.clear()
+    }
+
+    fun getItem(position: Int): T? {
+        return items.getOrNull(position)
+    }
+
+    fun notifyListeners(action: OnItemClickListener.()-> Unit) {
+        listeners.forEach(action)
     }
 
     companion object {

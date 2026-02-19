@@ -1,20 +1,18 @@
 package ji.shop.base.adapter
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-abstract class ItemUI(val binding: ViewBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+abstract class ItemUI<VB : ViewBinding>() {
+    fun getIdView(): String = "${hashCode()}"
 
-    abstract fun createViewHolder(parent: ViewGroup, viewType: Int): ItemUI
+    abstract fun createViewHolder(adapter: FlexibleAdapter<*>, parent: ViewGroup, viewType: Int): ItemViewHolder
 
-    abstract fun bindViewHolder(holder: ItemUI, position: Int, payloads: List<Any?>)
+    abstract fun bindViewHolder(adapter: FlexibleAdapter<*>, holder: ItemViewHolder, position: Int, payloads: List<Any?>)
 
-    fun getItemViewType(position: Int) = 0
+    fun getItemViewType() = 0
 
-    fun <VB : ViewBinding> bind(action: VB.() -> Unit) {
-        action(binding as? VB ?: return)
+    fun withBinding(holder: ItemViewHolder, action: VB.() -> Unit) {
+        action(holder.binding as VB)
     }
-
 }

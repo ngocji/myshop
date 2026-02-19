@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_count_left"
+        android:minWidth="48dp"
+        android:padding="13dp"
+        android:src="@drawable/ic_minus"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="1dp"
+        android:background="@drawable/bg_count_center"
+        android:gravity="center"
+        android:minWidth="40dp"
+        android:textSize="20sp"
+        style="@style/fontBold"
+        android:visibility="gone"
+        tools:text="10" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_count_right"
+        android:minWidth="48dp"
+        android:padding="13dp"
+        android:src="@drawable/ic_plus"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_add"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_count_circle"
+        android:padding="13dp"
+        android:src="@drawable/ic_plus"
+        android:visibility="gone" />
+
+</merge>
