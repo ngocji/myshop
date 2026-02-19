@@ -13,7 +13,8 @@ android {
 
     defaultConfig {
         minSdk = 21
-
+        renderscriptTargetApi = 19
+        renderscriptSupportModeEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
