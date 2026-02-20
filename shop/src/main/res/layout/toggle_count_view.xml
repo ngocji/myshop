@@ -15,6 +15,7 @@
         android:background="@drawable/bg_count_left"
         android:minWidth="48dp"
         android:padding="13dp"
+        android:tint="@color/colorOnCount"
         android:src="@drawable/ic_minus"
         android:visibility="gone" />
 
@@ -28,6 +29,7 @@
         android:minWidth="40dp"
         android:textSize="20sp"
         style="@style/fontBold"
+        android:textColor="@color/colorOnCount"
         android:visibility="gone"
         tools:text="10" />
 
@@ -38,6 +40,7 @@
         android:background="@drawable/bg_count_right"
         android:minWidth="48dp"
         android:padding="13dp"
+        android:tint="@color/colorOnCount"
         android:src="@drawable/ic_plus"
         android:visibility="gone" />
 
@@ -47,7 +50,9 @@
         android:layout_height="48dp"
         android:background="@drawable/bg_count_circle"
         android:padding="13dp"
+        android:tint="@color/colorOnCount"
         android:src="@drawable/ic_plus"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </merge>

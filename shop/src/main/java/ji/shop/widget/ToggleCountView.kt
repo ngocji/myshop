@@ -24,32 +24,34 @@ class ToggleCountView @JvmOverloads constructor(
 
     private fun initViews() {
         with(binding) {
-            updateCount()
+            updateCount(true)
             btnPlus.setOnClickListener { counting(1) }
             btnMinus.setOnClickListener { counting(-1) }
             btnAdd.setOnClickListener { counting(1) }
         }
     }
 
-    fun setCount(count: Int) {
+    fun setCount(count: Int, skipZero: Boolean = true) {
         currentCount = count
-        updateCount()
+        updateCount(skipZero)
     }
 
     private fun counting(i: Int) {
         currentCount += i
-        updateCount()
+        if (currentCount < 0) currentCount = 0
+        updateCount(true)
         listener?.onCount(currentCount)
     }
 
-    private fun updateCount() {
+    private fun updateCount(skipZero: Boolean) {
         binding.tvCount.text = currentCount.toString()
-        val hasCount = currentCount > 0
-        if (!hasCount || binding.btnMinus.isVisible) return
-        binding.btnMinus.isVisible = hasCount
-        binding.tvCount.isVisible = hasCount
-        binding.btnPlus.isVisible = hasCount
-        binding.btnAdd.isVisible = !hasCount
+        val hasCount = currentCount > 0 || (binding.btnMinus.isVisible && skipZero)
+        with(binding) {
+            btnMinus.isVisible = hasCount
+            tvCount.isVisible = hasCount
+            btnPlus.isVisible = hasCount
+            btnAdd.isVisible = !hasCount
+        }
     }
 
     fun interface OnCountListener {

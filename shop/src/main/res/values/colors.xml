@@ -10,7 +10,8 @@
     <color name="colorInvertAccent">#5F6261</color>
     <color name="colorWaring">#EB1501</color>
     <color name="colorCancelable">#33FFFFFF</color>
-    <color name="colorCount">#29949494</color>
+    <color name="colorCount">#99FFFFFF</color>
+    <color name="colorOnCount">#000</color>
     <color name="colorLine">#33FFFFFF</color>
 
     <color name="colorStateComplete">#56DE8A</color>

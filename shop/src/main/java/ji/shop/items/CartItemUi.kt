@@ -51,7 +51,7 @@ class CartItemUi(val data: Cart) : ItemUI<ItemCartBinding>() {
                 }
             }
             tvName.text = data.product.name
-            tvSize.text = data.size.name
+            tvSize.text = data.size?.name.orEmpty()
             image.load(data.product.images.firstOrNull())
             toggleCountView.setCount(data.count)
         }

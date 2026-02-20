@@ -28,6 +28,13 @@ fun <T> ViewModel.safeResultFlow(block: suspend () -> T): Flow<ResultWrapper<T>>
             emit(ResultWrapper.Failure(it))
         }
 
+fun <T> ViewModel.safeFlow(block: suspend () -> T?): Flow<T?> = flow {
+    emit(block())
+}
+    .catch {
+        emit(null)
+    }
+
 @OptIn(ExperimentalCoroutinesApi::class)
 fun <T, R> Flow<ResultWrapper<T>>.mapWhenSuccess(block: (T) -> R) = this.mapLatest { result ->
     when (result) {

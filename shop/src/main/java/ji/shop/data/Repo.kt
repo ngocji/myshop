@@ -2,10 +2,23 @@ package ji.shop.data
 
 import ji.shop.R
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 object Repo {
+    suspend fun getShopCategory() = withContext(Dispatchers.IO) {
+        buildList {
+            add(
+                ShopCategory(
+                    id = "shop_festival",
+                    name = "Festival Concessions"
+                )
+            )
+        }
+    }
+
     suspend fun getCollections() = withContext(Dispatchers.IO) {
+        delay(2000)
         buildList {
             repeat(10) {
                 add(
@@ -19,7 +32,7 @@ object Repo {
         }
     }
 
-    suspend fun getProductsByCollection(collectionId: String) = withContext(Dispatchers.IO) {
+    suspend fun getProductsByCollection(collectionId: String, groupId: String) = withContext(Dispatchers.IO) {
         buildList {
             repeat(10) {
                 add(

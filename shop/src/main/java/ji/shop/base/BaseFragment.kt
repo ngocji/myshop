@@ -33,7 +33,11 @@ abstract class BaseFragment(layoutRes: Int) : Fragment(layoutRes),
         shopViewModel.goto { fragment }
     }
 
-    fun <T> collectWithProgress(flow: Flow<ResultWrapper<T>>, action: (T) -> Unit) {
+    fun <T> collectWithProgress(
+        stateWrapperView: StateWrapperView? = this.stateWrapperView,
+        flow: Flow<ResultWrapper<T>>,
+        action: (T) -> Unit
+    ) {
         collect(flow = flow) { result ->
             when (result) {
                 is ResultWrapper.Success -> {
@@ -52,8 +56,11 @@ abstract class BaseFragment(layoutRes: Int) : Fragment(layoutRes),
                     }
                 }
 
-                else -> {
+                is ResultWrapper.Empty -> {
                     stateWrapperView?.updateState(result) ?: showProgress(false)
+                }
+
+                is ResultWrapper.None -> {
                 }
             }
         }

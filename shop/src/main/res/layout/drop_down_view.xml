@@ -11,6 +11,7 @@
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="0dp"
+        android:popupBackground="@drawable/bg_secondary_rounded_with_stroke"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:layout_marginStart="@dimen/large_padding"

@@ -1,21 +1,22 @@
 package ji.shop.items
 
 import android.view.ViewGroup
-import ji.shop.R
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.databinding.ItemSelectionTabViewBinding
+import ji.shop.data.Collection
+import ji.shop.databinding.ItemCollectionGridBinding
 import ji.shop.exts.layoutInflate
+import ji.shop.exts.load
 
-class SelectTabViewItemUi<T>(val data: T, val title: String) : ItemUI<ItemSelectionTabViewBinding>() {
+class CollectionGridItemUi(val data: Collection) : ItemUI<ItemCollectionGridBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
         parent: ViewGroup,
         viewType: Int
     ): ItemViewHolder {
         return ItemViewHolder(
-            ItemSelectionTabViewBinding.inflate(
+            ItemCollectionGridBinding.inflate(
                 parent.layoutInflate(),
                 parent,
                 false
@@ -30,12 +31,9 @@ class SelectTabViewItemUi<T>(val data: T, val title: String) : ItemUI<ItemSelect
         payloads: List<Any?>
     ) {
         withBinding(holder) {
-            tv.text = title
-            if (adapter.isSelected(position)) {
-                tv.setBackgroundResource(R.drawable.bg_highlight)
-            } else {
-                tv.setBackgroundColor(0)
-            }
+            tv.text = data.name
+            image.load(data.image.firstOrNull())
+            root.isSelected = adapter.isSelected(position)
         }
     }
 }

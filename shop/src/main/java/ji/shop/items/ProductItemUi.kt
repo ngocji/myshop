@@ -14,8 +14,8 @@ import ji.shop.utils.NumberFormater
 
 data class ProductItemUi(
     val data: Product,
-    val count: Int,
-    val isUseToggleCount: Boolean
+    var count: Int,
+    var isUseToggleCount: Boolean
 ) : ItemUI<ItemProductBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
@@ -31,6 +31,7 @@ data class ProductItemUi(
         ).apply {
             withBinding(this) {
                 toggleCountView.setListener { newCount ->
+                    count = newCount
                     adapter.notifyListeners {
                         if (this is CountChangOnItemListener) {
                             onCountChanged(absoluteAdapterPosition, newCount)
@@ -51,7 +52,7 @@ data class ProductItemUi(
             if (payloads.isNotEmpty()) {
                 payloads.forEach { obj ->
                     if (obj == Payload.CHANGE_COUNT) {
-                        toggleCountView.setCount(count)
+                        toggleCountView.setCount(count,skipZero = false)
                         return@withBinding
                     }
                     if (obj == Payload.CHANGE_USE_TOGGLE_COUNT) {
@@ -64,7 +65,7 @@ data class ProductItemUi(
             tvName.text = data.name
             tvPrice.text = NumberFormater.formatNumberLocale(data.price)
             image.load(data.images.firstOrNull())
-            toggleCountView.setCount(count)
+            toggleCountView.setCount(count,skipZero = false)
             toggleCountView.isVisible = isUseToggleCount
         }
     }

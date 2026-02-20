@@ -127,6 +127,13 @@ class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
         selectedItems.clear()
     }
 
+    fun clearSelection() {
+        val selectedPositions = selectedItems.mapNotNull { item -> items.indexOf(item).takeIf {  it != -1 } }
+            .sortedDescending()
+        selectedItems.clear()
+        selectedPositions.forEach { notifyItemChanged(it, Payload.SELECTION) }
+    }
+
     fun getItem(position: Int): T? {
         return items.getOrNull(position)
     }
