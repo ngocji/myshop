@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    app:cardBackgroundColor="@color/colorSecondaryBackground"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="50dp">
+
+        <TextView
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.7"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/small_padding"
+            android:text="@string/text_total_refund" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorFourthBackground"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/small_padding"
+            android:text="@string/text_price" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

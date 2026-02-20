@@ -5,10 +5,17 @@
     <color name="colorBackground">#000403</color>
     <color name="colorSecondaryBackground">#0DFFFFFF</color>
     <color name="colorThirdBackground">#1AFFFFFF</color>
+    <color name="colorStrokeBackground">#1AFFFFFF</color>
     <color name="colorRipple">#0DFFFFFF</color>
     <color name="colorInvertAccent">#5F6261</color>
     <color name="colorWaring">#EB1501</color>
     <color name="colorCancelable">#33FFFFFF</color>
     <color name="colorCount">#29949494</color>
     <color name="colorLine">#33FFFFFF</color>
+
+    <color name="colorStateComplete">#56DE8A</color>
+    <color name="colorStatePaid">#62A6ED</color>
+    <color name="colorStateInProgress">#F08D37</color>
+    <color name="colorStateRefund">#E74738</color>
+    <color name="colorFourthBackground">#474948</color>
 </resources>

@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="text_empty" />
+    <string name="text_state_complete">Completed</string>
+    <string name="text_state_paid">Paid</string>
+    <string name="text_state_refund">Refund</string>
+    <string name="text_state_inpgoress">In Progress</string>
+    <string name="text_sell">Sell</string>
+    <string name="text_inventory">Inventory</string>
+    <string name="text_orders">Orders</string>
+    <string name="text_qty">QTY</string>
+    <string name="text_add_on">Add-on</string>
+    <string name="text_price">Price</string>
+    <string name="text_total_refund">Total Refund</string>
 </resources>
