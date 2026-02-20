@@ -10,11 +10,12 @@ import ji.shop.R
 import ji.shop.databinding.DropDownViewBinding
 
 class DropDownView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : LinearLayout(context, attrs) {
-    private val binding = DropDownViewBinding.inflate(LayoutInflater.from(context), this)
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
+    private val binding:DropDownViewBinding
 
     init {
+        binding = DropDownViewBinding.inflate(LayoutInflater.from(context), this)
         setBackgroundResource(R.drawable.bg_secondary_rounded_with_stroke)
         gravity = Gravity.CENTER
     }

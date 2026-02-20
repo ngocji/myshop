@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import ji.shop.R
-import ji.shop.data.State
+import ji.shop.data.Status
 
-class StateView @JvmOverloads constructor(
+class StatusView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : TextView(context, attrs) {
     init {
@@ -18,24 +18,24 @@ class StateView @JvmOverloads constructor(
         minWidth = resources.getDimensionPixelSize(R.dimen._90dp)
     }
 
-    fun setState(state: State) {
+    fun setState(status: Status) {
         val colorRes: Int
         val textRes: Int
         val bgRes: Int
-        when (state) {
-            State.COMPLETE -> {
+        when (status) {
+            Status.COMPLETE -> {
                 colorRes = R.color.colorStateComplete
                 textRes = R.string.text_state_complete
                 bgRes = R.drawable.bg_state_complete
             }
 
-            State.PAID -> {
+            Status.PAID -> {
                 colorRes = R.color.colorStatePaid
                 textRes = R.string.text_state_paid
                 bgRes = R.drawable.bg_state_paid
             }
 
-            State.REFUND -> {
+            Status.REFUND -> {
                 colorRes = R.color.colorStateRefund
                 textRes = R.string.text_state_refund
                 bgRes = R.drawable.bg_state_refund

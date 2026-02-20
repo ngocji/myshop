@@ -1,12 +1,11 @@
 package ji.shop.utils
 
 import android.util.Log
-import com.jibase.BuildConfig
 import kotlin.math.max
 
 object Log {
     var prefix = "MY_LOG"
-    var isEnable = BuildConfig.DEBUG
+    var isEnable = true
 
     private const val STACK_TRACE_LEVELS_UP = 6
 

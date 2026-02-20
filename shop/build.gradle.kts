@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -58,5 +58,5 @@ dependencies {
 
     val glideVersion = "5.0.5"
     implementation("com.github.bumptech.glide:glide:$glideVersion")
-    ksp("com.github.bumptech.glide:compiler:$glideVersion")
+    kapt("com.github.bumptech.glide:compiler:$glideVersion")
 }

@@ -9,5 +9,6 @@
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="materialButtonStyle">@style/defaultButton</item>
     </style>
 </resources>
