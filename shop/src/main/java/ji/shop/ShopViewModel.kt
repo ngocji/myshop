@@ -42,7 +42,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     // state for user
     val myBalanceState = MutableStateFlow(0.0)
     val cartsState = MutableStateFlow(WrapUpdateData<Set<Cart>>(emptySet()))
-    val isNfcEnabledState = MutableStateFlow(true)
+    val isNfcEnabledState = MutableStateFlow(false)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val cartPriceState = cartsState.mapLatest { wrap ->
@@ -98,7 +98,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             ProductItemUi(
                 it,
                 count = getProductCountOfCart(it),
-                isUseToggleCount = isNfcEnabledState.value
+                isUseToggleCount = isNfcEnabled()
             )
         }
     }
@@ -163,4 +163,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             WrapUpdateData(data = carts)
         }
     }
+
+    fun setNfcEnabled(enabled: Boolean) {
+        isNfcEnabledState.tryEmit(enabled)
+    }
+
+    fun isNfcEnabled() = isNfcEnabledState.value
 }

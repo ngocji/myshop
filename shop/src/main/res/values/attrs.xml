@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<declare-styleable name="RealtimeBlurView">
-		<attr name="realtimeBlurRadius" format="dimension"/>
-		<attr name="realtimeDownsampleFactor" format="float"/>
-		<attr name="realtimeOverlayColor" format="color"/>
-	</declare-styleable>
+    <declare-styleable name="RealtimeBlurView">
+        <attr name="realtimeBlurRadius" format="dimension" />
+        <attr name="realtimeDownsampleFactor" format="float" />
+        <attr name="realtimeOverlayColor" format="color" />
+    </declare-styleable>
 
-	<declare-styleable name="RoundRectBlurView">
+    <declare-styleable name="RoundRectBlurView">
         <attr name="allRadius" format="dimension" />
-		<attr name="topLeftRadius" format="dimension"/>
-		<attr name="topRightRadius" format="dimension"/>
-        <attr name="bottomLeftRadius" format="dimension"/>
-        <attr name="bottomRightRadius" format="dimension"/>
-	</declare-styleable>
+        <attr name="topLeftRadius" format="dimension" />
+        <attr name="topRightRadius" format="dimension" />
+        <attr name="bottomLeftRadius" format="dimension" />
+        <attr name="bottomRightRadius" format="dimension" />
+        <attr name="enabledStroke" format="boolean" />
+    </declare-styleable>
 </resources>

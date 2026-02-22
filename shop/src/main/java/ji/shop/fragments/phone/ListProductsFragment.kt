@@ -12,6 +12,7 @@ import ji.shop.base.viewBinding
 import ji.shop.data.Collection
 import ji.shop.data.TabType
 import ji.shop.databinding.FragmentListProductsBinding
+import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.exts.collect
 import ji.shop.exts.isTablet
 import ji.shop.items.CollectionGridItemUi
@@ -52,7 +53,7 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
             }
 
             btnBackToCollections.setOnClickListener { shopViewModel.setViewCollection(null) }
-            btnNfc.setOnClickListener { }
+            btnNfc.setOnClickListener { doToggleNFC() }
             btnViewCart.setOnClickListener { }
             btnStream.setOnClickListener { }
         }
@@ -172,7 +173,11 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
             flexibleProductAdapter = FlexibleAdapter(items.toMutableList())
                 .addListener(object : CountChangOnItemListener {
                     override fun onCountChanged(position: Int, count: Int) {
-                        shopViewModel.updateProductCountOfCart(flexibleProductAdapter?.getItem(position)?.data ?: return, count)
+                        shopViewModel.updateProductCountOfCart(
+                            flexibleProductAdapter?.getItem(
+                                position
+                            )?.data ?: return, count
+                        )
                     }
 
                     override fun onClick(
@@ -206,6 +211,17 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
                     .alpha(1f)
                     .start()
             }
+        }
+    }
+
+    private fun doToggleNFC() {
+        if (shopViewModel.isNfcEnabled()) {
+            shopViewModel.setNfcEnabled(false)
+        } else {
+            TurnOnNfcDialog.newInstance {
+                shopViewModel.setNfcEnabled(true)
+            }
+                .show(childFragmentManager)
         }
     }
 

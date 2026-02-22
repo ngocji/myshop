@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 
 import ji.shop.R;
@@ -27,12 +30,19 @@ public class RoundRectBlurView extends RealtimeBlurView {
 
     private Path path;
 
+    private Paint mStrokePaint;
+    private boolean mEnabledStroke = true;
+
     public RoundRectBlurView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mRectF = new RectF();
+
+        mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mStrokePaint.setStrokeWidth(context.getResources().getDimension(R.dimen._1dp));
+        mStrokePaint.setStyle(Paint.Style.STROKE);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundRectBlurView);
         mAllRadius = a.getDimension(R.styleable.RoundRectBlurView_allRadius, 0);
@@ -41,6 +51,7 @@ public class RoundRectBlurView extends RealtimeBlurView {
         mBottomLeftRadius = a.getDimension(R.styleable.RoundRectBlurView_bottomLeftRadius, 0);
         mBottomRightRadius = a.getDimension(R.styleable.RoundRectBlurView_bottomRightRadius, 0);
 
+        mEnabledStroke = a.getBoolean(R.styleable.RoundRectBlurView_enabledStroke, true);
 
         a.recycle();
     }
@@ -79,6 +90,17 @@ public class RoundRectBlurView extends RealtimeBlurView {
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         canvas.drawBitmap(mRoundBitmap, 0, 0, mPaint);
 
+        if (mEnabledStroke) {
+            if (mStrokePaint.getShader() == null) {
+                initStrokeShader();
+            }
+            if (mAllRadius != 0) {
+                canvas.drawRoundRect(mRectF, mAllRadius, mAllRadius, mStrokePaint);
+            } else {
+                canvas.drawPath(path, mStrokePaint);
+            }
+        }
+
 //        if (blurredBitmap != null) {
 //            mRectF.right = getWidth();
 //            mRectF.bottom = getHeight();
@@ -97,6 +119,22 @@ public class RoundRectBlurView extends RealtimeBlurView {
 //            mPaint.setColor(overlayColor);
 //            canvas.drawRoundRect(mRectF, mXRadius, mYRadius, mPaint);
 //        }
+    }
+
+    private void initStrokeShader() {
+        mStrokePaint.setShader(
+                new LinearGradient(
+                        0f, 0f,
+                        0f, getHeight(),
+                        new int[]{
+                                Color.parseColor("#66FFFFFF"),
+                                Color.parseColor("#0DFFFFFF"),
+                                Color.parseColor("#1AFFFFFF")
+                        },
+                        new float[]{0f, 0.5f, 1f},
+                        Shader.TileMode.CLAMP
+                )
+        );
     }
 
     public void setRadius(float radius) {

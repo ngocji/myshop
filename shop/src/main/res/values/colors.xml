@@ -19,4 +19,5 @@
     <color name="colorStateInProgress">#F08D37</color>
     <color name="colorStateRefund">#E74738</color>
     <color name="colorFourthBackground">#474948</color>
+    <color name="colorOverlayBlur">#1F000000</color>
 </resources>

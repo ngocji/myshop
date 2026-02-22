@@ -5,6 +5,7 @@
     <dimen name="line_height">1dp</dimen>
     <dimen name="normal_padding">12dp</dimen>
     <dimen name="large_padding">16dp</dimen>
+    <dimen name="large_2_padding">24dp</dimen>
     <dimen name="sc_padding">19dp</dimen>
     <dimen name="components_padding">20dp</dimen>
     <dimen name="small_padding">8dp</dimen>
@@ -13,4 +14,5 @@
     <dimen name="_90dp">90dp</dimen>
     <dimen name="_10dp">10dp</dimen>
     <dimen name="_32dp">32dp</dimen>
+    <dimen name="_1dp">1dp</dimen>
 </resources>
