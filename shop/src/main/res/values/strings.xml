@@ -24,4 +24,7 @@
     <string name="text_add">Add</string>
     <string name="text_add_to_cart">Add to Cart</string>
     <string name="text_checkout">Checkout</string>
+    <string name="text_cart">Cart</string>
+    <string name="text_subtotal">Subtotal</string>
+    <string name="text_tax">Tax</string>
 </resources>

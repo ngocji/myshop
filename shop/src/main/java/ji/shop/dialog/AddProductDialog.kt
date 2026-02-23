@@ -11,7 +11,9 @@ import ji.shop.base.viewBinding
 import ji.shop.data.Cart
 import ji.shop.data.Product
 import ji.shop.databinding.DialogAddProductBinding
+import ji.shop.exts.height
 import ji.shop.exts.isTablet
+import ji.shop.exts.width
 import ji.shop.items.CountChangOnItemListener
 import ji.shop.utils.NumberFormater
 import kotlin.math.roundToInt
@@ -24,10 +26,10 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     override fun doOnWindow(window: Window) {
         super.doOnWindow(window)
         window.setLayout(
-            resources.displayMetrics.widthPixels.let {
+            requireActivity().width().let {
                 if (context.isTablet()) (it * 0.7).roundToInt() else it
             },
-            (resources.displayMetrics.heightPixels * 0.9).roundToInt(),
+            (requireActivity().height() * 0.9).roundToInt(),
         )
         window.setGravity(Gravity.BOTTOM)
     }

@@ -9,6 +9,7 @@ import ji.shop.data.Collection
 import ji.shop.data.Group
 import ji.shop.data.Product
 import ji.shop.data.Repo
+import ji.shop.data.ResultWrapper
 import ji.shop.data.TabType
 import ji.shop.data.WrapUpdateData
 import ji.shop.exts.mapWhenSuccess
@@ -87,21 +88,46 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         group?.let { groups.indexOfFirst { it.data.id == group.id } } ?: -1
     }
 
-    val productsFlow = groupState.filterNotNull().flatMapLatest {
-        safeResultFlow {
-            Repo.getProductsByCollection(
-                it.collectionId, it.id
-            )
+    val productsFlow = groupState
+        .filterNotNull()
+        .flatMapLatest {
+            safeResultFlow {
+                Repo.getProductsByCollection(
+                    it.collectionId, it.id
+                )
+            }
         }
-    }.mapWhenSuccess { items ->
-        items.map {
-            ProductItemUi(
-                it,
-                count = getProductCountOfCart(it),
-                isUseToggleCount = isNfcEnabled()
-            )
+        .mapWhenSuccess { items ->
+            items.map {
+                ProductItemUi(
+                    it,
+                    count = getProductCountOfCart(it),
+                    isUseToggleCount = isNfcEnabled()
+                )
+            }
+        }
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+
+
+    val productCountNotifyFlow = combine(cartsState, productsFlow) { carts, products ->
+        if (products is ResultWrapper.Success) {
+            val items = products.data
+            val index = carts.data.mapNotNull { cart ->
+                val index = items.indexOfFirst { it.data.id == cart.product.id }
+                val item = items.getOrNull(index)
+                if (item != null) {
+                    item.count = cart.count
+                    index
+                } else {
+                    null
+                }
+            }
+            index.minOrNull() to index.maxOrNull()
+        } else {
+            null
         }
     }
+        .filterNotNull()
 
     init {
         goto {
@@ -184,6 +210,16 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
             carts.add(cart)
             WrapUpdateData(data = carts)
+        }
+    }
+
+    fun getCartItems(): List<Cart> {
+        return cartsState.value.data.toList()
+    }
+
+    fun updateCarts(carts: List<Cart>) {
+        cartsState.update {
+            WrapUpdateData(data = carts.toSet())
         }
     }
 }

@@ -14,6 +14,7 @@ import ji.shop.data.TabType
 import ji.shop.databinding.FragmentShoppingBinding
 import ji.shop.dialog.AddProductDialog
 import ji.shop.dialog.TurnOnNfcDialog
+import ji.shop.dialog.ViewCartDialog
 import ji.shop.exts.collect
 import ji.shop.exts.isTablet
 import ji.shop.items.CollectionGridItemUi
@@ -55,7 +56,7 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
 
             btnBackToCollections?.setOnClickListener { shopViewModel.setViewCollection(null) }
             btnNfc.setOnClickListener { doToggleNFC() }
-            btnViewCart.setOnClickListener { }
+            btnViewCart.setOnClickListener { doViewCart() }
             btnStream.setOnClickListener { }
         }
     }
@@ -102,6 +103,10 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
 
         collect(flow = shopViewModel.isNfcEnabledState) {
             doUpdateUiNfc(it)
+        }
+
+        collect(flow = shopViewModel.productCountNotifyFlow) {
+            doUpdateProductCountUi(it)
         }
     }
 
@@ -206,6 +211,18 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
         }
     }
 
+    private fun doUpdateProductCountUi(range: Pair<Int?, Int?>) {
+        val start = range.first ?: return
+        val end = range.second ?: return
+        flexibleProductAdapter?.run {
+            if (start == end) {
+                notifyItemChanged(start, Payload.CHANGE_COUNT)
+            } else {
+                notifyItemRangeChanged(start, end + 1, Payload.CHANGE_COUNT)
+            }
+        }
+    }
+
     private fun doUpdateUiViewCollection(collection: Collection?) {
         if (context.isTablet()) {
             return
@@ -237,7 +254,7 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
         if (shopViewModel.isNfcEnabled()) {
             shopViewModel.setNfcEnabled(false)
         } else {
-            TurnOnNfcDialog.Companion.newInstance {
+            TurnOnNfcDialog.newInstance {
                 shopViewModel.setNfcEnabled(true)
             }
                 .show(childFragmentManager)
@@ -255,13 +272,20 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
     }
 
     private fun doAddToCart(position: Int, product: Product) {
-        AddProductDialog.Companion.newInstance(shopViewModel.getCart(product), product) {
+        AddProductDialog.newInstance(shopViewModel.getCart(product), product) {
             shopViewModel.addToCart(it)
             flexibleProductAdapter?.run {
                 val item = getItem(position) ?: return@run
                 item.count = it.count
                 notifyItemChanged(position, Payload.CHANGE_COUNT)
             }
+        }
+            .show(childFragmentManager)
+    }
+
+    private fun doViewCart() {
+        ViewCartDialog.newInstance(shopViewModel.getCartItems()) { carts ->
+            shopViewModel.updateCarts(carts)
         }
             .show(childFragmentManager)
     }

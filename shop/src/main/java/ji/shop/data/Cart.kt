@@ -6,7 +6,7 @@ data class Cart(
     val count: Int,
     val additional: Map<ProductAdditional, Int>
 ) {
-    fun getTotalPrice(): Double {
+    fun getTotalPrice(count: Int = this.count): Double {
         val perItem = product.price + (size?.price ?: 0.0) + additional.map { it.key.price * it.value }.sum()
         return perItem * count
     }
