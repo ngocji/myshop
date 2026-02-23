@@ -14,4 +14,9 @@
         <attr name="bottomRightRadius" format="dimension" />
         <attr name="enabledStroke" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ToggleCountView">
+        <attr name="tg_hide_when_counting_zero" format="boolean" />
+        <attr name="tg_use_expanded_view" format="boolean" />
+    </declare-styleable>
 </resources>

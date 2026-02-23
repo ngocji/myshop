@@ -53,7 +53,7 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
                 shopViewModel.changeTabType(selected)
             }
 
-            btnBackToCollections.setOnClickListener { shopViewModel.setViewCollection(null) }
+            btnBackToCollections?.setOnClickListener { shopViewModel.setViewCollection(null) }
             btnNfc.setOnClickListener { doToggleNFC() }
             btnViewCart.setOnClickListener { }
             btnStream.setOnClickListener { }
@@ -62,7 +62,7 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
 
     private fun initObserves() {
         collect(flow = shopViewModel.myBalanceState) { price ->
-            binding.myBalance.setPrice(price)
+            binding.myBalance?.setPrice(price)
         }
 
         collect(flow = shopViewModel.cartPriceState) { price ->
@@ -139,27 +139,25 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
         }
 
         // linear if has
-        if (binding.recyclerviewSecondaryCollections.tag != null) {
-            flexibleCollectionSecondaryAdapter?.updateDataset(data.second) ?: run {
-                flexibleCollectionSecondaryAdapter = FlexibleAdapter(data.second.toMutableList())
-                    .setMode(FlexibleAdapter.Companion.SINGLE)
-                    .addListener { adapter, _, position ->
-                        if (!adapter.isSelected(position)) {
-                            adapter.toggleSelection(position)
-                            flexibleCollectionSecondaryAdapter?.getItem(position)
-                                ?.let { shopViewModel.setViewCollection(it.data) }
-                        }
+        flexibleCollectionSecondaryAdapter?.updateDataset(data.second) ?: run {
+            flexibleCollectionSecondaryAdapter = FlexibleAdapter(data.second.toMutableList())
+                .setMode(FlexibleAdapter.Companion.SINGLE)
+                .addListener { adapter, _, position ->
+                    if (!adapter.isSelected(position)) {
+                        adapter.toggleSelection(position)
+                        flexibleCollectionSecondaryAdapter?.getItem(position)
+                            ?.let { shopViewModel.setViewCollection(it.data) }
                     }
-            }
-            binding.recyclerviewSecondaryCollections.adapter = flexibleCollectionSecondaryAdapter
+                }
         }
+        binding.recyclerviewSecondaryCollections?.adapter = flexibleCollectionSecondaryAdapter
     }
 
     private fun initGroups(items: List<GroupItemUi>) {
         flexibleGroupAdapter?.updateDataset(items) ?: run {
             flexibleGroupAdapter = FlexibleAdapter(items.toMutableList())
-                .setMode(FlexibleAdapter.Companion.SINGLE)
-                .addListener { adapter, view, position ->
+                .setMode(FlexibleAdapter.SINGLE)
+                .addListener { adapter, _, position ->
                     if (!adapter.isSelected(position)) {
                         adapter.toggleSelection(position)
                         shopViewModel.setViewGroup(

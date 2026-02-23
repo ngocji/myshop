@@ -3,14 +3,17 @@ package ji.shop.dialog
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import ji.shop.R
 import ji.shop.base.BaseDialog
+import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
 import ji.shop.data.Cart
 import ji.shop.data.Product
 import ji.shop.databinding.DialogAddProductBinding
+import ji.shop.exts.isTablet
+import ji.shop.items.CountChangOnItemListener
+import ji.shop.utils.NumberFormater
 import kotlin.math.roundToInt
 
 class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
@@ -21,7 +24,9 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     override fun doOnWindow(window: Window) {
         super.doOnWindow(window)
         window.setLayout(
-            resources.displayMetrics.widthPixels,
+            resources.displayMetrics.widthPixels.let {
+                if (context.isTablet()) (it * 0.7).roundToInt() else it
+            },
             (resources.displayMetrics.heightPixels * 0.9).roundToInt(),
         )
         window.setGravity(Gravity.BOTTOM)
@@ -35,13 +40,30 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
 
     private fun initViews() {
         with(binding) {
+            toggleCountView?.setListener { doUpdatePrice() }
+            selectionSizeItemsView.setListener { _, _, _ -> doUpdatePrice() }
+            selectionAdditionalItemsView.setListener(object : CountChangOnItemListener {
+                override fun onCountChanged(position: Int, count: Int) {
+                    doUpdatePrice()
+                }
+
+                override fun onClick(
+                    adapter: FlexibleAdapter<*>,
+                    view: View,
+                    position: Int
+                ) {
+                }
+            })
+
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
-            btnAdd.setOnClickListener { doAddToCart() }
+            btnAddToCart.setOnClickListener { doAddToCart() }
         }
     }
 
     private fun initData() {
         with(binding) {
+            doUpdatePrice()
+            toggleCountView?.setCount(currentCart?.count ?: 1)
             tvProductName.text = product?.name ?: ""
             imageProduct.load(product?.images?.firstOrNull())
             selectionSizeItemsView.setData(
@@ -53,20 +75,32 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     }
 
     private fun doAddToCart() {
-        val size = binding.selectionSizeItemsView.getSelected() ?: return
-        val additional = binding.selectionAdditionalItemsView.getMapCount()
         onAdd?.invoke(
-            currentCart?.copy(
-                size = size,
-                additional = additional
-            ) ?: Cart(
-                product = product ?: return,
-                size = size,
-                additional = additional,
-                count = 1
-            )
+            obtainCart() ?: return
         )
         dismissAllowingStateLoss()
+    }
+
+    private fun doUpdatePrice() {
+        val cart = obtainCart()
+        val totalPrice = NumberFormater.formatNumberLocale(cart?.getTotalPrice() ?: 0.0)
+        binding.tvTotalPrice?.text = totalPrice
+        binding.btnAddToCart.takeIf { context.isTablet() }
+            ?.text = "${getString(R.string.text_add_to_cart)} $totalPrice"
+    }
+
+    private fun obtainCart(): Cart? {
+        val size = binding.selectionSizeItemsView.getSelected()
+        val additional = binding.selectionAdditionalItemsView.getMapCount()
+        return currentCart?.copy(
+            size = size,
+            additional = additional
+        ) ?: Cart(
+            product = product ?: return null,
+            size = size,
+            additional = additional,
+            count = binding.toggleCountView?.currentCount?.takeIf { it > 0 } ?: 1
+        )
     }
 
     companion object {

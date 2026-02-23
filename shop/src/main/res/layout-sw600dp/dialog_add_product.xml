@@ -54,14 +54,58 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Product name" />
 
+    <ji.shop.widget.ShapeImageStrokeView
+        android:id="@+id/image_product"
+        android:layout_width="0dp"
+        android:layout_height="226dp"
+        app:layout_constraintEnd_toStartOf="@id/nested_scroll_view"
+        app:layout_constraintHorizontal_weight="0.8"
+        app:layout_constraintStart_toStartOf="@id/guide_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_product_name" />
+
+    <ji.shop.widget.ToggleCountView
+        android:id="@+id/toggle_count_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_padding"
+        app:layout_constraintEnd_toEndOf="@id/image_product"
+        app:layout_constraintTop_toBottomOf="@id/image_product"
+        app:tg_use_expanded_view="true" />
+
+    <TextView
+        android:id="@+id/tv_qty"
+        style="@style/fontDemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_qty"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/toggle_count_view"
+        app:layout_constraintStart_toStartOf="@id/guide_start"
+        app:layout_constraintTop_toTopOf="@id/toggle_count_view" />
+
+    <TextView
+        android:id="@+id/tv_total_price"
+        style="@style/fontDemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_2_padding"
+        android:gravity="center"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="@id/image_product"
+        app:layout_constraintStart_toStartOf="@id/guide_start"
+        app:layout_constraintTop_toBottomOf="@id/toggle_count_view"
+        tools:text="$17.00" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/normal_padding"
         android:layout_marginBottom="@dimen/_32dp"
         app:layout_constraintBottom_toTopOf="@id/btn_add_to_cart"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintStart_toStartOf="@id/guide_start"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/image_product"
         app:layout_constraintTop_toBottomOf="@id/tv_product_name">
 
         <LinearLayout
@@ -69,15 +113,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ji.shop.widget.ShapeImageStrokeView
-                android:id="@+id/image_product"
-                android:layout_width="match_parent"
-                android:layout_height="242dp" />
-
             <ji.shop.widget.GradientStrokeLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_padding"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/large_2_padding"
                 android:paddingVertical="@dimen/large_padding">

@@ -5,17 +5,26 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import ji.shop.R
 import ji.shop.databinding.ToggleCountViewBinding
 
 class ToggleCountView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : LinearLayout(context, attrs) {
+    context: Context, attrs: AttributeSet? = null, def: Int = 0
+) : LinearLayout(context, attrs, def) {
     private val binding = ToggleCountViewBinding.inflate(LayoutInflater.from(context), this)
-    private var currentCount = 0
+    var currentCount = 0
     private var listener: OnCountListener? = null
-    private var hideWhenCoutingZero = false
+    private var hideWhenCountingZero = false
+    private var useExpandView = false
 
     init {
+        attrs?.let {
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.ToggleCountView, def, 0)
+            hideWhenCountingZero =
+                typedArray.getBoolean(R.styleable.ToggleCountView_tg_hide_when_counting_zero, false)
+            useExpandView =
+                typedArray.getBoolean(R.styleable.ToggleCountView_tg_use_expanded_view, false)
+        }
         initViews()
     }
 
@@ -33,7 +42,7 @@ class ToggleCountView @JvmOverloads constructor(
     }
 
     fun setHideWhenCountingZero(hide: Boolean) {
-        hideWhenCoutingZero = hide
+        hideWhenCountingZero = hide
         updateCount()
     }
 
@@ -51,8 +60,8 @@ class ToggleCountView @JvmOverloads constructor(
 
     private fun updateCount() {
         binding.tvCount.text = currentCount.toString()
-        val hasCount = currentCount > 0 || (binding.btnMinus.isVisible && !hideWhenCoutingZero)
-        isVisible = hasCount || !hideWhenCoutingZero
+        val hasCount = currentCount > 0 || useExpandView || (binding.btnMinus.isVisible && !hideWhenCountingZero)
+        isVisible = hasCount || !hideWhenCountingZero
         with(binding) {
             btnMinus.isVisible = hasCount
             tvCount.isVisible = hasCount

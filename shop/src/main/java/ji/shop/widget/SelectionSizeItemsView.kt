@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
+import ji.shop.base.adapter.OnItemClickListener
 import ji.shop.data.ProductSize
 import ji.shop.items.SelectionSizeItemUi
 
@@ -24,6 +25,10 @@ class SelectionSizeItemsView @JvmOverloads constructor(
         isNestedScrollingEnabled = false
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         adapter = flexibleAdapter
+    }
+
+    fun setListener(onItemClickListener: OnItemClickListener) {
+        flexibleAdapter.addListener(onItemClickListener)
     }
 
     fun setData(items: List<ProductSize>, selectedIndex: Int = 0) {
