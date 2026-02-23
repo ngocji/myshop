@@ -20,4 +20,7 @@
     <string name="text_nfc_turn_off_message">To use contactless features, NFC must be enabled on your device.</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_turn_on_nfc">Turn on NFC</string>
+    <string name="text_choose_1">Choose 1</string>
+    <string name="text_add">Add</string>
+    <string name="text_add_to_cart">Add to Cart</string>
 </resources>

@@ -9,10 +9,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 
 abstract class BaseDialog(layoutRes: Int) : DialogFragment(layoutRes) {
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState).apply {
-            window?.also { doOnWindow(it) }
-        }
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.also { doOnWindow(it) }
     }
 
     open fun doOnWindow(window: Window) {

@@ -32,6 +32,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="fontDemiBold">
+    </style>
+
     <style name="ShapeAppearanceOverlay.CornerSize16" parent="">
         <item name="cornerSize">16dp</item>
     </style>

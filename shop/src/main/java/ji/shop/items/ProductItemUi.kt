@@ -1,7 +1,6 @@
 package ji.shop.items
 
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
@@ -30,8 +29,10 @@ data class ProductItemUi(
             )
         ).apply {
             withBinding(this) {
+                toggleCountView.setHideWhenCountingZero(!isUseToggleCount)
                 toggleCountView.setListener { newCount ->
-                    count = newCount
+                    val item = adapter.getItem(absoluteAdapterPosition) as? ProductItemUi
+                    item?.count = newCount
                     adapter.notifyListeners {
                         if (this is CountChangOnItemListener) {
                             onCountChanged(absoluteAdapterPosition, newCount)
@@ -51,12 +52,9 @@ data class ProductItemUi(
         withBinding(holder) {
             if (payloads.isNotEmpty()) {
                 payloads.forEach { obj ->
-                    if (obj == Payload.CHANGE_COUNT) {
-                        toggleCountView.setCount(count,skipZero = false)
-                        return@withBinding
-                    }
-                    if (obj == Payload.CHANGE_USE_TOGGLE_COUNT) {
-                        toggleCountView.isVisible = isUseToggleCount
+                    if (obj == Payload.CHANGE_COUNT || obj == Payload.CHANGE_USE_TOGGLE_COUNT) {
+                        toggleCountView.setCount(count)
+                        toggleCountView.setHideWhenCountingZero(!isUseToggleCount)
                         return@withBinding
                     }
                 }
@@ -65,8 +63,8 @@ data class ProductItemUi(
             tvName.text = data.name
             tvPrice.text = NumberFormater.formatNumberLocale(data.price)
             image.load(data.images.firstOrNull())
-            toggleCountView.setCount(count,skipZero = false)
-            toggleCountView.isVisible = isUseToggleCount
+            toggleCountView.setCount(count)
+            toggleCountView.setHideWhenCountingZero(!isUseToggleCount)
         }
     }
 }

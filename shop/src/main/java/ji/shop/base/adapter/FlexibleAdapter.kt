@@ -142,6 +142,10 @@ class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
         listeners.forEach(action)
     }
 
+    fun find(action: T.() -> Boolean):T? {
+        return items.find(action)
+    }
+
     companion object {
         const val SINGLE = 0
         const val MULTI = 1

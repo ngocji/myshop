@@ -13,7 +13,7 @@ import ji.shop.utils.NumberFormater
 
 data class SelectionAdditionalItemUi(
     val data: ProductAdditional,
-    val count: Int
+    var count: Int
 ) : ItemUI<ItemSelectionAdditionalBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
@@ -28,10 +28,12 @@ data class SelectionAdditionalItemUi(
             )
         ).apply {
             withBinding(this) {
-                toggleCountView.setListener { count ->
+                toggleCountView.setListener { newCount ->
+                    val item = adapter.getItem(absoluteAdapterPosition) as? SelectionAdditionalItemUi
+                    item?.count = newCount
                     adapter.notifyListeners {
                         if (this is CountChangOnItemListener) {
-                            onCountChanged(absoluteAdapterPosition, count)
+                            onCountChanged(absoluteAdapterPosition, newCount)
                         }
                     }
                 }

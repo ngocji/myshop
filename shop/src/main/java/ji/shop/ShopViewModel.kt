@@ -169,4 +169,21 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     }
 
     fun isNfcEnabled() = isNfcEnabledState.value
+
+    fun getCart(product: Product): Cart? {
+        return cartsState.value.data.find { it.product.id == product.id }
+    }
+
+    fun addToCart(cart: Cart) {
+        cartsState.update {
+            val carts = it.data.toMutableSet()
+            val extProduct = carts.find { c -> c.product.id == cart.product.id }
+            if (extProduct != null) {
+                carts.remove(extProduct)
+            }
+
+            carts.add(cart)
+            WrapUpdateData(data = carts)
+        }
+    }
 }

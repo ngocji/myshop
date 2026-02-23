@@ -13,6 +13,7 @@ class ToggleCountView @JvmOverloads constructor(
     private val binding = ToggleCountViewBinding.inflate(LayoutInflater.from(context), this)
     private var currentCount = 0
     private var listener: OnCountListener? = null
+    private var hideWhenCoutingZero = false
 
     init {
         initViews()
@@ -24,28 +25,34 @@ class ToggleCountView @JvmOverloads constructor(
 
     private fun initViews() {
         with(binding) {
-            updateCount(true)
+            updateCount()
             btnPlus.setOnClickListener { counting(1) }
             btnMinus.setOnClickListener { counting(-1) }
             btnAdd.setOnClickListener { counting(1) }
         }
     }
 
-    fun setCount(count: Int, skipZero: Boolean = true) {
+    fun setHideWhenCountingZero(hide: Boolean) {
+        hideWhenCoutingZero = hide
+        updateCount()
+    }
+
+    fun setCount(count: Int) {
         currentCount = count
-        updateCount(skipZero)
+        updateCount()
     }
 
     private fun counting(i: Int) {
         currentCount += i
         if (currentCount < 0) currentCount = 0
-        updateCount(true)
+        updateCount()
         listener?.onCount(currentCount)
     }
 
-    private fun updateCount(skipZero: Boolean) {
+    private fun updateCount() {
         binding.tvCount.text = currentCount.toString()
-        val hasCount = currentCount > 0 || (binding.btnMinus.isVisible && skipZero)
+        val hasCount = currentCount > 0 || (binding.btnMinus.isVisible && !hideWhenCoutingZero)
+        isVisible = hasCount || !hideWhenCoutingZero
         with(binding) {
             btnMinus.isVisible = hasCount
             tvCount.isVisible = hasCount

@@ -21,16 +21,19 @@ class SelectionSizeItemsView @JvmOverloads constructor(
         }
 
     init {
+        isNestedScrollingEnabled = false
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         adapter = flexibleAdapter
     }
 
-    fun setData(items: List<ProductSize>) {
+    fun setData(items: List<ProductSize>, selectedIndex: Int = 0) {
         flexibleAdapter.clearAdjustSelection()
-        flexibleAdapter.addAdjustSelected(0)
         flexibleAdapter.updateDataset(items.map {
             SelectionSizeItemUi(it)
         })
+        if (!flexibleAdapter.isSelected(selectedIndex)) {
+            flexibleAdapter.toggleSelection(selectedIndex)
+        }
     }
 
     fun getSelected(): ProductSize? {

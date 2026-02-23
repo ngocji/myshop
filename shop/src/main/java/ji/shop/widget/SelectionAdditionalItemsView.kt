@@ -15,13 +15,14 @@ class SelectionAdditionalItemsView @JvmOverloads constructor(
     private val flexibleAdapter = FlexibleAdapter<SelectionAdditionalItemUi>(mutableListOf())
 
     init {
+        isNestedScrollingEnabled = false
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         adapter = flexibleAdapter
     }
 
-    fun setData(cart: Cart, items: List<ProductAdditional>) {
+    fun setData(cart: Cart?, items: List<ProductAdditional>) {
         flexibleAdapter.updateDataset(items.map {
-            SelectionAdditionalItemUi(it, cart.additional[it] ?: 0)
+            SelectionAdditionalItemUi(it, cart?.additional?.get(it) ?: 0)
         })
     }
 

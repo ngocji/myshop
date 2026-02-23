@@ -10,8 +10,10 @@ import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
 import ji.shop.base.adapter.Payload
 import ji.shop.base.viewBinding
 import ji.shop.data.Collection
+import ji.shop.data.Product
 import ji.shop.data.TabType
 import ji.shop.databinding.FragmentListProductsBinding
+import ji.shop.dialog.AddProductDialog
 import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.exts.collect
 import ji.shop.exts.isTablet
@@ -185,6 +187,10 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
                         view: View,
                         position: Int
                     ) {
+                        doAddToCart(
+                            position,
+                            flexibleProductAdapter?.getItem(position)?.data ?: return
+                        )
                     }
                 })
             binding.recyclerViewProducts.adapter = flexibleProductAdapter
@@ -233,5 +239,17 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
                 notifyItemRangeChanged(0, itemCount, Payload.CHANGE_USE_TOGGLE_COUNT)
             }
         }
+    }
+
+    private fun doAddToCart(position: Int, product: Product) {
+        AddProductDialog.newInstance(shopViewModel.getCart(product), product) {
+            shopViewModel.addToCart(it)
+            flexibleProductAdapter?.run {
+                val item = getItem(position) ?: return@run
+                item.count = it.count
+                notifyItemChanged(position, Payload.CHANGE_COUNT)
+            }
+        }
+            .show(childFragmentManager)
     }
 }
