@@ -47,4 +47,8 @@
     <style name="dialogTitleStyle" parent="fontBold">
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="circle">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
