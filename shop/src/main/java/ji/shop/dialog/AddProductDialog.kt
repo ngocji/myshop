@@ -64,8 +64,7 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
 
     private fun initData() {
         with(binding) {
-            doUpdatePrice()
-            toggleCountView?.setCount(currentCart?.count ?: 1)
+            toggleCountView?.setCount(currentCart?.count?.takeIf { it > 0 } ?: 1)
             tvProductName.text = product?.name ?: ""
             imageProduct.load(product?.images?.firstOrNull())
             selectionSizeItemsView.setData(
@@ -73,6 +72,7 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
                 selectedIndex = product?.sizes?.indexOfFirst { it.name == currentCart?.size?.name }
                     .let { if (it == null || it < 0) 0 else it })
             selectionAdditionalItemsView.setData(currentCart, product?.additional ?: emptyList())
+            doUpdatePrice()
         }
     }
 
@@ -101,7 +101,7 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
             product = product ?: return null,
             size = size,
             additional = additional,
-            count = binding.toggleCountView?.currentCount?.takeIf { it > 0 } ?: 1
+            count = binding.toggleCountView?.currentCount ?: 1
         )
     }
 

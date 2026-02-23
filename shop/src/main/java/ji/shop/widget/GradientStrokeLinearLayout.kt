@@ -12,7 +12,7 @@ import android.widget.LinearLayout
 import ji.shop.R
 import androidx.core.graphics.toColorInt
 
-class GradientStrokeLinearLayout @JvmOverloads constructor(
+open class GradientStrokeLinearLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
     private val radius by lazy { context.resources.getDimension(R.dimen.large_radius) }

@@ -11,9 +11,8 @@ import ji.shop.exts.load
 
 class ShapeImageStrokeView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : FrameLayout(context, attrs) {
+) : GradientStrokeLinearLayout(context, attrs) {
     init {
-        setBackgroundResource(R.drawable.bg_secondary_rounded_with_stroke)
         val padding = context.resources.getDimensionPixelSize(R.dimen._6dp)
         setPadding(padding, padding, padding, padding)
         addView(ShapeableImageView(context).apply {
