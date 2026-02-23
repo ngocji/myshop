@@ -14,7 +14,7 @@ import ji.shop.data.WrapUpdateData
 import ji.shop.exts.mapWhenSuccess
 import ji.shop.exts.safeFlow
 import ji.shop.exts.safeResultFlow
-import ji.shop.fragments.phone.ListProductsFragment
+import ji.shop.fragments.ShoppingFragment
 import ji.shop.items.CollectionGridItemUi
 import ji.shop.items.CollectionLinearItemUi
 import ji.shop.items.GroupItemUi
@@ -105,7 +105,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     init {
         goto {
-            ListProductsFragment()
+            ShoppingFragment()
         }
     }
 

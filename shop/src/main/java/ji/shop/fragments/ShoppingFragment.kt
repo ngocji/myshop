@@ -1,4 +1,4 @@
-package ji.shop.fragments.phone
+package ji.shop.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -6,13 +6,12 @@ import androidx.core.view.isVisible
 import ji.shop.R
 import ji.shop.base.BaseFragment
 import ji.shop.base.adapter.FlexibleAdapter
-import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
 import ji.shop.base.adapter.Payload
 import ji.shop.base.viewBinding
 import ji.shop.data.Collection
 import ji.shop.data.Product
 import ji.shop.data.TabType
-import ji.shop.databinding.FragmentListProductsBinding
+import ji.shop.databinding.FragmentShoppingBinding
 import ji.shop.dialog.AddProductDialog
 import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.exts.collect
@@ -23,8 +22,8 @@ import ji.shop.items.CountChangOnItemListener
 import ji.shop.items.GroupItemUi
 import ji.shop.items.ProductItemUi
 
-class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
-    private val binding by viewBinding(FragmentListProductsBinding::bind)
+class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
+    private val binding by viewBinding(FragmentShoppingBinding::bind)
     private var flexibleCollectionAdapter: FlexibleAdapter<CollectionGridItemUi>? = null
     private var flexibleCollectionSecondaryAdapter: FlexibleAdapter<CollectionLinearItemUi>? = null
     private var flexibleGroupAdapter: FlexibleAdapter<GroupItemUi>? = null
@@ -67,11 +66,7 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
         }
 
         collect(flow = shopViewModel.cartPriceState) { price ->
-            if (price.isNullOrBlank()) {
-                binding.btnViewCart.setText(R.string.text_view_cart)
-            } else {
-                binding.btnViewCart.text = "${getString(R.string.text_view_cart)} ($price)"
-            }
+            doUpdateViewCart(price)
         }
 
         collect(flow = shopViewModel.tabTabTypeState) { tab ->
@@ -110,11 +105,20 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
         }
     }
 
+    private fun doUpdateViewCart(price: String?) {
+        if (context.isTablet()) return // skip update btn text
+        if (price.isNullOrBlank()) {
+            binding.btnViewCart.setText(R.string.text_view_cart)
+        } else {
+            binding.btnViewCart.text = "${getString(R.string.text_view_cart)} ($price)"
+        }
+    }
+
     private fun initCollections(data: Pair<List<CollectionGridItemUi>, List<CollectionLinearItemUi>>) {
         // grid
         flexibleCollectionAdapter?.updateDataset(data.first) ?: run {
             flexibleCollectionAdapter = FlexibleAdapter(data.first.toMutableList())
-                .setMode(SINGLE)
+                .setMode(FlexibleAdapter.Companion.SINGLE)
                 .addListener { adapter, _, position ->
                     if (!adapter.isSelected(position)) {
                         adapter.toggleSelection(position)
@@ -124,6 +128,13 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
                     }
                 }
 
+            if (context.isTablet()) {
+                // select first
+                flexibleCollectionAdapter?.toggleSelection(0)
+                flexibleCollectionAdapter?.getItem(0)
+                    ?.let { shopViewModel.setViewCollection(it.data) }
+            }
+
             binding.recyclerView.adapter = flexibleCollectionAdapter
         }
 
@@ -131,7 +142,7 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
         if (binding.recyclerviewSecondaryCollections.tag != null) {
             flexibleCollectionSecondaryAdapter?.updateDataset(data.second) ?: run {
                 flexibleCollectionSecondaryAdapter = FlexibleAdapter(data.second.toMutableList())
-                    .setMode(SINGLE)
+                    .setMode(FlexibleAdapter.Companion.SINGLE)
                     .addListener { adapter, _, position ->
                         if (!adapter.isSelected(position)) {
                             adapter.toggleSelection(position)
@@ -147,7 +158,7 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
     private fun initGroups(items: List<GroupItemUi>) {
         flexibleGroupAdapter?.updateDataset(items) ?: run {
             flexibleGroupAdapter = FlexibleAdapter(items.toMutableList())
-                .setMode(SINGLE)
+                .setMode(FlexibleAdapter.Companion.SINGLE)
                 .addListener { adapter, view, position ->
                     if (!adapter.isSelected(position)) {
                         adapter.toggleSelection(position)
@@ -198,6 +209,10 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
     }
 
     private fun doUpdateUiViewCollection(collection: Collection?) {
+        if (context.isTablet()) {
+            return
+        }
+        // need update phone
         val viewProducts = binding.viewProducts
         if (collection == null) {
             // revert
@@ -224,7 +239,7 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
         if (shopViewModel.isNfcEnabled()) {
             shopViewModel.setNfcEnabled(false)
         } else {
-            TurnOnNfcDialog.newInstance {
+            TurnOnNfcDialog.Companion.newInstance {
                 shopViewModel.setNfcEnabled(true)
             }
                 .show(childFragmentManager)
@@ -242,7 +257,7 @@ class ListProductsFragment : BaseFragment(R.layout.fragment_list_products) {
     }
 
     private fun doAddToCart(position: Int, product: Product) {
-        AddProductDialog.newInstance(shopViewModel.getCart(product), product) {
+        AddProductDialog.Companion.newInstance(shopViewModel.getCart(product), product) {
             shopViewModel.addToCart(it)
             flexibleProductAdapter?.run {
                 val item = getItem(position) ?: return@run
