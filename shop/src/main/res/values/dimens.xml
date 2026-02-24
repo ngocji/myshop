@@ -11,9 +11,11 @@
     <dimen name="components_padding">20dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="_6dp">6dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
     <dimen name="_5dp">5dp</dimen>
     <dimen name="_90dp">90dp</dimen>
     <dimen name="_10dp">10dp</dimen>
+    <dimen name="_16dp">16dp</dimen>
     <dimen name="_32dp">32dp</dimen>
     <dimen name="_1dp">1dp</dimen>
     <dimen name="image_inventory">40dp</dimen>
