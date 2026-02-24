@@ -164,7 +164,7 @@
             app:layout_constraintEnd_toEndOf="@id/tv_orders"
             app:layout_constraintStart_toStartOf="@id/guide_start"
             app:layout_constraintTop_toTopOf="@id/remaining"
-            app:progressValue="50"
+            app:progressValue="20"
             app:trackColor="#0000001A" />
 
         <TextView

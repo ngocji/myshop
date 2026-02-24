@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="image_inventory">58dp</dimen>
+    <dimen name="tg_w">48dp</dimen>
+    <dimen name="tg_h">32dp</dimen>
 </resources>

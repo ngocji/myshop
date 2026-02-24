@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/small_padding">
+    android:paddingVertical="@dimen/normal_padding"
+    android:paddingHorizontal="@dimen/small_padding">
 
     <TextView
         style="@style/fontMedium"
@@ -21,7 +22,7 @@
 
     <TextView
         style="@style/fontMedium"
-        android:layout_width="wrap_content"
+        android:layout_width="93dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_padding"
         android:text="@string/text_visibility" />
