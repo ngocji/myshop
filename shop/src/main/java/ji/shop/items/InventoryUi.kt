@@ -23,7 +23,13 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
                 parent,
                 false
             )
-        )
+        ).apply {
+            withBinding(this) {
+                imgArrowDown?.setOnClickListener {
+
+                }
+            }
+        }
     }
 
     override fun bindViewHolder(
@@ -33,15 +39,15 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
         payloads: List<Any?>
     ) {
         withBinding(holder) {
-            imgPicture?.load(inventory.image)
-            imgPicture?.isSelected = inventory.isVisibility
-            tvName?.text = inventory.name
-            tvOrders?.text = inventory.orders.toPlanString()
-            tvComplete?.text = inventory.complete.toPlanString()
-            tvPrice?.text = NumberFormater.formatNumberLocale(inventory.price)
-            tvSold?.text = inventory.sold.toPlanString()
-            prgRemaining?.setProgress(inventory.remaining)
-            tvQuantity?.text = inventory.quantity.toPlanString()
+            imgPicture.load(inventory.image)
+            imgPicture.isSelected = inventory.isVisibility
+            tvName.text = inventory.name
+            tvOrders.text = inventory.orders.toPlanString()
+            tvComplete.text = inventory.complete.toPlanString()
+            tvPrice.text = NumberFormater.formatNumberLocale(inventory.price)
+            tvSold.text = inventory.sold.toPlanString()
+            prgRemaining.setProgress(inventory.remaining)
+            tvQuantity.text = inventory.quantity.toPlanString()
         }
     }
 
