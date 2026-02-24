@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_6dp"
+    android:background="@drawable/bg_secondary"
+    android:padding="@dimen/_6dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_picture"
+        android:layout_width="@dimen/image_inventory"
+        android:layout_height="@dimen/image_inventory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circle"
+        app:srcCompat="@drawable/ic_inventory" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        style="@style/fontDemiBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_6dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_picture"
+        app:layout_constraintStart_toEndOf="@id/img_picture"
+        app:layout_constraintTop_toTopOf="@id/img_picture"
+        tools:text="Coca Cola" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_Visibility"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="@dimen/small_padding"
+        android:src="@drawable/ic_tg_selector"
+        app:layout_constraintBottom_toBottomOf="@id/img_picture"
+        app:layout_constraintEnd_toStartOf="@+id/img_arrow_down"
+        app:layout_constraintTop_toTopOf="@id/img_picture"
+        tools:ignore="ContentDescription" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_arrow_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/small_padding"
+        android:src="@drawable/ic_arrow_down"
+        app:layout_constraintBottom_toBottomOf="@+id/img_Visibility"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/img_Visibility" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_6dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_picture">
+
+        <TextView
+            android:id="@+id/orders"
+            style="@style/fontMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_orders"
+            app:layout_constraintEnd_toStartOf="@id/guide_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_orders"
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="28" />
+
+        <TextView
+            android:id="@+id/complete"
+            style="@style/fontMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/normal_padding"
+            android:text="@string/text_complete"
+            app:layout_constraintEnd_toEndOf="@id/orders"
+            app:layout_constraintStart_toStartOf="@id/orders"
+            app:layout_constraintTop_toBottomOf="@+id/orders" />
+
+        <TextView
+            android:id="@+id/tv_complete"
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/complete"
+            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="@id/complete"
+            tools:text="2,291" />
+
+
+        <TextView
+            android:id="@+id/price"
+            style="@style/fontMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/normal_padding"
+            android:text="@string/text_price"
+            app:layout_constraintEnd_toEndOf="@id/orders"
+            app:layout_constraintStart_toStartOf="@id/orders"
+            app:layout_constraintTop_toBottomOf="@+id/complete" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/price"
+            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="@id/price"
+            tools:text="2,291" />
+
+        <TextView
+            android:id="@+id/sold"
+            style="@style/fontMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_sold"
+            app:layout_constraintEnd_toEndOf="@id/orders"
+            app:layout_constraintStart_toStartOf="@id/price"
+            app:layout_constraintTop_toBottomOf="@+id/price" />
+
+        <TextView
+            android:id="@+id/tv_sold"
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/sold"
+            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="@id/sold"
+            tools:text="2,291" />
+
+        <TextView
+            android:id="@+id/remaining"
+            style="@style/fontMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/normal_padding"
+            android:text="@string/text_remaining"
+            app:layout_constraintEnd_toEndOf="@id/orders"
+            app:layout_constraintStart_toStartOf="@id/orders"
+            app:layout_constraintTop_toBottomOf="@+id/sold" />
+
+        <ji.shop.widget.ProgressView
+            android:id="@+id/prg_remaining"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:indicatorColor="#137EFC"
+            app:layout_constraintBottom_toBottomOf="@id/remaining"
+            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="@id/remaining"
+            app:progressValue="20"
+            app:trackColor="#0000001A" />
+
+        <TextView
+            android:id="@+id/quantity"
+            style="@style/fontMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_quantity"
+            app:layout_constraintEnd_toEndOf="@id/orders"
+            app:layout_constraintStart_toStartOf="@id/price"
+            app:layout_constraintTop_toBottomOf="@+id/remaining" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_stroke_secondary"
+            android:padding="@dimen/small_padding"
+            app:layout_constraintBottom_toBottomOf="@id/quantity"
+            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="@id/quantity"
+            tools:text="2,291" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_percent="0.3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

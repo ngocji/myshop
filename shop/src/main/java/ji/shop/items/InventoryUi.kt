@@ -26,10 +26,14 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
             )
         ).apply {
             withBinding(this) {
+                var expanded = info?.isVisible ?: false
                 imgArrowDown?.setOnClickListener {
-                    info?.let {
-                        info.isVisible = !it.isVisible
-                    }
+                    expanded = !expanded
+                    imgArrowDown.animate()
+                        .rotation(if (expanded) 180f else 0f)
+                        .setDuration(200)
+                        .start()
+                    info?.isVisible = expanded
                 }
             }
         }

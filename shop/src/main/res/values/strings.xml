@@ -34,4 +34,8 @@
     <string name="text_remaining">Inventory Remaining %</string>
     <string name="text_quantity">Quantity</string>
     <string name="text_refund">Partial Refund</string>
+    <string name="text_name">Name</string>
+    <string name="text_time">Time</string>
+    <string name="text_order_method">Order method</string>
+    <string name="text_status">Status</string>
 </resources>

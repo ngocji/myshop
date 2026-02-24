@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10dp"
+    android:background="@drawable/bg_secondary"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/small_padding">
+
+    <ji.shop.widget.OrderAvatarItemsView
+        android:id="@+id/img_avatar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        style="@style/fontDemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="1"
+        tools:text="Floyd Miles" />
+
+    <TextView
+        android:id="@+id/tv_orders"
+        style="@style/fontSemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        tools:text="28" />
+
+    <TextView
+        android:id="@+id/tv_qty"
+        style="@style/fontSemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        style="@style/fontSemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        tools:text="3:20 pm" />
+
+    <TextView
+        android:id="@+id/tv_order_method"
+        style="@style/fontSemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        tools:text="Online" />
+
+    <ji.shop.widget.StatusView
+        android:id="@+id/tv_state"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        android:paddingHorizontal="@dimen/small_padding" />
+
+</LinearLayout>
