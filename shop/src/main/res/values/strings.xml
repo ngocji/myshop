@@ -27,4 +27,10 @@
     <string name="text_cart">Cart</string>
     <string name="text_subtotal">Subtotal</string>
     <string name="text_tax">Tax</string>
+    <string name="text_item">Items</string>
+    <string name="text_visibility">Visibility</string>
+    <string name="text_complete">Complete</string>
+    <string name="text_sold">Sold</string>
+    <string name="text_remaining">Inventory Remaining %</string>
+    <string name="text_quantity">Quantity</string>
 </resources>

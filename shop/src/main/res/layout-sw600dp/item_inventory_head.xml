@@ -1,94 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_secondary"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="@dimen/small_padding">
 
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/img_picture"
+    <TextView
+        style="@style/fontMedium"
         android:layout_width="58dp"
-        android:layout_height="58dp"
-        app:shapeAppearanceOverlay="@style/circle"
-        app:srcCompat="@drawable/ic_inventory" />
+        android:layout_height="wrap_content"
+        android:text="@string/text_item" />
 
     <TextView
-        android:id="@+id/tv_name"
-        style="@style/fontDemiBold"
+        style="@style/fontMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/large_padding"
-        android:layout_weight="1"
-        tools:text="Coca Cola" />
-
-    <ImageView
-        android:id="@+id/img_Visibility"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/small_padding"
-        android:src="@drawable/ic_tg_selector"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tv_orders"
-        style="@style/fontSemiBold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_padding"
-        android:layout_weight="0.3"
-        tools:text="28" />
-
-    <TextView
-        android:id="@+id/tv_complete"
-        style="@style/fontSemiBold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_padding"
-        android:layout_weight="0.3"
-        tools:text="2,291" />
-
-    <TextView
-        android:id="@+id/tv_price"
-        style="@style/fontSemiBold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_padding"
-        android:layout_weight="0.3"
-        tools:text="193" />
-
-    <TextView
-        android:id="@+id/tv_sold"
-        style="@style/fontSemiBold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_padding"
-        android:layout_weight="0.3"
-        tools:text="2,291" />
-
-    <ji.shop.widget.ProgressView
-        android:id="@+id/prg_remaining"
-        android:layout_width="0dp"
-        app:progressValue="50"
-        app:indicatorColor="#137EFC"
-        app:trackColor="#0000001A"
-        android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_quantity"
-        style="@style/fontSemiBold"
+        style="@style/fontMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_padding"
+        android:text="@string/text_visibility" />
+
+    <TextView
+        style="@style/fontMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        android:text="@string/text_orders" />
+
+    <TextView
+        style="@style/fontMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        android:text="@string/text_complete" />
+
+    <TextView
+        style="@style/fontMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        android:text="@string/text_price" />
+
+    <TextView
+        style="@style/fontMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_padding"
+        android:layout_weight="0.3"
+        android:text="@string/text_sold" />
+
+    <TextView
+        style="@style/fontMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/text_remaining" />
+
+    <TextView
+        style="@style/fontMedium"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/large_padding"
         android:layout_weight="0.3"
-        android:background="@drawable/bg_stroke_secondary"
-        android:gravity="center_vertical"
         android:paddingHorizontal="@dimen/small_padding"
-        tools:text="22,000" />
+        android:text="@string/text_quantity" />
 
 </LinearLayout>

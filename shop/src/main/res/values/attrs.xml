@@ -19,4 +19,10 @@
         <attr name="tg_hide_when_counting_zero" format="boolean" />
         <attr name="tg_use_expanded_view" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ProgressItemView">
+        <attr name="progressValue" format="integer"/>
+        <attr name="indicatorColor" format="color"/>
+        <attr name="trackColor" format="color"/>
+    </declare-styleable>
 </resources>
