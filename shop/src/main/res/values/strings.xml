@@ -33,4 +33,5 @@
     <string name="text_sold">Sold</string>
     <string name="text_remaining">Inventory Remaining %</string>
     <string name="text_quantity">Quantity</string>
+    <string name="text_refund">Partial Refund</string>
 </resources>

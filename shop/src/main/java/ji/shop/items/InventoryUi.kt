@@ -1,6 +1,7 @@
 package ji.shop.items
 
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
@@ -26,7 +27,9 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
         ).apply {
             withBinding(this) {
                 imgArrowDown?.setOnClickListener {
-
+                    info?.let {
+                        info.isVisible = !it.isVisible
+                    }
                 }
             }
         }
