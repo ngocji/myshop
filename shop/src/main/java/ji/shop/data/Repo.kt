@@ -77,4 +77,12 @@ object Repo {
             }
         }
     }
+
+    suspend fun getInventories() = withContext(Dispatchers.IO) {
+        buildList {
+            repeat(5) {
+                add(Inventory(image = R.drawable.ic_inventory, "Coca Cola $it", true, 28, 2.291, 193.0, 2.291, 20, 2.291))
+            }
+        }
+    }
 }

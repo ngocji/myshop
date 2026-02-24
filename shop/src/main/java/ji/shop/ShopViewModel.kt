@@ -19,6 +19,7 @@ import ji.shop.fragments.ShoppingFragment
 import ji.shop.items.CollectionGridItemUi
 import ji.shop.items.CollectionLinearItemUi
 import ji.shop.items.GroupItemUi
+import ji.shop.items.InventoryUi
 import ji.shop.items.ProductItemUi
 import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -222,4 +223,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             WrapUpdateData(data = carts.toSet())
         }
     }
+
+    val inventoriesFlow = safeFlow {
+        Repo.getInventories().map {
+            InventoryUi(it)
+        }
+    }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 }

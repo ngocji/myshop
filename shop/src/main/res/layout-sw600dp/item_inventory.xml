@@ -7,6 +7,7 @@
     android:background="@drawable/bg_secondary"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:layout_marginTop="@dimen/small_padding"
     android:padding="@dimen/small_padding">
 
     <com.google.android.material.imageview.ShapeableImageView
