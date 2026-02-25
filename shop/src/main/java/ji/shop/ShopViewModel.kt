@@ -28,14 +28,12 @@ import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 
@@ -58,7 +56,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
 
     // trigger refresh
-    private val triggerRefreshCollectionsFlow = MutableSharedFlow<Unit>(replay = 1)
+    private val triggerRefreshCollectionsFlow = MutableStateFlow<Int>(0)
 
 
     // state for shop
@@ -68,21 +66,24 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         Repo.getShopCategory() to 0
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    val collectionsFlow = triggerRefreshCollectionsFlow.onStart { emit(Unit) }
-        .flatMapLatest { safeResultFlow { Repo.getCollections() } }.mapWhenSuccess { items ->
-            items.map {
-                CollectionGridItemUi(it)
-            } to items.map {
-                CollectionLinearItemUi(it)
-            }
-        }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+    val collectionsFlow =
+        triggerRefreshCollectionsFlow.flatMapLatest { safeResultFlow { Repo.getCollections() } }
+            .mapWhenSuccess { items ->
+                items.map {
+                    CollectionGridItemUi(it)
+                } to items.map {
+                    CollectionLinearItemUi(it)
+                }
+            }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
     val collectionState = MutableStateFlow<Collection?>(null)
 
     val groupsFlow =
         collectionState.filterNotNull().flatMapLatest { safeFlow { Repo.getGroups(it.id) } }
             .filterNotNull().mapLatest { items ->
-                groupState.tryEmit(items.firstOrNull())
+                if (items.firstOrNull()?.collectionId != groupState.value?.collectionId) {
+                    groupState.tryEmit(items.firstOrNull())
+                }
                 items.map {
                     GroupItemUi(it)
                 }
@@ -93,25 +94,19 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         group?.let { groups.indexOfFirst { it.data.id == group.id } } ?: -1
     }
 
-    val productsFlow = groupState
-        .filterNotNull()
-        .flatMapLatest {
+    val productsFlow = groupState.filterNotNull().flatMapLatest {
             safeResultFlow {
                 Repo.getProductsByCollection(
                     it.collectionId, it.id
                 )
             }
-        }
-        .mapWhenSuccess { items ->
+        }.mapWhenSuccess { items ->
             items.map {
                 ProductItemUi(
-                    it,
-                    count = getProductCountOfCart(it),
-                    isUseToggleCount = it.isSingleSelection()
+                    it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
                 )
             }
-        }
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+        }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
 
     val productCountNotifyFlow = combine(cartsState, productsFlow) { carts, products ->
@@ -131,8 +126,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         } else {
             null
         }
-    }
-        .filterNotNull()
+    }.filterNotNull()
 
     init {
         changeTabType(TabType.Sell)
@@ -158,7 +152,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     }
 
     fun refreshCollectionsFlow() {
-        triggerRefreshCollectionsFlow.tryEmit(Unit)
+        triggerRefreshCollectionsFlow.update { it + 1 }
     }
 
     fun isViewTheSameCollection(collection: Collection): Boolean {

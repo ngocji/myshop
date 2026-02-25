@@ -103,16 +103,21 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                             ?.let { shopViewModel.setViewCollection(it.data) }
                     }
                 }
+        }
 
-            if (context.isTablet()) {
-                // select first
-                flexibleCollectionAdapter?.toggleSelection(0)
-                flexibleCollectionAdapter?.getItem(0)
+        if (context.isTablet()) {
+            val index = data.first.indexOfFirst { it.data.id == shopViewModel.collectionState.value?.id }
+                .takeIf { it > -1 } ?: 0
+            if (flexibleCollectionAdapter?.isSelected(index) == false) {
+                flexibleCollectionAdapter?.toggleSelection(index)
+            }
+            if (shopViewModel.collectionState.value == null) {
+                flexibleCollectionAdapter?.getItem(index)
                     ?.let { shopViewModel.setViewCollection(it.data) }
             }
-
-            binding.recyclerView.adapter = flexibleCollectionAdapter
         }
+
+        binding.recyclerView.adapter = flexibleCollectionAdapter
 
         // linear if has
         flexibleCollectionSecondaryAdapter?.updateDataset(data.second) ?: run {
@@ -141,8 +146,14 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                         )
                     }
                 }
-            binding.recyclerViewGroups.adapter = flexibleGroupAdapter
         }
+
+        val index = items.indexOfFirst { it.data.id == shopViewModel.groupState.value?.id }.takeIf { it > -1 } ?: 0
+        if (flexibleGroupAdapter?.isSelected(index) == false) {
+            flexibleGroupAdapter?.toggleSelection(index)
+        }
+        binding.recyclerViewGroups.itemAnimator = null
+        binding.recyclerViewGroups.adapter = flexibleGroupAdapter
     }
 
     private fun doUpdateUiSelectedGroup(index: Int) {

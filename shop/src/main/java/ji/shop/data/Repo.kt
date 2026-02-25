@@ -74,7 +74,7 @@ object Repo {
     suspend fun getGroups(collectionId: String) = withContext(Dispatchers.IO) {
         buildList {
             repeat(4) {
-                add(Group("g_$it", "c_$it", "Group $it"))
+                add(Group("g_$it", collectionId, "Group $it"))
             }
         }
     }
