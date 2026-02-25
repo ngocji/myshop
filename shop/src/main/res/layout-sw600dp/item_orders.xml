@@ -10,13 +10,13 @@
     android:padding="@dimen/small_padding">
 
     <ji.shop.widget.OrderAvatarItemsView
-        android:id="@+id/img_avatar"
+        android:id="@+id/rcv_avatar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tv_product_name"
         style="@style/fontDemiBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -61,11 +61,17 @@
         tools:text="Online" />
 
     <ji.shop.widget.StatusView
-        android:id="@+id/tv_state"
+        android:id="@+id/tv_status"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/large_padding"
         android:layout_weight="0.3"
         android:paddingHorizontal="@dimen/small_padding" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_dots" />
 
 </LinearLayout>

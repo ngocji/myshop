@@ -1,6 +1,7 @@
 package ji.shop.items
 
 import android.view.ViewGroup
+import ji.shop.R
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
@@ -32,6 +33,12 @@ data class OrderAvatarItemUi(
         payloads: List<Any?>
     ) {
         withBinding(holder) {
+            val marginStart = imgPicture.resources.getDimensionPixelSize(R.dimen._8dp)
+            val params = imgPicture.layoutParams as ViewGroup.MarginLayoutParams
+
+            params.marginStart = if (position == 0) 0 else marginStart
+
+            holder.itemView.layoutParams = params
             imgPicture.load(data)
         }
     }

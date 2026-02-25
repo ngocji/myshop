@@ -15,11 +15,13 @@ import ji.shop.data.WrapUpdateData
 import ji.shop.exts.mapWhenSuccess
 import ji.shop.exts.safeFlow
 import ji.shop.exts.safeResultFlow
+import ji.shop.fragments.OrdersFragment
 import ji.shop.fragments.ShoppingFragment
 import ji.shop.items.CollectionGridItemUi
 import ji.shop.items.CollectionLinearItemUi
 import ji.shop.items.GroupItemUi
 import ji.shop.items.InventoryUi
+import ji.shop.items.OrdersItemUi
 import ji.shop.items.ProductItemUi
 import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -224,9 +226,15 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
     }
 
-    val inventoriesFlow = safeFlow {
+    val inventoriesFlow = safeResultFlow {
         Repo.getInventories().map {
             InventoryUi(it)
+        }
+    }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+
+    val orderFlow = safeResultFlow {
+        Repo.getOrder("").items.map {
+            OrdersItemUi(it)
         }
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 }

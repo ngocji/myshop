@@ -32,43 +32,44 @@ object Repo {
         }
     }
 
-    suspend fun getProductsByCollection(collectionId: String, groupId: String) = withContext(Dispatchers.IO) {
-        buildList {
-            repeat(10) {
-                add(
-                    Product(
-                        id = "p_$it",
-                        groupId = "g_$it",
-                        collectionId = collectionId,
-                        name = "Product $it",
-                        price = 90.0,
-                        description = "Description $it",
-                        images = listOf(R.drawable.ic_product),
-                        sizes = listOf(
-                            ProductSize("Small", 9.0),
-                            ProductSize("Medium", 10.0),
-                            ProductSize("Large", 12.0),
-                            ProductSize("Extra Large", 14.0),
-                        ),
-                        additional = listOf(
-                            ProductAdditional(
-                                name = "Mild Sauce",
-                                price = 1.0
+    suspend fun getProductsByCollection(collectionId: String, groupId: String) =
+        withContext(Dispatchers.IO) {
+            buildList {
+                repeat(10) {
+                    add(
+                        Product(
+                            id = "p_$it",
+                            groupId = "g_$it",
+                            collectionId = collectionId,
+                            name = "Product $it",
+                            price = 90.0,
+                            description = "Description $it",
+                            images = listOf(R.drawable.ic_product),
+                            sizes = listOf(
+                                ProductSize("Small", 9.0),
+                                ProductSize("Medium", 10.0),
+                                ProductSize("Large", 12.0),
+                                ProductSize("Extra Large", 14.0),
                             ),
-                            ProductAdditional(
-                                name = "Hot Sauce",
-                                price = 1.0
-                            ),
-                            ProductAdditional(
-                                name = "Xtreme Sauce",
-                                price = 2.0
+                            additional = listOf(
+                                ProductAdditional(
+                                    name = "Mild Sauce",
+                                    price = 1.0
+                                ),
+                                ProductAdditional(
+                                    name = "Hot Sauce",
+                                    price = 1.0
+                                ),
+                                ProductAdditional(
+                                    name = "Xtreme Sauce",
+                                    price = 2.0
+                                )
                             )
                         )
                     )
-                )
+                }
             }
         }
-    }
 
     suspend fun getGroups(collectionId: String) = withContext(Dispatchers.IO) {
         buildList {
@@ -98,53 +99,47 @@ object Repo {
         }
     }
 
-    suspend fun getOrders(collectionId: String) = withContext(Dispatchers.IO) {
-        buildList {
-            repeat(5) {
-                add(
-                    Checkout(
-                        "c_$it",
-                        items = buildList {
-                            repeat(3) {
-                                add(
-                                    Cart(
-                                        product = Product(
-                                            id = "p_$it",
-                                            groupId = "g_$it",
-                                            collectionId = collectionId,
-                                            name = "Product $it",
-                                            price = 90.0,
-                                            description = "Description $it",
-                                            images = listOf(R.drawable.ic_product),
-                                            sizes = listOf(
-                                                ProductSize("Small", 9.0),
-                                                ProductSize("Medium", 10.0),
-                                                ProductSize("Large", 12.0),
-                                                ProductSize("Extra Large", 14.0),
-                                            ),
-                                            additional = listOf(
-                                                ProductAdditional(
-                                                    name = "Mild Sauce",
-                                                    price = 1.0
-                                                ),
-                                                ProductAdditional(
-                                                    name = "Hot Sauce",
-                                                    price = 1.0
-                                                ),
-                                                ProductAdditional(
-                                                    name = "Xtreme Sauce",
-                                                    price = 2.0
-                                                )
-                                            )
-                                        ),
-                                        count = 3
+    suspend fun getOrder(collectionId: String) = withContext(Dispatchers.IO) {
+        Checkout(
+            "c_",
+            items = buildList {
+                repeat(3) {
+                    add(
+                        Cart(
+                            product = Product(
+                                id = "p_$it",
+                                groupId = "g_$it",
+                                collectionId = collectionId,
+                                name = "Product $it",
+                                price = 90.0,
+                                description = "Description $it",
+                                images = listOf(R.drawable.ic_product),
+                                sizes = listOf(
+                                    ProductSize("Small", 9.0),
+                                    ProductSize("Medium", 10.0),
+                                    ProductSize("Large", 12.0),
+                                    ProductSize("Extra Large", 14.0),
+                                ),
+                                additional = listOf(
+                                    ProductAdditional(
+                                        name = "Mild Sauce",
+                                        price = 1.0
+                                    ),
+                                    ProductAdditional(
+                                        name = "Hot Sauce",
+                                        price = 1.0
+                                    ),
+                                    ProductAdditional(
+                                        name = "Xtreme Sauce",
+                                        price = 2.0
                                     )
                                 )
-                            }
-                        }
+                            ),
+                            count = 3
+                        )
                     )
-                )
+                }
             }
-        }
+        )
     }
 }

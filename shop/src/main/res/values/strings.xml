@@ -38,4 +38,5 @@
     <string name="text_time">Time</string>
     <string name="text_order_method">Order method</string>
     <string name="text_status">Status</string>
+    <string name="text_note">Note</string>
 </resources>

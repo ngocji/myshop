@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/ic_inventory" />
 
     <TextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tv_product_name"
         style="@style/fontDemiBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,16 +28,23 @@
         app:layout_constraintTop_toTopOf="@id/img_picture"
         tools:text="Coca Cola" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ji.shop.widget.StatusView
         android:id="@+id/img_Visibility"
-        android:layout_width="48dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_padding"
-        android:src="@drawable/ic_tg_selector"
+        app:layout_constraintBottom_toBottomOf="@id/img_picture"
+        app:layout_constraintEnd_toStartOf="@+id/img_action"
+        app:layout_constraintTop_toTopOf="@id/img_picture" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_dots"
         app:layout_constraintBottom_toBottomOf="@id/img_picture"
         app:layout_constraintEnd_toStartOf="@+id/img_arrow_down"
-        app:layout_constraintTop_toTopOf="@id/img_picture"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="@id/img_picture" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_arrow_down"
@@ -57,27 +64,28 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_picture">
+        app:layout_constraintTop_toBottomOf="@+id/img_picture"
+        tools:visibility="visible">
 
         <TextView
-            android:id="@+id/orders"
+            android:id="@+id/time"
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/text_orders"
+            android:text="@string/text_time"
             app:layout_constraintEnd_toStartOf="@id/guide_start"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_orders"
+            android:id="@+id/tv_time"
             style="@style/fontSemiBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/guide_start"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="28" />
+            tools:text="3:20 pm" />
 
         <TextView
             android:id="@+id/complete"
@@ -86,9 +94,9 @@
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/normal_padding"
             android:text="@string/text_complete"
-            app:layout_constraintEnd_toEndOf="@id/orders"
-            app:layout_constraintStart_toStartOf="@id/orders"
-            app:layout_constraintTop_toBottomOf="@+id/orders" />
+            app:layout_constraintEnd_toEndOf="@id/time"
+            app:layout_constraintStart_toStartOf="@id/time"
+            app:layout_constraintTop_toBottomOf="@+id/time" />
 
         <TextView
             android:id="@+id/tv_complete"
@@ -96,21 +104,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/complete"
-            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintEnd_toEndOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="@id/guide_start"
             app:layout_constraintTop_toTopOf="@id/complete"
             tools:text="2,291" />
 
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/qty"
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/normal_padding"
-            android:text="@string/text_price"
-            app:layout_constraintEnd_toEndOf="@id/orders"
-            app:layout_constraintStart_toStartOf="@id/orders"
+
+            android:text="@string/text_qty"
+            app:layout_constraintEnd_toEndOf="@id/time"
+            app:layout_constraintStart_toStartOf="@id/time"
             app:layout_constraintTop_toBottomOf="@+id/complete" />
 
         <TextView
@@ -118,78 +126,58 @@
             style="@style/fontSemiBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/price"
-            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintBottom_toBottomOf="@id/qty"
+            app:layout_constraintEnd_toEndOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="@id/guide_start"
-            app:layout_constraintTop_toTopOf="@id/price"
+            app:layout_constraintTop_toTopOf="@id/qty"
             tools:text="2,291" />
 
         <TextView
-            android:id="@+id/sold"
-            style="@style/fontMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/text_sold"
-            app:layout_constraintEnd_toEndOf="@id/orders"
-            app:layout_constraintStart_toStartOf="@id/price"
-            app:layout_constraintTop_toBottomOf="@+id/price" />
-
-        <TextView
-            android:id="@+id/tv_sold"
-            style="@style/fontSemiBold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/sold"
-            app:layout_constraintEnd_toEndOf="@id/tv_orders"
-            app:layout_constraintStart_toStartOf="@id/guide_start"
-            app:layout_constraintTop_toTopOf="@id/sold"
-            tools:text="2,291" />
-
-        <TextView
-            android:id="@+id/remaining"
+            android:id="@+id/name"
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/normal_padding"
-            android:text="@string/text_remaining"
-            app:layout_constraintEnd_toEndOf="@id/orders"
-            app:layout_constraintStart_toStartOf="@id/orders"
-            app:layout_constraintTop_toBottomOf="@+id/sold" />
-
-        <ji.shop.widget.ProgressView
-            android:id="@+id/prg_remaining"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:indicatorColor="#137EFC"
-            app:layout_constraintBottom_toBottomOf="@id/remaining"
-            app:layout_constraintEnd_toEndOf="@id/tv_orders"
-            app:layout_constraintStart_toStartOf="@id/guide_start"
-            app:layout_constraintTop_toTopOf="@id/remaining"
-            app:progressValue="20"
-            app:trackColor="#0000001A" />
+            android:text="@string/text_name"
+            app:layout_constraintEnd_toEndOf="@id/time"
+            app:layout_constraintStart_toStartOf="@id/qty"
+            app:layout_constraintTop_toBottomOf="@+id/qty" />
 
         <TextView
-            android:id="@+id/quantity"
+            android:id="@+id/tv_name"
+            style="@style/fontSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/name"
+            app:layout_constraintEnd_toEndOf="@id/tv_time"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="@id/name"
+            tools:text="2,291" />
+
+        <TextView
+            android:id="@+id/note"
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/text_quantity"
-            app:layout_constraintEnd_toEndOf="@id/orders"
-            app:layout_constraintStart_toStartOf="@id/price"
-            app:layout_constraintTop_toBottomOf="@+id/remaining" />
+            android:paddingVertical="@dimen/normal_padding"
+            android:text="@string/text_note"
+            app:layout_constraintEnd_toEndOf="@id/time"
+            app:layout_constraintStart_toStartOf="@id/time"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
-            android:id="@+id/tv_quantity"
+            android:id="@+id/tv_note"
             style="@style/fontSemiBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_stroke_secondary"
+            android:maxLines="2"
             android:padding="@dimen/small_padding"
-            app:layout_constraintBottom_toBottomOf="@id/quantity"
-            app:layout_constraintEnd_toEndOf="@id/tv_orders"
+            app:layout_constraintBottom_toBottomOf="@id/note"
+            app:layout_constraintEnd_toEndOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="@id/guide_start"
-            app:layout_constraintTop_toTopOf="@id/quantity"
-            tools:text="2,291" />
+            app:layout_constraintTop_toTopOf="@id/note"
+            tools:text="Can I get an extra cup with just ice please?" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_start"
