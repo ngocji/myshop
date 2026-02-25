@@ -74,7 +74,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 } to items.map {
                     CollectionLinearItemUi(it)
                 }
-            }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+            }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val collectionState = MutableStateFlow<Collection?>(null)
 
@@ -87,7 +87,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 items.map {
                     GroupItemUi(it)
                 }
-            }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+            }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val groupState = MutableStateFlow<Group?>(null)
     val groupSelectedIndexFlow = combine(groupsFlow, groupState) { groups, group ->
@@ -106,7 +106,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                     it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
                 )
             }
-        }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+        }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
 
     val productCountNotifyFlow = combine(cartsState, productsFlow) { carts, products ->
