@@ -24,4 +24,10 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
     private fun initData() {
 
     }
+
+    companion object {
+        fun newInstance(): ViewRefundDialog {
+            return ViewRefundDialog()
+        }
+    }
 }

@@ -11,6 +11,7 @@ import ji.shop.databinding.LayoutPopupMenuBinding
 class PopupWindow(
     private val context: Context,
     private val anchor: View,
+    private val listener: PopupWindowListener
 ) {
     fun show() {
 
@@ -30,15 +31,28 @@ class PopupWindow(
         val binding = LayoutPopupMenuBinding.bind(view)
 
         binding.btnVewOrder.setOnClickListener {
+            listener.onActionClick(PopupAction.VIEW_ORDER)
             popupWindow.dismiss()
         }
 
         binding.btnRefund.setOnClickListener {
+            listener.onActionClick(PopupAction.REFUND)
             popupWindow.dismiss()
         }
 
         binding.btnCouponsReport.setOnClickListener {
+            listener.onActionClick(PopupAction.COUPONS_REPORT)
             popupWindow.dismiss()
         }
     }
+
+    interface PopupWindowListener {
+        fun onActionClick(action: PopupAction)
+    }
+}
+
+enum class PopupAction {
+    VIEW_ORDER,
+    REFUND,
+    COUPONS_REPORT
 }

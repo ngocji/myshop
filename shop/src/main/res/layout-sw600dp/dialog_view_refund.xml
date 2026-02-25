@@ -54,6 +54,46 @@
         app:layout_constraintStart_toStartOf="@id/guide_start"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv1"
+        style="@style/fontDemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/large_2_padding"
+        android:text="@string/text_bill_evans"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toStartOf="@id/btn_close"
+        app:layout_constraintStart_toStartOf="@id/guide_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv" />
+
+    <TextView
+        android:id="@+id/tv_mail"
+        style="@style/fontDemiBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/small_padding"
+        android:paddingVertical="@dimen/small_padding"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_mail"
+        app:layout_constraintStart_toStartOf="@id/guide_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv1"
+        tools:text="bill.evans@gmail.com" />
+
+    <TextView
+        android:id="@+id/tv_phone"
+        style="@style/fontDemiBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_32dp"
+        android:drawablePadding="@dimen/small_padding"
+        android:paddingVertical="@dimen/small_padding"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_phone"
+        app:layout_constraintStart_toEndOf="@id/tv_mail"
+        app:layout_constraintTop_toTopOf="@+id/tv_mail"
+        tools:text="678-774-0987" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -63,7 +103,7 @@
         app:layout_constraintBottom_toTopOf="@id/title_values_view"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@id/tv"
+        app:layout_constraintTop_toBottomOf="@id/tv_mail"
         tools:listitem="@layout/item_cart" />
 
     <ji.shop.widget.TitleValuesView
@@ -74,8 +114,7 @@
         app:layout_constraintBottom_toTopOf="@id/btn_refund"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_title_value" />
+        tools:itemCount="2" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_refund"
