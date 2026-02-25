@@ -32,7 +32,7 @@
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/small_padding"
+        android:layout_marginHorizontal="@dimen/small_padding"
         app:layout_constraintBottom_toBottomOf="@id/img_picture"
         app:layout_constraintEnd_toStartOf="@+id/img_action"
         app:layout_constraintTop_toTopOf="@id/img_picture" />
@@ -170,7 +170,6 @@
             style="@style/fontSemiBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_stroke_secondary"
             android:maxLines="2"
             android:padding="@dimen/small_padding"
             app:layout_constraintBottom_toBottomOf="@id/note"

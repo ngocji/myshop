@@ -33,7 +33,7 @@ data class OrderAvatarItemUi(
         payloads: List<Any?>
     ) {
         withBinding(holder) {
-            val marginStart = imgPicture.resources.getDimensionPixelSize(R.dimen._8dp)
+            val marginStart = -imgPicture.resources.getDimensionPixelSize(R.dimen._10dp)
             val params = imgPicture.layoutParams as ViewGroup.MarginLayoutParams
 
             params.marginStart = if (position == 0) 0 else marginStart

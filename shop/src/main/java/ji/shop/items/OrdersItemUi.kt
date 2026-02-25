@@ -34,6 +34,10 @@ data class OrdersItemUi(
                         .start()
                     info?.isVisible = expanded
                 }
+
+                imgAction.setOnClickListener {
+
+                }
             }
         }
     }
@@ -50,7 +54,7 @@ data class OrdersItemUi(
             tvQty?.text = cart.count.toString()
             tvTime.text = cart.count.toString()
             tvOrderMethod?.text = cart.count.toString()
-            tvStatus?.setState(cart.product.status)
+            tvStatus.setState(cart.product.status)
             tvNote?.text = cart.product.description
         }
     }

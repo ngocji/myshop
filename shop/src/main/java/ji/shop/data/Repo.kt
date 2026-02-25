@@ -113,7 +113,8 @@ object Repo {
                                 name = "Product $it",
                                 price = 90.0,
                                 description = "Description $it",
-                                images = listOf(R.drawable.ic_product),
+                                images = listOf(R.drawable.ic_inventory, R.drawable.ic_inventory, R.drawable.ic_inventory,
+                                    R.drawable.ic_inventory),
                                 sizes = listOf(
                                     ProductSize("Small", 9.0),
                                     ProductSize("Medium", 10.0),
