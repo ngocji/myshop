@@ -1,5 +1,6 @@
 package ji.shop.dialog
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -22,7 +23,8 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
     private val binding by viewBinding(DialogViewCartBinding::bind)
     private var flexibleAdapter: FlexibleAdapter<CartItemUi>? = null
     private var items: List<Cart>? = null
-    private var actionCheckout: ((List<Cart>) -> Unit)? = null
+    private var actionCheckout: ((List<Cart>, Boolean) -> Unit)? = null
+    private var isGotoCheckout=false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,12 +46,17 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
         window.setGravity(if (isTablet) Gravity.END else Gravity.BOTTOM)
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        val newItems = obtainItems()
+        actionCheckout?.invoke(newItems, isGotoCheckout)
+    }
+
     private fun initViews() {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
             btnCheckout.setOnClickListener {
-                val newItems = obtainItems()
-                actionCheckout?.invoke(newItems)
+                isGotoCheckout=true
                 dismissAllowingStateLoss()
             }
         }
@@ -85,7 +92,8 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
     }
 
     private fun doUpdatePrice() {
-        val total = obtainItems().sumOf { it.getTotalPrice() }
+        val items = obtainItems()
+        val total = items.sumOf { it.getTotalPrice() }
         val tax = total * 0.038f
         binding.titleValuesView.setData(
             Pair(
@@ -97,10 +105,11 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
                 NumberFormater.formatNumberLocale(tax)
             )
         )
+        actionCheckout?.invoke(items, false)
     }
 
     companion object {
-        fun newInstance(items: List<Cart>, actionCheckout: (List<Cart>) -> Unit): ViewCartDialog {
+        fun newInstance(items: List<Cart>, actionCheckout: (List<Cart>, Boolean) -> Unit): ViewCartDialog {
             return ViewCartDialog().apply {
                 this.items = items
                 this.actionCheckout = actionCheckout

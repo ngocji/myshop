@@ -19,52 +19,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/sc_padding" />
 
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ji.shop.widget.DropDownView
-            android:id="@+id/shop_category_drop_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <ji.shop.widget.ToggleToolbarIcon
-            android:id="@+id/btn_stream"
-            style="@style/toggleToolbarIconStyle"
-            android:src="@drawable/ic_stream" />
-
-        <ji.shop.widget.ToggleToolbarIcon
-            android:id="@+id/btn_nfc"
-            style="@style/toggleToolbarIconStyle"
-            android:layout_marginStart="@dimen/small_padding"
-            android:src="@drawable/ic_nfc" />
-
-        <ji.shop.widget.SelectionTabView
-            android:id="@+id/tab_views"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_padding" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_view_cart"
-            android:layout_width="wrap_content"
-            android:paddingTop="@dimen/_10dp"
-            android:paddingBottom="@dimen/_10dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_padding"
-            android:text="@string/text_checkout" />
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -74,7 +28,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:spanCount="2"
         tools:listitem="@layout/item_collection_grid" />
 

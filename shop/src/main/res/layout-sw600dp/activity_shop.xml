@@ -15,9 +15,8 @@
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sc_padding"
             android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/sc_padding"
+            android:padding="@dimen/sc_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,34 +41,30 @@
                 style="@style/toggleToolbarIconStyle"
                 android:layout_marginStart="@dimen/small_padding"
                 android:src="@drawable/ic_nfc" />
+
+            <ji.shop.widget.SelectionTabView
+                android:id="@+id/tab_views"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_padding" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_view_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_padding"
+                android:paddingTop="@dimen/_10dp"
+                android:paddingBottom="@dimen/_10dp"
+                android:text="@string/text_checkout" />
         </LinearLayout>
-
-        <ji.shop.widget.SelectionTabView
-            android:id="@+id/tab_views"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/sc_padding"
-            android:layout_marginTop="@dimen/components_padding"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-        <ji.shop.widget.MyBalanceView
-            android:id="@+id/my_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/sc_padding"
-            app:layout_constraintBottom_toBottomOf="@id/tab_views"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tab_views" />
 
         <FrameLayout
             android:id="@+id/fl_replace"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/sc_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_views" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ji.shop.insets.InsetContainer>

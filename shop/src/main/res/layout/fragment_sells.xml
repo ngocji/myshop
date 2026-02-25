@@ -19,52 +19,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/sc_padding" />
 
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ji.shop.widget.DropDownView
-            android:id="@+id/shop_category_drop_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <ji.shop.widget.ToggleToolbarIcon
-            android:id="@+id/btn_stream"
-            style="@style/toggleToolbarIconStyle"
-            android:src="@drawable/ic_stream" />
-
-        <ji.shop.widget.ToggleToolbarIcon
-            android:id="@+id/btn_nfc"
-            style="@style/toggleToolbarIconStyle"
-            android:layout_marginStart="@dimen/small_padding"
-            android:src="@drawable/ic_nfc" />
-    </LinearLayout>
-
-    <ji.shop.widget.SelectionTabView
-        android:id="@+id/tab_views"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/components_padding"
-        app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-    <ji.shop.widget.MyBalanceView
-        android:id="@+id/my_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/tab_views"
-        app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintTop_toTopOf="@id/tab_views" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -78,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@id/btn_view_cart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_views"
+        app:layout_constraintTop_toTopOf="parent"
         app:spanCount="2"
         tools:listitem="@layout/item_collection_grid" />
 
@@ -86,14 +40,14 @@
         android:id="@+id/view_products"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/components_padding"
-        android:layout_marginBottom="24dp"
+        android:paddingBottom="24dp"
+        android:paddingHorizontal="@dimen/sc_padding"
         android:background="@color/colorBackground"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/btn_view_cart"
-        app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
         <com.google.android.material.button.MaterialButton
@@ -172,5 +126,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_views" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@ import ji.shop.utils.NumberFormater
 data class ProductItemUi(
     val data: Product,
     var count: Int,
-    var isUseToggleCount: Boolean
+    val isUseToggleCount: Boolean
 ) : ItemUI<ItemProductBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,

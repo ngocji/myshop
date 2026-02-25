@@ -15,8 +15,9 @@ import ji.shop.data.WrapUpdateData
 import ji.shop.exts.mapWhenSuccess
 import ji.shop.exts.safeFlow
 import ji.shop.exts.safeResultFlow
+import ji.shop.fragments.InventoryFragment
 import ji.shop.fragments.OrdersFragment
-import ji.shop.fragments.ShoppingFragment
+import ji.shop.fragments.SellsFragment
 import ji.shop.items.CollectionGridItemUi
 import ji.shop.items.CollectionLinearItemUi
 import ji.shop.items.GroupItemUi
@@ -42,6 +43,7 @@ import kotlinx.coroutines.flow.update
 class ShopViewModel(context: Application) : AndroidViewModel(context) {
     val gotoFragmentEvent = Channel<() -> Fragment>(capacity = BUFFERED)
     val backEvent = Channel<Unit>()
+    val viewCartEvent = Channel<Unit>()
 
     // state for user
     val myBalanceState = MutableStateFlow(0.0)
@@ -60,7 +62,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
 
     // state for shop
-    val tabTabTypeState = MutableStateFlow(TabType.Inventory)
+    val tabTabTypeState = MutableStateFlow(TabType.Sell)
 
     val shopCategoriesFlow = safeFlow {
         Repo.getShopCategory() to 0
@@ -105,7 +107,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 ProductItemUi(
                     it,
                     count = getProductCountOfCart(it),
-                    isUseToggleCount = isNfcEnabled()
+                    isUseToggleCount = it.isSingleSelection()
                 )
             }
         }
@@ -133,9 +135,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         .filterNotNull()
 
     init {
-        goto {
-            ShoppingFragment()
-        }
+        changeTabType(TabType.Sell)
     }
 
     fun goto(fragment: () -> Fragment) {
@@ -148,6 +148,13 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun changeTabType(newTabType: TabType) {
         tabTabTypeState.value = newTabType
+        goto {
+            when (newTabType) {
+                TabType.Inventory -> InventoryFragment()
+                TabType.Orders -> OrdersFragment()
+                else -> SellsFragment()
+            }
+        }
     }
 
     fun refreshCollectionsFlow() {
@@ -237,4 +244,8 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             OrdersItemUi(it)
         }
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+
+    fun viewCart() {
+        viewCartEvent.trySend(Unit)
+    }
 }

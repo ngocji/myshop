@@ -10,11 +10,8 @@ import ji.shop.base.adapter.Payload
 import ji.shop.base.viewBinding
 import ji.shop.data.Collection
 import ji.shop.data.Product
-import ji.shop.data.TabType
-import ji.shop.databinding.FragmentShoppingBinding
+import ji.shop.databinding.FragmentSellsBinding
 import ji.shop.dialog.AddProductDialog
-import ji.shop.dialog.TurnOnNfcDialog
-import ji.shop.dialog.ViewCartDialog
 import ji.shop.exts.collect
 import ji.shop.exts.isTablet
 import ji.shop.items.CollectionGridItemUi
@@ -23,8 +20,8 @@ import ji.shop.items.CountChangOnItemListener
 import ji.shop.items.GroupItemUi
 import ji.shop.items.ProductItemUi
 
-class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
-    private val binding by viewBinding(FragmentShoppingBinding::bind)
+class SellsFragment : BaseFragment(R.layout.fragment_sells) {
+    private val binding by viewBinding(FragmentSellsBinding::bind)
     private var flexibleCollectionAdapter: FlexibleAdapter<CollectionGridItemUi>? = null
     private var flexibleCollectionSecondaryAdapter: FlexibleAdapter<CollectionLinearItemUi>? = null
     private var flexibleGroupAdapter: FlexibleAdapter<GroupItemUi>? = null
@@ -46,36 +43,14 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
 
     private fun initViews() {
         with(binding) {
-            tabViews.setData(
-                items = TabType.entries.toList(),
-                selectedIndex = shopViewModel.tabTabTypeState.value.ordinal,
-                onGetTitle = { tab -> getString(tab.titleRes) }
-            ) { selected ->
-                shopViewModel.changeTabType(selected)
-            }
-
             btnBackToCollections?.setOnClickListener { shopViewModel.setViewCollection(null) }
-            btnNfc.setOnClickListener { doToggleNFC() }
-            btnViewCart.setOnClickListener { doViewCart() }
-            btnStream.setOnClickListener { }
+            btnViewCart?.setOnClickListener { shopViewModel.viewCart() }
         }
     }
 
     private fun initObserves() {
-        collect(flow = shopViewModel.myBalanceState) { price ->
-            binding.myBalance?.setPrice(price)
-        }
-
         collect(flow = shopViewModel.cartPriceState) { price ->
             doUpdateViewCart(price)
-        }
-
-        collect(flow = shopViewModel.tabTabTypeState) { tab ->
-            binding.tabViews.setSelected(tab)
-        }
-
-        collect(flow = shopViewModel.shopCategoriesFlow) { data ->
-            binding.shopCategoryDropDown.setData(data?.first, data?.second)
         }
 
         collectWithProgress(flow = shopViewModel.collectionsFlow) {
@@ -101,10 +76,6 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
             initProducts(data)
         }
 
-        collect(flow = shopViewModel.isNfcEnabledState) {
-            doUpdateUiNfc(it)
-        }
-
         collect(flow = shopViewModel.productCountNotifyFlow) {
             doUpdateProductCountUi(it)
         }
@@ -113,9 +84,9 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
     private fun doUpdateViewCart(price: String?) {
         if (context.isTablet()) return // skip update btn text
         if (price.isNullOrBlank()) {
-            binding.btnViewCart.setText(R.string.text_view_cart)
+            binding.btnViewCart?.setText(R.string.text_view_cart)
         } else {
-            binding.btnViewCart.text = "${getString(R.string.text_view_cart)} ($price)"
+            binding.btnViewCart?.text = "${getString(R.string.text_view_cart)} ($price)"
         }
     }
 
@@ -250,27 +221,6 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
         }
     }
 
-    private fun doToggleNFC() {
-        if (shopViewModel.isNfcEnabled()) {
-            shopViewModel.setNfcEnabled(false)
-        } else {
-            TurnOnNfcDialog.newInstance {
-                shopViewModel.setNfcEnabled(true)
-            }
-                .show(childFragmentManager)
-        }
-    }
-
-    private fun doUpdateUiNfc(enable: Boolean) {
-        binding.btnNfc.isSelected = enable
-        if (binding.viewProducts.isVisible) {
-            flexibleProductAdapter?.run {
-                items.forEach { it.isUseToggleCount = enable }
-                notifyItemRangeChanged(0, itemCount, Payload.CHANGE_USE_TOGGLE_COUNT)
-            }
-        }
-    }
-
     private fun doAddToCart(position: Int, product: Product) {
         AddProductDialog.newInstance(shopViewModel.getCart(product), product) {
             shopViewModel.addToCart(it)
@@ -279,13 +229,6 @@ class ShoppingFragment : BaseFragment(R.layout.fragment_shopping) {
                 item.count = it.count
                 notifyItemChanged(position, Payload.CHANGE_COUNT)
             }
-        }
-            .show(childFragmentManager)
-    }
-
-    private fun doViewCart() {
-        ViewCartDialog.newInstance(shopViewModel.getCartItems()) { carts ->
-            shopViewModel.updateCarts(carts)
         }
             .show(childFragmentManager)
     }

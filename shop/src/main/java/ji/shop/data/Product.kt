@@ -11,7 +11,9 @@ data class Product(
     val images: List<Any?>,
     val sizes: List<ProductSize>,
     val additional: List<ProductAdditional>
-)
+) {
+    fun isSingleSelection() = sizes.size <= 1 && additional.isEmpty()
+}
 
 data class ProductSize(
     val name: String,
