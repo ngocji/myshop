@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_secondary_rounded_with_stroke"
+    android:orientation="vertical"
+    android:padding="@dimen/small_padding">
+
+
+    <TextView
+        android:id="@+id/btn_vew_order"
+        style="@style/fontMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/small_padding"
+        android:text="@string/text_view_order" />
+
+    <TextView
+        android:id="@+id/btn_refund"
+        style="@style/fontMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/small_padding"
+        android:text="@string/text_refund_action" />
+
+    <TextView
+        android:id="@+id/btn_coupons_report"
+        style="@style/fontMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/small_padding"
+        android:text="@string/text_coupons_report" />
+
+</LinearLayout>

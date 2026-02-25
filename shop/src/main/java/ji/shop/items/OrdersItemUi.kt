@@ -8,6 +8,7 @@ import ji.shop.base.adapter.ItemViewHolder
 import ji.shop.data.Cart
 import ji.shop.databinding.ItemOrdersBinding
 import ji.shop.exts.layoutInflate
+import ji.shop.widget.PopupWindow
 
 data class OrdersItemUi(
     val cart: Cart
@@ -36,7 +37,8 @@ data class OrdersItemUi(
                 }
 
                 imgAction.setOnClickListener {
-
+                    val popupWindow = PopupWindow(it.context, it)
+                    popupWindow.show()
                 }
             }
         }
