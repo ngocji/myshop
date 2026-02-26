@@ -4,23 +4,29 @@ import android.view.ViewGroup
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.databinding.ItemRefundTotalBinding
+import ji.shop.data.CardMethod
+import ji.shop.databinding.ItemCardInfoBinding
 import ji.shop.exts.layoutInflate
-import ji.shop.utils.NumberFormater
 
-class TotalRefundItemUi(val totalPrice: Double) : ItemUI<ItemRefundTotalBinding>() {
+class CardInfoItemUi(
+    val data: CardMethod
+) : ItemUI<ItemCardInfoBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
         parent: ViewGroup,
         viewType: Int
     ): ItemViewHolder {
         return ItemViewHolder(
-            ItemRefundTotalBinding.inflate(
+            ItemCardInfoBinding.inflate(
                 parent.layoutInflate(),
                 parent,
                 false
             )
-        )
+        ).apply {
+            withBinding(this) {
+
+            }
+        }
     }
 
     override fun bindViewHolder(
@@ -30,7 +36,7 @@ class TotalRefundItemUi(val totalPrice: Double) : ItemUI<ItemRefundTotalBinding>
         payloads: List<Any?>
     ) {
         withBinding(holder) {
-            tvPrice.text = NumberFormater.formatNumberLocale(totalPrice)
+            tvInfo.text = tvInfo.context.getString(data.id)
         }
     }
 }

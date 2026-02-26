@@ -52,13 +52,13 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
             btnRefund.setOnClickListener {
-
+                ViewCardInfoDialog.newInstance().show(childFragmentManager)
             }
         }
     }
 
     private fun initData() {
-        val data: MutableList<ItemUI<*>> = items?.map { RefundItemUi(it) }?.toMutableList() ?: mutableListOf()
+        val data: MutableList<ItemUI<*>> = items?.map { RefundItemUi.RefundItem(it) }?.toMutableList() ?: mutableListOf()
         flexibleAdapter = FlexibleAdapter(data)
         binding.recyclerView.adapter = flexibleAdapter
     }
