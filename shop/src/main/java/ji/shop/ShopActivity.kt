@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ji.shop.data.TabType
 import ji.shop.databinding.ActivityShopBinding
+import ji.shop.dialog.CheckoutDialog
 import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.dialog.ViewCartDialog
 import ji.shop.exts.collect
@@ -89,6 +90,10 @@ class ShopActivity : AppCompatActivity() {
     private fun doViewCart() {
         ViewCartDialog.newInstance(viewModel.getCartItems()) { carts, isGotoCheckout ->
             viewModel.updateCarts(carts)
+            if (isGotoCheckout) {
+                CheckoutDialog.newInstance(carts)
+                    .show(supportFragmentManager)
+            }
         }
             .show(supportFragmentManager)
     }

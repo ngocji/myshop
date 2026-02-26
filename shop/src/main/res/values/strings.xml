@@ -43,4 +43,10 @@
     <string name="text_refund_action">Refund</string>
     <string name="text_coupons_report">Coupons Report</string>
     <string name="text_bill_evans">Bill Evans</string>
+    <string name="text_cash">Cash</string>
+    <string name="text_credit">Credit</string>
+    <string name="text_add_customer_info">Add Customer Info</string>
+    <string name="text_change"><u>Change</u></string>
+    <string name="text_total">Total</string>
+    <string name="text_format_total_items">%d items</string>
 </resources>
