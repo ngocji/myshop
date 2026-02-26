@@ -51,4 +51,17 @@
     <string name="text_format_total_items">%d items</string>
     <string name="text_refund_cash_amount">Refund Cash Amount : %s</string>
     <string name="text_refund_card">%1$s from card ending in %2$s will be refund to Bill Evans</string>
+    <string name="text_card_info">Card Info</string>
+    <string name="text_card_swiper">Card Swiper</string>
+    <string name="text_card_manually">Enter Card Manually</string>
+    <string name="text_comp">Comp</string>
+    <string name="text_card_number">Card Number</string>
+    <string name="text_place_order">Place Order for %s</string>
+    <string name="text_card_summary">Card Summery</string>
+    <string name="text_coupon_discount">Coupon Discount</string>
+    <string name="text_face_value">Face Value</string>
+    <string name="text_donation">Donation</string>
+    <string name="text_service_fee">Service Fee</string>
+    <string name="text_taxes">Taxes</string>
+    <string name="text_back">Back</string>
 </resources>
