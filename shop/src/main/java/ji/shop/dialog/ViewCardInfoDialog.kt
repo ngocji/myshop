@@ -60,8 +60,13 @@ class ViewCardInfoDialog : BaseDialog(R.layout.dialog_view_card_info) {
         flexibleAdapter = FlexibleAdapter(data.toMutableList())
             .setMode(SINGLE)
             .addListener { adapter, _, position ->
-
+                if (!adapter.isSelected(position)) {
+                    adapter.toggleSelection(position)
+                }
             }
+        if (flexibleAdapter?.isSelected(0) == false) {
+            flexibleAdapter?.toggleSelection(0)
+        }
         binding.rcvCardMethod.adapter = flexibleAdapter
     }
 

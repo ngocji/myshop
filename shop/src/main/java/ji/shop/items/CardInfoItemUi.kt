@@ -37,6 +37,7 @@ class CardInfoItemUi(
     ) {
         withBinding(holder) {
             tvInfo.text = tvInfo.context.getString(data.id)
+            imgCheck.isSelected = adapter.isSelected(position)
         }
     }
 }

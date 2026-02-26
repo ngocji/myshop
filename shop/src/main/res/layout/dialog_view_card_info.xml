@@ -36,7 +36,7 @@
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:icon="@drawable/ic_back"
+        app:icon="@drawable/icon_back"
         app:iconSize="@dimen/_32dp"
         app:iconTint="@null"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +56,7 @@
         android:id="@+id/rcvCardMethod"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="@+id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
@@ -122,222 +123,227 @@
         app:layout_constraintStart_toStartOf="@id/guide_start"
         app:layout_constraintTop_toBottomOf="@+id/btn_place_order" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_16dp"
-        android:background="@drawable/bg_secondary"
-        android:paddingHorizontal="@dimen/normal_padding"
-        android:paddingVertical="@dimen/_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
         app:layout_constraintTop_toBottomOf="@+id/tv2">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgCard"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:src="@drawable/ic_card"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/imgCard"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/imgCard"
-            app:layout_constraintTop_toTopOf="@id/imgCard">
+            android:layout_marginTop="@dimen/_16dp"
+            android:background="@drawable/bg_secondary"
+            android:paddingHorizontal="@dimen/normal_padding"
+            android:paddingVertical="@dimen/_8dp">
 
-            <TextView
-                style="@style/fontDemiBold"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgCard"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:src="@drawable/ic_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                tools:text="Summer Music Fest" />
+                android:layout_marginStart="@dimen/_8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/imgCard"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imgCard"
+                app:layout_constraintTop_toTopOf="@id/imgCard">
+
+                <TextView
+                    style="@style/fontDemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    tools:text="Summer Music Fest" />
+
+                <TextView
+                    style="@style/fontMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8dp"
+                    android:textSize="14sp"
+                    tools:text="Sat, Apr 20, 2024, 11:00 AM" />
+            </LinearLayout>
+
 
             <TextView
+                android:id="@+id/tvFestival"
                 style="@style/fontMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8dp"
-                android:textSize="14sp"
-                tools:text="Sat, Apr 20, 2024, 11:00 AM" />
-        </LinearLayout>
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgCard"
+                tools:text="1X Festival Day Pass" />
 
+            <TextView
+                android:id="@+id/tvFestivalValue"
+                style="@style/fontBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8dp"
+                android:layout_marginEnd="50dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgCard"
+                tools:text="1 X $30.00" />
 
-        <TextView
-            android:id="@+id/tvFestival"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgCard"
-            tools:text="1X Festival Day Pass" />
+            <TextView
+                android:id="@+id/couponDiscount"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:text="@string/text_coupon_discount"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvFestival" />
 
-        <TextView
-            android:id="@+id/tvFestivalValue"
-            style="@style/fontBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:layout_marginEnd="50dp"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgCard"
-            tools:text="1 X $30.00" />
+            <TextView
+                android:id="@+id/tvCouponDiscount"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
+                app:layout_constraintTop_toTopOf="@+id/couponDiscount"
+                tools:text="$0.00" />
 
-        <TextView
-            android:id="@+id/couponDiscount"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:text="@string/text_coupon_discount"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvFestival" />
+            <TextView
+                android:id="@+id/face"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="@string/text_face_value"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/couponDiscount" />
 
-        <TextView
-            android:id="@+id/tvCouponDiscount"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
-            app:layout_constraintTop_toTopOf="@+id/couponDiscount"
-            tools:text="$0.00" />
+            <TextView
+                android:id="@+id/tvFaceValue"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
+                app:layout_constraintTop_toTopOf="@+id/face"
+                tools:text="$0.00" />
 
-        <TextView
-            android:id="@+id/face"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:text="@string/text_face_value"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/couponDiscount" />
+            <TextView
+                android:id="@+id/donation"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="@string/text_donation"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/face" />
 
-        <TextView
-            android:id="@+id/tvFaceValue"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
-            app:layout_constraintTop_toTopOf="@+id/face"
-            tools:text="$0.00" />
+            <TextView
+                android:id="@+id/tvDonation"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
+                app:layout_constraintTop_toTopOf="@+id/donation"
+                tools:text="$0.00" />
 
-        <TextView
-            android:id="@+id/donation"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:text="@string/text_donation"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/face" />
+            <TextView
+                android:id="@+id/service"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="@string/text_service_fee"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/donation" />
 
-        <TextView
-            android:id="@+id/tvDonation"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
-            app:layout_constraintTop_toTopOf="@+id/donation"
-            tools:text="$0.00" />
+            <TextView
+                android:id="@+id/tvServiceFee"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
+                app:layout_constraintTop_toTopOf="@+id/service"
+                tools:text="$0.00" />
 
-        <TextView
-            android:id="@+id/service"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:text="@string/text_service_fee"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/donation" />
+            <TextView
+                android:id="@+id/subtotal"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="@string/text_subtotal"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/service" />
 
-        <TextView
-            android:id="@+id/tvServiceFee"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
-            app:layout_constraintTop_toTopOf="@+id/service"
-            tools:text="$0.00" />
+            <TextView
+                android:id="@+id/tvSubtotal"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
+                app:layout_constraintTop_toTopOf="@+id/subtotal"
+                tools:text="$0.00" />
 
-        <TextView
-            android:id="@+id/subtotal"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:text="@string/text_subtotal"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/service" />
+            <TextView
+                android:id="@+id/taxes"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="@string/text_taxes"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subtotal" />
 
-        <TextView
-            android:id="@+id/tvSubtotal"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
-            app:layout_constraintTop_toTopOf="@+id/subtotal"
-            tools:text="$0.00" />
+            <TextView
+                android:id="@+id/tvTaxes"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
+                app:layout_constraintTop_toTopOf="@+id/taxes"
+                tools:text="$0.00" />
 
-        <TextView
-            android:id="@+id/taxes"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:text="@string/text_taxes"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtotal" />
+            <TextView
+                android:id="@+id/total"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="@string/text_total"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subtotal" />
 
-        <TextView
-            android:id="@+id/tvTaxes"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
-            app:layout_constraintTop_toTopOf="@+id/taxes"
-            tools:text="$0.00" />
-
-        <TextView
-            android:id="@+id/total"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8dp"
-            android:text="@string/text_total"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtotal" />
-
-        <TextView
-            android:id="@+id/tvTotal"
-            style="@style/fontMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
-            app:layout_constraintTop_toTopOf="@+id/total"
-            tools:text="$0.00" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tvTotal"
+                style="@style/fontMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tvFestivalValue"
+                app:layout_constraintTop_toTopOf="@+id/total"
+                tools:text="$0.00" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
