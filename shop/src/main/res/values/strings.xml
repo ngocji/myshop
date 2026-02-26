@@ -49,4 +49,6 @@
     <string name="text_change"><u>Change</u></string>
     <string name="text_total">Total</string>
     <string name="text_format_total_items">%d items</string>
+    <string name="text_refund_cash_amount">Refund Cash Amount : %s</string>
+    <string name="text_refund_card">%1$s from card ending in %2$s will be refund to Bill Evans</string>
 </resources>

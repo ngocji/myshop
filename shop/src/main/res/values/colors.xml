@@ -13,6 +13,7 @@
     <color name="colorCount">#99FFFFFF</color>
     <color name="colorOnCount">#000</color>
     <color name="colorLine">#33FFFFFF</color>
+    <color name="colorWhite">#FFFFFF</color>
 
     <color name="colorStateComplete">#56DE8A</color>
     <color name="colorStatePaid">#62A6ED</color>

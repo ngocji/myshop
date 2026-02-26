@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/btn_vew_order"
         style="@style/fontMedium"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/small_padding"
         android:text="@string/text_view_order" />
@@ -18,7 +18,7 @@
     <TextView
         android:id="@+id/btn_refund"
         style="@style/fontMedium"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/small_padding"
         android:text="@string/text_refund_action" />
@@ -26,7 +26,7 @@
     <TextView
         android:id="@+id/btn_coupons_report"
         style="@style/fontMedium"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/small_padding"
         android:text="@string/text_coupons_report" />

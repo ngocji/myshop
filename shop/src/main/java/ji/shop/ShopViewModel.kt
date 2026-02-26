@@ -234,9 +234,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val orderFlow = safeResultFlow {
-        Repo.getOrder("").items.map {
-            OrdersItemUi(it)
-        }
+        Repo.getOrder("").items
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     fun viewCart() {

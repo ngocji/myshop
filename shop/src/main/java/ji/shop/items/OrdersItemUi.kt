@@ -38,22 +38,7 @@ data class OrdersItemUi(
                 }
 
                 imgAction.setOnClickListener {
-                    val popupWindow = PopupWindow(it.context, it, object : PopupWindow.PopupWindowListener {
-                            override fun onActionClick(action: PopupAction) {
-                                when (action) {
-                                    PopupAction.VIEW_ORDER -> {
-
-                                    }
-                                    PopupAction.REFUND -> {
-
-                                    }
-                                    PopupAction.COUPONS_REPORT -> {
-
-                                    }
-                                }
-                            }
-                        })
-                    popupWindow.show()
+                    adapter.notifyListeners { onClick(adapter, it, absoluteAdapterPosition) }
                 }
             }
         }
