@@ -2,7 +2,9 @@ package ji.shop.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import ji.shop.R
 import ji.shop.data.Status
@@ -48,7 +50,8 @@ class StatusView @JvmOverloads constructor(
             }
         }
         setText(textRes)
-        setTextColor(context.getColor(colorRes))
+        setTextColor(ContextCompat.getColor(context, colorRes))
         setBackgroundResource(bgRes)
+        gravity = Gravity.CENTER
     }
 }
