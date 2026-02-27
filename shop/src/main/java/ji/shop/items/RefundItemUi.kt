@@ -12,6 +12,9 @@ import ji.shop.utils.NumberFormater
 
 class RefundItemUi {
     class RefundItem(val data: Cart) : ItemUI<ItemRefundBinding>() {
+        override fun getItemViewType(): Int {
+            return 0
+        }
         override fun createViewHolder(
             adapter: FlexibleAdapter<*>,
             parent: ViewGroup,
@@ -41,6 +44,9 @@ class RefundItemUi {
     }
 
     class TotalRefundItem(val totalPrice: Double) : ItemUI<ItemRefundTotalBinding>() {
+        override fun getItemViewType(): Int {
+            return 1
+        }
         override fun createViewHolder(
             adapter: FlexibleAdapter<*>,
             parent: ViewGroup,

@@ -10,7 +10,7 @@ abstract class ItemUI<VB : ViewBinding>() {
 
     abstract fun bindViewHolder(adapter: FlexibleAdapter<*>, holder: ItemViewHolder, position: Int, payloads: List<Any?>)
 
-    fun getItemViewType() = 0
+    open fun getItemViewType() = 0
 
     fun withBinding(holder: ItemViewHolder, action: VB.() -> Unit) {
         action(holder.binding as VB)
