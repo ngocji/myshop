@@ -71,11 +71,11 @@
         tools:text="@string/text_refund_cash_amount" />
 
     <TextView
-        android:id="@+id/tv1"
+        android:id="@+id/tvName"
         style="@style/fontDemiBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/text_bill_evans"
+        tools:text="Bill Evans"
         android:textSize="32sp"
         app:layout_constraintEnd_toStartOf="@id/btn_close"
         app:layout_constraintStart_toStartOf="@id/guide_start"
@@ -91,7 +91,7 @@
         android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_mail"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@+id/tv1"
+        app:layout_constraintTop_toBottomOf="@+id/tvName"
         tools:text="bill.evans@gmail.com" />
 
     <androidx.appcompat.widget.AppCompatImageView

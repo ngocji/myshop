@@ -90,19 +90,20 @@
                 android:id="@+id/card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/large_2_padding"
                 android:background="@drawable/bg_secondary_rounded_with_stroke"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/_8dp"
-                android:paddingVertical="12dp"
+                android:padding="@dimen/_8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv1">
 
                 <TextView
+                    android:id="@+id/tvCardNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:drawablePadding="@dimen/_8dp"
                     app:drawableStartCompat="@drawable/ic_card_outline"
@@ -118,7 +119,7 @@
                 android:id="@+id/btn_place_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/large_2_padding"
+                android:layout_marginVertical="@dimen/large_padding"
                 android:text="@string/text_place_order"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -165,19 +166,21 @@
                     app:layout_constraintTop_toTopOf="@id/imgCard">
 
                     <TextView
+                        android:id="@+id/tvName"
                         style="@style/fontDemiBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        tools:text="Summer Music Fest" />
+                        android:text="Summer Music Fest"
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tvTime"
                         style="@style/fontMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8dp"
-                        android:textSize="14sp"
-                        tools:text="Sat, Apr 20, 2024, 11:00 AM" />
+                        android:text="Sat, Apr 20, 2024, 11:00 AM"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
 
@@ -187,10 +190,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
+                    android:text="1X Festival Day Pass"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imgCard"
-                    tools:text="1X Festival Day Pass" />
+                    app:layout_constraintTop_toBottomOf="@id/imgCard" />
 
                 <TextView
                     android:id="@+id/tvFestivalValue"
@@ -199,10 +202,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
                     android:layout_marginEnd="50dp"
+                    android:text="1 X $30.00"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imgCard"
-                    tools:text="1 X $30.00" />
+                    app:layout_constraintTop_toBottomOf="@id/imgCard" />
 
                 <TextView
                     android:id="@+id/couponDiscount"

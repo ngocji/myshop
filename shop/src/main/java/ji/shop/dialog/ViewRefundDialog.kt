@@ -10,7 +10,7 @@ import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.viewBinding
-import ji.shop.data.Cart
+import ji.shop.data.Checkout
 import ji.shop.databinding.DialogViewRefundBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
@@ -19,9 +19,8 @@ import ji.shop.items.RefundItemUi
 import kotlin.math.roundToInt
 
 class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
-
     private val binding by viewBinding(DialogViewRefundBinding::bind)
-    private var items: List<Cart>? = null
+    private var checkout: Checkout? = null
     private var flexibleAdapter: FlexibleAdapter<ItemUI<*>>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,25 +51,31 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
             btnRefund.setOnClickListener {
-                ViewCardInfoDialog.newInstance().show(childFragmentManager)
+                ViewCardInfoDialog.newInstance(checkout).show(childFragmentManager)
             }
         }
     }
 
     private fun initData() {
-        val data = (items.orEmpty()
+        val data = (checkout?.items.orEmpty()
             .map { RefundItemUi.RefundItem(it) } +
                 RefundItemUi.TotalRefundItem(0.0))
             .toMutableList()
 
         flexibleAdapter = FlexibleAdapter(data)
         binding.recyclerView.adapter = flexibleAdapter
+
+        checkout?.customerInfo?.apply {
+            binding.tvName.text = name
+            binding.tvPhone.text = phoneNumber
+            binding.tvMail.text = email
+        }
     }
 
     companion object {
-        fun newInstance(items: List<Cart>): ViewRefundDialog {
+        fun newInstance(checkout: Checkout): ViewRefundDialog {
             return ViewRefundDialog().apply {
-                this.items = items
+                this.checkout = checkout
             }
         }
     }

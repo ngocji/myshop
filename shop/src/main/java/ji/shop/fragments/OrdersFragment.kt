@@ -9,6 +9,7 @@ import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.OnItemClickListener
 import ji.shop.base.viewBinding
 import ji.shop.data.Cart
+import ji.shop.data.Checkout
 import ji.shop.databinding.FragmentOrdersBinding
 import ji.shop.dialog.ViewRefundDialog
 import ji.shop.items.OrdersItemUi
@@ -36,8 +37,8 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
         }
     }
 
-    private fun initOrders(items: List<Cart>) {
-        val data = items.map { OrdersItemUi(it) }
+    private fun initOrders(checkout: Checkout) {
+        val data = checkout.items.map { OrdersItemUi(it) }
         flexibleOrdersAdapter?.updateDataset(data) ?: run {
             flexibleOrdersAdapter = FlexibleAdapter(data.toMutableList())
                 .addListener(object : OnItemClickListener{
@@ -57,7 +58,7 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                                             }
 
                                             PopupAction.REFUND -> {
-                                                ViewRefundDialog.newInstance(items)
+                                                ViewRefundDialog.newInstance(checkout)
                                                     .show(childFragmentManager)
                                             }
 

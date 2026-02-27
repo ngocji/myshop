@@ -2,6 +2,7 @@ package ji.shop.data
 
 import ji.shop.R
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
@@ -140,7 +141,9 @@ object Repo {
                         )
                     )
                 }
-            }
+            },
+            customerInfo = CustomerInfo("Bill Evans", "bill.evans@gmail.com", "678-774-0987"),
+            creditInfo = CreditInfo("678-774-0987")
         )
     }
 }

@@ -2,9 +2,9 @@ package ji.shop.data
 
 import ji.shop.R
 
-class CreditInfo {
-
-}
+data class CreditInfo (
+    val cardNumber: String,
+)
 
 sealed class CardMethod(val id: Int) {
     class CardSwiper : CardMethod(R.string.text_card_swiper)
