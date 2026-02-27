@@ -46,26 +46,29 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                         view: View,
                         position: Int
                     ) {
-                        val popupWindow = PopupWindow(
-                            view.context,
-                            view,
-                            object : PopupWindow.PopupWindowListener {
-                                override fun onActionClick(action: PopupAction) {
-                                    when (action) {
-                                        PopupAction.VIEW_ORDER -> {
-                                        }
+                        if (view.id == R.id.img_action) {
+                            val popupWindow = PopupWindow(
+                                view.context,
+                                view,
+                                object : PopupWindow.PopupWindowListener {
+                                    override fun onActionClick(action: PopupAction) {
+                                        when (action) {
+                                            PopupAction.VIEW_ORDER -> {
+                                            }
 
-                                        PopupAction.REFUND -> {
-                                            ViewRefundDialog.newInstance(items).show(childFragmentManager)
-                                        }
+                                            PopupAction.REFUND -> {
+                                                ViewRefundDialog.newInstance(items)
+                                                    .show(childFragmentManager)
+                                            }
 
-                                        PopupAction.COUPONS_REPORT -> {
+                                            PopupAction.COUPONS_REPORT -> {
 
+                                            }
                                         }
                                     }
-                                }
-                            })
-                        popupWindow.show()
+                                })
+                            popupWindow.show()
+                        }
                     }
 
                 })

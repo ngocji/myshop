@@ -1,5 +1,6 @@
 package ji.shop.items
 
+import android.graphics.Color
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import ji.shop.base.adapter.FlexibleAdapter
@@ -54,6 +55,8 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
             tvPrice.text = NumberFormater.formatNumberLocale(inventory.price)
             tvSold.text = inventory.sold.toPlanString()
             prgRemaining.setProgress(inventory.remaining)
+           /* prgRemaining.setIndicatorColor(Color.BLUE)
+            prgRemaining.setTrackColor(Color.GRAY)*/
             tvQuantity.text = inventory.quantity.toPlanString()
         }
     }

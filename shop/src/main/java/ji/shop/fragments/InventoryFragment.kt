@@ -21,7 +21,7 @@ class InventoryFragment : BaseFragment(R.layout.fragment_inventory) {
     }
 
     private fun initViews() {
-
+        binding.btnCheckout?.setOnClickListener {  }
     }
 
     private fun initObserves() {

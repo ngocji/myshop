@@ -80,9 +80,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:indicatorColor="#137EFC"
+        app:indicatorColor="@color/colorPrimary"
         app:progressValue="50"
-        app:trackColor="#0000001A" />
+        app:trackColor="@color/colorThirdBackground" />
 
     <TextView
         android:id="@+id/tv_quantity"

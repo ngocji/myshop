@@ -38,7 +38,7 @@ data class OrdersItemUi(
                 }
 
                 imgAction.setOnClickListener {
-                    adapter.notifyListeners { onClick(adapter, it, absoluteAdapterPosition) }
+                    adapter.notifyListeners { onClick(adapter, imgAction, absoluteAdapterPosition) }
                 }
             }
         }

@@ -58,7 +58,11 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
     }
 
     private fun initData() {
-        val data: MutableList<ItemUI<*>> = items?.map { RefundItemUi.RefundItem(it) }?.toMutableList() ?: mutableListOf()
+        val data = (items.orEmpty()
+            .map { RefundItemUi.RefundItem(it) } +
+                RefundItemUi.TotalRefundItem(0.0))
+            .toMutableList()
+
         flexibleAdapter = FlexibleAdapter(data)
         binding.recyclerView.adapter = flexibleAdapter
     }

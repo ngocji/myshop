@@ -16,8 +16,8 @@
             android:layout_weight="1"
             android:max="100"
             android:progress="10"
-            app:indicatorColor="#137EFC"
-            app:trackColor="#0000001A"
+            app:indicatorColor="@color/colorPrimary"
+            app:trackColor="@color/colorThirdBackground"
             app:trackCornerRadius="3dp"
             app:trackThickness="6dp" />
 
