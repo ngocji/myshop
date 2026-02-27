@@ -28,7 +28,7 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
     }
 
     private fun initViews() {
-
+        binding.btnCheckout?.setOnClickListener {  }
     }
 
     private fun initObserves() {

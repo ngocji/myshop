@@ -5,6 +5,7 @@ import android.view.View
 import ji.shop.R
 import ji.shop.base.BaseFragment
 import ji.shop.base.adapter.FlexibleAdapter
+import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
 import ji.shop.base.viewBinding
 import ji.shop.databinding.FragmentInventoryBinding
 import ji.shop.exts.collect
@@ -33,6 +34,12 @@ class InventoryFragment : BaseFragment(R.layout.fragment_inventory) {
     private fun initInventories(items: List<InventoryUi>) {
         flexibleInventoryAdapter?.updateDataset(items) ?: run {
             flexibleInventoryAdapter = FlexibleAdapter(items.toMutableList())
+                .setMode(SINGLE)
+                .addListener { adapter, view, position ->
+                    if (view.id == R.id.img_Visibility) {
+                        adapter.toggleSelection(position)
+                    }
+                }
             binding.rcvInventory.adapter = flexibleInventoryAdapter
         }
     }

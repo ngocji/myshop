@@ -46,6 +46,7 @@ object Repo {
                             price = 90.0,
                             description = "Description $it",
                             images = listOf(R.drawable.ic_product),
+                            status = Status.COMPLETE,
                             sizes = listOf(
                                 ProductSize("Small", 9.0),
                                 ProductSize("Medium", 10.0),
@@ -82,17 +83,17 @@ object Repo {
 
     suspend fun getInventories() = withContext(Dispatchers.IO) {
         buildList {
-            repeat(5) {
+            repeat(8) {
                 add(
                     Inventory(
                         image = R.drawable.ic_inventory,
                         "Coca Cola $it",
-                        true,
+                        false,
                         28,
                         2.291,
                         193.0,
                         2.291,
-                        20,
+                        (20..100).random(),
                         2.291
                     )
                 )
@@ -104,7 +105,7 @@ object Repo {
         Checkout(
             "c_",
             items = buildList {
-                repeat(3) {
+                repeat(10) {
                     add(
                         Cart(
                             product = Product(
@@ -122,6 +123,7 @@ object Repo {
                                     ProductSize("Large", 12.0),
                                     ProductSize("Extra Large", 14.0),
                                 ),
+                                status = Status.entries.toTypedArray().random(),
                                 additional = listOf(
                                     ProductAdditional(
                                         name = "Mild Sauce",

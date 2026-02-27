@@ -90,7 +90,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/large_padding"
-        android:layout_weight="0.3"
+        android:layout_weight="0.4"
         android:background="@drawable/bg_stroke_secondary"
         android:gravity="center_vertical"
         android:paddingHorizontal="@dimen/small_padding"

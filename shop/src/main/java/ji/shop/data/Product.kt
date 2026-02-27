@@ -6,7 +6,7 @@ data class Product(
     val collectionId: String,
     val name: String,
     val price: Double,
-    val status: Status = Status.COMPLETE,
+    val status: Status,
     val description: String,
     val images: List<Any?>,
     val sizes: List<ProductSize>,

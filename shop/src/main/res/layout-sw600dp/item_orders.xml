@@ -17,10 +17,10 @@
 
     <TextView
         android:id="@+id/tv_product_name"
-        style="@style/fontDemiBold"
+        style="@style/fontSemiBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/large_padding"
+        android:layout_marginStart="@dimen/_8dp"
         android:layout_weight="1"
         tools:text="Floyd Miles" />
 

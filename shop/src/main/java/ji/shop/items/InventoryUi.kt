@@ -1,8 +1,9 @@
 package ji.shop.items
 
-import android.graphics.Color
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import ji.shop.R
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
@@ -36,6 +37,10 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
                         .start()
                     info?.isVisible = expanded
                 }
+
+                imgVisibility.setOnClickListener {
+                    adapter.notifyListeners { onClick(adapter, imgVisibility, absoluteAdapterPosition) }
+                }
             }
         }
     }
@@ -55,10 +60,9 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
             tvPrice.text = NumberFormater.formatNumberLocale(inventory.price)
             tvSold.text = inventory.sold.toPlanString()
             prgRemaining.setProgress(inventory.remaining)
-           /* prgRemaining.setIndicatorColor(Color.BLUE)
-            prgRemaining.setTrackColor(Color.GRAY)*/
+            prgRemaining.setIndicatorColor(ContextCompat.getColor(prgRemaining.context, R.color.colorPrimary))
             tvQuantity.text = inventory.quantity.toPlanString()
+            imgVisibility.isSelected = adapter.isSelected(position)
         }
     }
-
 }

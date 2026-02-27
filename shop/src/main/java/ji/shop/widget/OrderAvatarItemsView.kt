@@ -19,7 +19,7 @@ class OrderAvatarItemsView @JvmOverloads constructor(
     }
 
     fun setData(items: List<Any?>) {
-        flexibleAdapter.updateDataset(items.map {
+        flexibleAdapter.updateDataset(items.take(4).map {
             OrderAvatarItemUi(it)
         })
     }
