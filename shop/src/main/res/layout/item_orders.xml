@@ -51,7 +51,6 @@
         android:id="@+id/img_arrow_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/small_padding"
         android:padding="@dimen/_8dp"
         android:src="@drawable/ic_arrow_down"
         app:layout_constraintBottom_toBottomOf="@+id/tvStatus"
@@ -90,41 +89,18 @@
             tools:text="3:20 pm" />
 
         <TextView
-            android:id="@+id/complete"
+            android:id="@+id/qty"
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/normal_padding"
-            android:text="@string/text_complete"
+            android:text="@string/text_qty"
             app:layout_constraintEnd_toEndOf="@id/time"
             app:layout_constraintStart_toStartOf="@id/time"
             app:layout_constraintTop_toBottomOf="@+id/time" />
 
         <TextView
-            android:id="@+id/tv_complete"
-            style="@style/fontSemiBold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/complete"
-            app:layout_constraintEnd_toEndOf="@id/tv_time"
-            app:layout_constraintStart_toStartOf="@id/guide_start"
-            app:layout_constraintTop_toTopOf="@id/complete"
-            tools:text="2,291" />
-
-
-        <TextView
-            android:id="@+id/qty"
-            style="@style/fontMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:text="@string/text_qty"
-            app:layout_constraintEnd_toEndOf="@id/time"
-            app:layout_constraintStart_toStartOf="@id/time"
-            app:layout_constraintTop_toBottomOf="@+id/complete" />
-
-        <TextView
-            android:id="@+id/tv_price"
+            android:id="@+id/tv_qty"
             style="@style/fontSemiBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -139,7 +115,6 @@
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/normal_padding"
             android:text="@string/text_name"
             app:layout_constraintEnd_toEndOf="@id/time"
             app:layout_constraintStart_toStartOf="@id/qty"
@@ -173,7 +148,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:padding="@dimen/small_padding"
             app:layout_constraintBottom_toBottomOf="@id/note"
             app:layout_constraintEnd_toEndOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="@id/guide_start"

@@ -53,7 +53,7 @@ data class OrdersItemUi(
         withBinding(holder) {
             rcvAvatar?.setData(cart.product.images)
             tvProductName.text = cart.product.name
-            tvQty?.text = cart.count.toString()
+            tvQty.text = cart.count.toString()
             tvTime.text = cart.count.toString()
             tvOrderMethod?.text = cart.count.toString()
             tvStatus.setState(cart.product.status)
