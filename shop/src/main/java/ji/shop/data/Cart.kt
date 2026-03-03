@@ -4,6 +4,7 @@ data class Cart(
     val product: Product,
     val size: ProductSize? = null,
     val count: Int,
+    val date: Long = System.currentTimeMillis(),
     val additional: Map<ProductAdditional, Int> = emptyMap()
 ) {
     fun getTotalPrice(count: Int = this.count): Double {

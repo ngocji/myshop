@@ -8,6 +8,7 @@ import ji.shop.base.adapter.ItemViewHolder
 import ji.shop.data.Cart
 import ji.shop.databinding.ItemOrdersBinding
 import ji.shop.exts.layoutInflate
+import ji.shop.utils.DateFormater
 import ji.shop.widget.PopupAction
 import ji.shop.widget.PopupWindow
 
@@ -54,7 +55,7 @@ data class OrdersItemUi(
             rcvAvatar?.setData(cart.product.images)
             tvProductName.text = cart.product.name
             tvQty.text = cart.count.toString()
-            tvTime.text = cart.count.toString()
+            tvTime.text = DateFormater.format(cart.date, "hh:mm a")
             tvOrderMethod?.text = cart.count.toString()
             tvStatus.setState(cart.product.status)
             tvNote?.text = cart.product.description

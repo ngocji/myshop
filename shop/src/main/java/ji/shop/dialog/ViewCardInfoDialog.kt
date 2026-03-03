@@ -1,10 +1,12 @@
 package ji.shop.dialog
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
+import androidx.lifecycle.lifecycleScope
 import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
@@ -12,12 +14,17 @@ import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
 import ji.shop.base.viewBinding
 import ji.shop.data.CardMethod
 import ji.shop.data.Checkout
+import ji.shop.data.Repo
 import ji.shop.databinding.DialogViewCardInfoBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
 import ji.shop.exts.width
 import ji.shop.items.CardInfoItemUi
+import ji.shop.utils.DateFormater
 import ji.shop.utils.NumberFormater
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 class ViewCardInfoDialog : BaseDialog(R.layout.dialog_view_card_info) {
@@ -29,6 +36,7 @@ class ViewCardInfoDialog : BaseDialog(R.layout.dialog_view_card_info) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initData()
+        initTicket()
     }
 
     override fun doOnWindow(window: Window) {
@@ -53,22 +61,42 @@ class ViewCardInfoDialog : BaseDialog(R.layout.dialog_view_card_info) {
 
         with(binding) {
             tvCardNumber.text = checkout?.creditInfo?.cardNumber.orEmpty()
-            tvCouponDiscount.text = NumberFormater.formatNumberLocale(0.0)
-            tvFaceValue.text = NumberFormater.formatNumberLocale(1.0)
-            tvDonation.text = NumberFormater.formatNumberLocale(1.0)
-            tvServiceFee.text = NumberFormater.formatNumberLocale(1.0)
-            tvSubtotal.text = NumberFormater.formatNumberLocale(1.0)
-            tvTaxes.text = NumberFormater.formatNumberLocale(1.0)
-            tvTotal.text = NumberFormater.formatNumberLocale(6.0)
+
             btnPlaceOrder.text = String.format(
                 resources.getString(R.string.text_place_order),
-                NumberFormater.formatNumberLocale(25.44)
+                NumberFormater.formatNumberLocale(getTotal())
             )
 
             btnBack.setOnClickListener { dismissAllowingStateLoss() }
 
             btnPlaceOrder.setOnClickListener {
 
+            }
+        }
+    }
+
+    private fun getTotal(): Double {
+        val itemPrice = checkout?.items?.sumOf { it.getTotalPrice() } ?: 0.0
+        val tax = itemPrice * 0.038f
+        return itemPrice + tax
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initTicket() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val ticket = Repo.getTicket()
+            val info = ticket.info.map { entry ->
+                entry.key to NumberFormater.formatNumberLocale(entry.value)
+            }
+            withContext(Dispatchers.Main) {
+                with(binding) {
+                    tvName.text = ticket.name
+                    tvTime.text = DateFormater.format(ticket.date, "EEE, MMM dd, yyyy, hh:mm a")
+                    tvFestival.text = "${checkout?.items?.size ?: 0} x ${ticket.ticketDayPass}"
+                    tvFestivalValue.text = "${checkout?.items?.size ?: 0} x ${NumberFormater.formatNumberLocale(getTotal())}"
+                    titleValuesView.setBoldValue(false)
+                    titleValuesView.setData(*info.toTypedArray())
+                }
             }
         }
     }
