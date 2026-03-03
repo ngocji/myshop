@@ -64,4 +64,7 @@
     <string name="text_taxes">Taxes</string>
     <string name="text_back">Back</string>
     <string name="text_festival">%s  Festival Day Pass</string>
+    <string name="text_tax_fees"><![CDATA[Taxs & Fees]]></string>
+    <string name="text_done">Done</string>
+    <string name="tickets">Tickets</string>
 </resources>

@@ -148,4 +148,22 @@ object Repo {
             creditInfo = CreditInfo("678-774-0987")
         )
     }
+
+    suspend fun getTicket() = withContext(Dispatchers.IO) {
+        Ticket(
+            image=  R.drawable.ic_card,
+            name = "Summer Music Fest",
+            date = System.currentTimeMillis(),
+            ticketDayPass = "Festival Day Pass",
+            info = mapOf(
+                "Coupon Discount" to 0.0,
+                "Face Value" to 1.0,
+                "Donation" to 1.0,
+                "Service Fee" to 1.0,
+                "Subtotal" to 1.0,
+                "Taxes" to 1.0,
+                "Total" to 30.0
+            )
+        )
+    }
 }

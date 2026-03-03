@@ -11,7 +11,7 @@ import ji.shop.databinding.ItemTitleValueBinding
 import ji.shop.exts.layoutInflate
 
 class TitleValueItemUi(
-    var data: Pair<Int, Any>,
+    var data: Pair<Any, Any>,
     private val isBoldValue: Boolean = true
 ) : ItemUI<ItemTitleValueBinding>() {
     override fun createViewHolder(
@@ -51,7 +51,11 @@ class TitleValueItemUi(
     }
 
     private fun ItemTitleValueBinding.updateInfo() {
-        tvTitle.setText(data.first.takeIf { it > 0 } ?: R.string.text_empty)
+        when (val f = data.first) {
+            is Int -> tvTitle.setText(f.takeIf { it > 0 } ?: R.string.text_empty)
+            else -> tvTitle.text = f.toString()
+        }
+
         tvValue.text = data.second.toString()
     }
 }

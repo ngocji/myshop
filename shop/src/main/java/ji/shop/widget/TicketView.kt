@@ -11,7 +11,9 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.graphics.Shader
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
+import ji.shop.R
 
 class TicketView @JvmOverloads constructor(
     context: Context,
@@ -51,7 +53,7 @@ class TicketView @JvmOverloads constructor(
 
         val rect = RectF(0f, 0f, width.toFloat(), height.toFloat())
 
-        val dividerY = height * 0.32f   // position dashed line
+        val dividerY = getDriverY()   // position dashed line
 
         // background
         canvas.drawRoundRect(rect, radius, radius, bgPaint)
@@ -73,6 +75,11 @@ class TicketView @JvmOverloads constructor(
         canvas.drawRoundRect(rect, radius, radius, strokePaint)
 
         super.dispatchDraw(canvas)
+    }
+
+    private fun getDriverY(): Float {
+        val header = findViewById<View>(R.id.header)
+        return header.measuredHeight.takeIf { it > 0 }?.toFloat() ?: (height * 0.32f)
     }
 
     private fun dp(v: Float) = v * resources.displayMetrics.density

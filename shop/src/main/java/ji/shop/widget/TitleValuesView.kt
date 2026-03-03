@@ -16,7 +16,6 @@ class TitleValuesView @JvmOverloads constructor(
         FlexibleAdapter(mutableListOf())
 
     init {
-        setHasFixedSize(true)
         isNestedScrollingEnabled = false
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         adapter = flexibleAdapter
@@ -26,7 +25,7 @@ class TitleValuesView @JvmOverloads constructor(
         this.isBoldValue = isBoldValue
     }
 
-    fun setData(vararg values: Pair<Int, Any>) {
+    fun setData(vararg values: Pair<Any, Any>) {
         if (values.size == flexibleAdapter.itemCount) {
             flexibleAdapter.items.forEachIndexed { index, item ->
                 item.data = values[index]
