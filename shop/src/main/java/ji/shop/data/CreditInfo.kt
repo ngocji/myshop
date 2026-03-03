@@ -4,15 +4,19 @@ import ji.shop.R
 
 data class CreditInfo (
     val cardNumber: String,
+    val nameOnCard: String = "",
+    val date: String = "",
+    val cvv: String = "",
+    val imageUri: String? = null
 )
 
 sealed class CardMethod(val id: Int) {
-    class CardSwiper : CardMethod(R.string.text_card_swiper)
-    class CardManually : CardMethod(R.string.text_card_manually)
-    class Cash : CardMethod(R.string.text_cash)
-    class Comp : CardMethod(R.string.text_comp)
+    object CardSwiper : CardMethod(R.string.text_card_swiper)
+    object CardManually : CardMethod(R.string.text_card_manually)
+    object Cash : CardMethod(R.string.text_cash)
+    object Comp : CardMethod(R.string.text_comp)
 
     companion object {
-        fun all() = listOf(CardSwiper(), CardManually(), Cash(), Comp())
+        fun all() = listOf(CardSwiper, CardManually, Cash, Comp)
     }
 }

@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ji.shop.data.CardMethod
+import ji.shop.data.CustomerInfo
 import ji.shop.data.TabType
 import ji.shop.databinding.ActivityShopBinding
 import ji.shop.dialog.CheckoutDialog
+import ji.shop.dialog.EditManualCardDialog
 import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.dialog.ViewCartDialog
 import ji.shop.exts.collect
@@ -91,7 +94,22 @@ class ShopActivity : AppCompatActivity() {
         ViewCartDialog.newInstance(viewModel.getCartItems()) { carts, isGotoCheckout ->
             viewModel.updateCarts(carts)
             if (isGotoCheckout) {
-                CheckoutDialog.newInstance(carts)
+                CheckoutDialog.newInstance(carts, viewModel.getUsedCardMethod(), object : CheckoutDialog.Listener {
+                    override fun onUpdateCustomerInfo(customerInfo: CustomerInfo?) {
+                        viewModel.updateCustomerInfo(customerInfo)
+                    }
+
+                    override fun onDone(method: CardMethod) {
+                        viewModel.updateUsedCardMethod(method)
+                        if (method == CardMethod.CardManually) {
+                            EditManualCardDialog
+                                .newInstance(viewModel.creditCardInfo.value) { newCreditCard ->
+                                    viewModel.updateCreditCard(newCreditCard)
+                                }
+                                .show(supportFragmentManager)
+                        }
+                    }
+                })
                     .show(supportFragmentManager)
             }
         }

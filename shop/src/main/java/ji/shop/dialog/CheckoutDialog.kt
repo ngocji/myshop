@@ -10,7 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.viewBinding
+import ji.shop.data.CardMethod
 import ji.shop.data.Cart
+import ji.shop.data.CustomerInfo
 import ji.shop.data.Repo
 import ji.shop.databinding.DialogViewCheckoutBinding
 import ji.shop.exts.height
@@ -26,6 +28,8 @@ import kotlin.math.roundToInt
 class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
     private val binding by viewBinding(DialogViewCheckoutBinding::bind)
     private var items: List<Cart>? = null
+    private var listener: Listener? = null
+    private var usedCardMethod: CardMethod = CardMethod.Cash
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +46,7 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
                 if (isTablet) (it * 0.4).roundToInt() else it
             },
             requireActivity().height().let {
-                if (isTablet) it else (it * 0.7).roundToInt()
+                if (isTablet) it else (it * 0.9).roundToInt()
             }
         )
         window.setGravity(if (isTablet) Gravity.END else Gravity.BOTTOM)
@@ -51,12 +55,25 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
     private fun initViews() {
         with(binding) {
             btnCash.setOnClickListener {
-
+                toggleCardMethod(CardMethod.Cash)
             }
-            btnCredit.setOnClickListener { }
+            btnCredit.setOnClickListener {
+                toggleCardMethod(CardMethod.CardManually)
+            }
             btnAddCustomerInfo.setOnClickListener { }
             btnTickets.setOnClickListener { toggleTicketView() }
-            btnDone.setOnClickListener { dismissAllowingStateLoss() }
+            btnDone.setOnClickListener {
+                listener?.onDone(usedCardMethod)
+                dismissAllowingStateLoss()
+            }
+        }
+    }
+
+    private fun toggleCardMethod(cardMethod: CardMethod) {
+        usedCardMethod = cardMethod
+        with(binding) {
+            btnCash.alpha = if (usedCardMethod == CardMethod.Cash) 1f else 0.5f
+            btnCredit.alpha = if (usedCardMethod == CardMethod.CardManually) 1f else 0.5f
         }
     }
 
@@ -73,6 +90,7 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
             val itemPrice = items?.sumOf { it.getTotalPrice() } ?: 0.0
             val tax = itemPrice * 0.038f
             tvTotal.text = NumberFormater.formatNumberLocale(itemPrice + tax)
+            toggleCardMethod(usedCardMethod)
         }
     }
 
@@ -96,10 +114,21 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         }
     }
 
+    interface Listener {
+        fun onUpdateCustomerInfo(customerInfo: CustomerInfo?)
+        fun onDone(method: CardMethod)
+    }
+
     companion object {
-        fun newInstance(items: List<Cart>): CheckoutDialog {
+        fun newInstance(
+            items: List<Cart>,
+            cardMethod: CardMethod,
+            listener: Listener
+        ): CheckoutDialog {
             return CheckoutDialog().apply {
                 this.items = items
+                this.usedCardMethod = cardMethod
+                this.listener = listener
             }
         }
     }

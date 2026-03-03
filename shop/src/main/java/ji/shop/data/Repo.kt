@@ -145,7 +145,7 @@ object Repo {
                 }
             },
             customerInfo = CustomerInfo("Bill Evans", "bill.evans@gmail.com", "678-774-0987"),
-            creditInfo = CreditInfo("678-774-0987")
+            creditInfo = CreditInfo(cardNumber = "678-774-0987")
         )
     }
 
@@ -165,5 +165,9 @@ object Repo {
                 "Total" to 30.0
             )
         )
+    }
+
+    fun getLastUsedCreditCard(): CreditInfo? {
+        return CreditInfo(cardNumber = "678-774-0987")
     }
 }

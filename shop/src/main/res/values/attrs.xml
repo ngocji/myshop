@@ -25,4 +25,11 @@
         <attr name="indicatorColor" format="color"/>
         <attr name="trackColor" format="color"/>
     </declare-styleable>
+    
+    <declare-styleable name="CustomEdittext">
+        <attr name="cs_title" format="string" />
+        <attr name="cs_hint" format="string" />
+        <attr name="cs_text" format="string" />
+        <attr name="cs_image_start" format="reference" />
+    </declare-styleable>
 </resources>

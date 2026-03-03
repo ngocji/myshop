@@ -4,8 +4,11 @@ import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import ji.shop.data.CardMethod
 import ji.shop.data.Cart
 import ji.shop.data.Collection
+import ji.shop.data.CreditInfo
+import ji.shop.data.CustomerInfo
 import ji.shop.data.Group
 import ji.shop.data.Product
 import ji.shop.data.Repo
@@ -22,7 +25,6 @@ import ji.shop.items.CollectionGridItemUi
 import ji.shop.items.CollectionLinearItemUi
 import ji.shop.items.GroupItemUi
 import ji.shop.items.InventoryUi
-import ji.shop.items.OrdersItemUi
 import ji.shop.items.ProductItemUi
 import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,12 +43,16 @@ import kotlinx.coroutines.flow.update
 class ShopViewModel(context: Application) : AndroidViewModel(context) {
     val gotoFragmentEvent = Channel<() -> Fragment>(capacity = BUFFERED)
     val backEvent = Channel<Unit>()
-    val viewCartEvent = Channel<Unit>()
+    val viewCartEvent = Channel<Unit>(capacity = BUFFERED)
 
     // state for user
     val myBalanceState = MutableStateFlow(0.0)
     val cartsState = MutableStateFlow(WrapUpdateData<Set<Cart>>(emptySet()))
     val isNfcEnabledState = MutableStateFlow(false)
+
+    val customerInfoState = MutableStateFlow<CustomerInfo?>(null)
+    val creditCardInfo = MutableStateFlow<CreditInfo?>(null)
+    val usedCardMethod = MutableStateFlow<CardMethod>(CardMethod.Cash)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val cartPriceState = cartsState.mapLatest { wrap ->
@@ -95,18 +101,18 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     }
 
     val productsFlow = groupState.filterNotNull().flatMapLatest {
-            safeResultFlow {
-                Repo.getProductsByCollection(
-                    it.collectionId, it.id
-                )
-            }
-        }.mapWhenSuccess { items ->
-            items.map {
-                ProductItemUi(
-                    it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
-                )
-            }
-        }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+        safeResultFlow {
+            Repo.getProductsByCollection(
+                it.collectionId, it.id
+            )
+        }
+    }.mapWhenSuccess { items ->
+        items.map {
+            ProductItemUi(
+                it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
+            )
+        }
+    }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
 
     val productCountNotifyFlow = combine(cartsState, productsFlow) { carts, products ->
@@ -239,5 +245,21 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun viewCart() {
         viewCartEvent.trySend(Unit)
+    }
+
+    fun updateCustomerInfo(customerInfo: CustomerInfo?) {
+        customerInfoState.tryEmit(customerInfo)
+    }
+
+    fun updateCreditCard(creditCard: CreditInfo) {
+        creditCardInfo.tryEmit(creditCard)
+    }
+
+    fun getUsedCardMethod(): CardMethod {
+        return usedCardMethod.value
+    }
+
+    fun updateUsedCardMethod(method: CardMethod) {
+        usedCardMethod.tryEmit(method)
     }
 }

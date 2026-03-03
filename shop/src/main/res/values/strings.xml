@@ -67,4 +67,10 @@
     <string name="text_tax_fees"><![CDATA[Taxs & Fees]]></string>
     <string name="text_done">Done</string>
     <string name="tickets">Tickets</string>
+    <string name="text_edit_manual_card">Enter Card Manually</string>
+    <string name="text_play_now">Pay Now</string>
+    <string name="text_name_on_card">Name on card</string>
+    <string name="text_cvv">CVV\t</string>
+    <string name="text_expriry_date">Expiry Date</string>
+    <string name="text_expriry_date_hint">MM/YY</string>
 </resources>

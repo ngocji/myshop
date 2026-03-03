@@ -22,4 +22,5 @@
     <color name="colorFourthBackground">#474948</color>
     <color name="colorOverlayBlur">#1F000000</color>
     <color name="colorPrimaryAlpha10">#1A137EFC</color>
+    <color name="colorHineText">#80FFFFFF</color>
 </resources>

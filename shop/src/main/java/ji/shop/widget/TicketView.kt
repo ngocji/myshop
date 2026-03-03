@@ -78,8 +78,8 @@ class TicketView @JvmOverloads constructor(
     }
 
     private fun getDriverY(): Float {
-        val header = findViewById<View>(R.id.header)
-        return header.measuredHeight.takeIf { it > 0 }?.toFloat() ?: (height * 0.32f)
+        val header = findViewById<View?>(R.id.header)
+        return header?.measuredHeight?.takeIf { it > 0 }?.toFloat() ?: (height * 0.32f)
     }
 
     private fun dp(v: Float) = v * resources.displayMetrics.density
