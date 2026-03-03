@@ -44,13 +44,13 @@ class ViewCardInfoDialog : BaseDialog(R.layout.dialog_view_card_info) {
         val isTablet = context.isTablet()
         window.setLayout(
             requireActivity().width().let {
-                if (isTablet) (it * 0.4).roundToInt() else it
+                if (isTablet) (it * 0.7).roundToInt() else it
             },
             requireActivity().height().let {
-                if (isTablet) it else (it * 0.7).roundToInt()
+                if (isTablet) (it * 0.7).roundToInt() else it
             }
         )
-        window.setGravity(if (isTablet) Gravity.END else Gravity.BOTTOM)
+        window.setGravity(if (isTablet) Gravity.CENTER else Gravity.BOTTOM)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
