@@ -14,6 +14,8 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 
+import androidx.core.content.ContextCompat;
+
 import ji.shop.R;
 
 /**
@@ -127,9 +129,9 @@ public class RoundRectBlurView extends RealtimeBlurView {
                         0f, 0f,
                         0f, getHeight(),
                         new int[]{
-                                Color.parseColor("#66FFFFFF"),
-                                Color.parseColor("#0DFFFFFF"),
-                                Color.parseColor("#1AFFFFFF")
+                                ContextCompat.getColor(getContext(), R.color.startColor),
+                                ContextCompat.getColor(getContext(), R.color.centerColor),
+                                ContextCompat.getColor(getContext(), R.color.endColor),
                         },
                         new float[]{0f, 0.5f, 1f},
                         Shader.TileMode.CLAMP

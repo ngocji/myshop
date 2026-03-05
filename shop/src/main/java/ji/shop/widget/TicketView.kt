@@ -13,6 +13,7 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import ji.shop.R
 
 class TicketView @JvmOverloads constructor(
@@ -28,7 +29,7 @@ class TicketView @JvmOverloads constructor(
 
     private val dashPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = dp(1f)
+        strokeWidth = dp(2f)
         color = Color.parseColor("#22FFFFFF")
         pathEffect = DashPathEffect(floatArrayOf(10f, 10f), 0f)
     }
@@ -39,8 +40,8 @@ class TicketView @JvmOverloads constructor(
             0f,
             0f,
             height.toFloat(),
-            Color.parseColor("#2B2E33"),
-            Color.parseColor("#1E2227"),
+            ContextCompat.getColor(context, R.color.colorTicket),
+            ContextCompat.getColor(context, R.color.colorTicket),
             Shader.TileMode.CLAMP
         )
 

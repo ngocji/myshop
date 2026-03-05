@@ -7,7 +7,6 @@
     tools:background="@drawable/bg_highlight"
     android:paddingHorizontal="14dp"
     android:paddingVertical="5dp"
-    android:textColor="@android:color/white"
     tools:text="Inventory">
 
 </TextView>

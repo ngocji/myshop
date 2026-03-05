@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
     <style name="ThemeApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorWaring</item>
         <item name="colorPrimaryVariant">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="materialButtonStyle">@style/defaultButton</item>
     </style>
 </resources>
