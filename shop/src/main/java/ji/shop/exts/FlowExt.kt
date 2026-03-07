@@ -18,8 +18,8 @@ fun <T> AppCompatActivity.collect(
 ) {
     lifecycleScope.launch {
         repeatOnLifecycle(state) {
-            channel.consumeEach {
-                action(it)
+            for (item in channel) {
+                action(item)
             }
         }
     }
@@ -47,8 +47,8 @@ fun <T> Fragment.collect(
     viewLifecycleOwner.run {
         lifecycleScope.launch {
             repeatOnLifecycle(state) {
-                channel.consumeEach {
-                    action(it)
+                for (item in channel) {
+                    action(item)
                 }
             }
         }

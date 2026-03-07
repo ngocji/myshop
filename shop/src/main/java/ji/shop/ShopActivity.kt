@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import ji.shop.data.CardMethod
 import ji.shop.data.CustomerInfo
 import ji.shop.data.TabType
@@ -44,13 +45,7 @@ class ShopActivity : AppCompatActivity() {
     }
 
     private fun initObserves() {
-        collect(channel = viewModel.gotoFragmentEvent) {
-            doOnGoto(it)
-        }
 
-        collect(channel = viewModel.backEvent) {
-            doOnBack()
-        }
 
         collect(flow = viewModel.isNfcEnabledState) { enable ->
             binding.btnNfc.isSelected = enable
@@ -68,6 +63,13 @@ class ShopActivity : AppCompatActivity() {
             binding.shopCategoryDropDown.setData(data?.first, data?.second)
         }
 
+        collect(channel = viewModel.gotoFragmentEvent) {
+            doOnGoto(it)
+        }
+
+        collect(channel = viewModel.backEvent) {
+            doOnBack()
+        }
         collect(channel = viewModel.viewCartEvent) {
             doViewCart()
         }
