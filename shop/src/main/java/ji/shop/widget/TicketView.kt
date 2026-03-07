@@ -4,12 +4,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.DashPathEffect
-import android.graphics.LinearGradient
 import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
+import android.graphics.Path
 import android.graphics.RectF
-import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -24,63 +21,63 @@ class TicketView @JvmOverloads constructor(
     private val radius = dp(16f)
     private val cutRadius = dp(12f)
 
-    private val bgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val bgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = ContextCompat.getColor(context, R.color.colorTicket)
+        style = Paint.Style.FILL
+    }
 
     private val dashPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = dp(2f)
+        strokeWidth = dp(1.5f)
         color = Color.parseColor("#22FFFFFF")
         pathEffect = DashPathEffect(floatArrayOf(10f, 10f), 0f)
     }
 
-    init {
-        bgPaint.shader = LinearGradient(
-            0f,
-            0f,
-            0f,
-            height.toFloat(),
-            ContextCompat.getColor(context, R.color.colorTicket),
-            ContextCompat.getColor(context, R.color.colorTicket),
-            Shader.TileMode.CLAMP
-        )
-
-        strokePaint.style = Paint.Style.STROKE
-        strokePaint.strokeWidth = dp(1f)
-        strokePaint.color = Color.TRANSPARENT
-    }
+    private val ticketPath = Path()
+    private val cutPath = Path()
 
     override fun dispatchDraw(canvas: Canvas) {
 
-        val rect = RectF(0f, 0f, width.toFloat(), height.toFloat())
+        val dividerY = getDividerY()
 
-        val dividerY = getDriverY()   // position dashed line
+        buildTicketPath(dividerY)
 
-        // background
-        canvas.drawRoundRect(rect, radius, radius, bgPaint)
+        // draw ticket background
+        canvas.drawPath(ticketPath, bgPaint)
 
         // dashed divider
-        canvas.drawLine(0f, dividerY, width.toFloat(), dividerY, dashPaint)
-
-        // cut circle left
-        val clearPaint = Paint().apply {
-            xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-        }
-
-        canvas.drawCircle(0f, dividerY, cutRadius, clearPaint)
-
-        // cut circle right
-        canvas.drawCircle(width.toFloat(), dividerY, cutRadius, clearPaint)
-
-        // stroke
-        canvas.drawRoundRect(rect, radius, radius, strokePaint)
+        canvas.drawLine(
+            cutRadius,
+            dividerY,
+            width - cutRadius,
+            dividerY,
+            dashPaint
+        )
 
         super.dispatchDraw(canvas)
     }
 
-    private fun getDriverY(): Float {
+    private fun buildTicketPath(dividerY: Float) {
+
+        ticketPath.reset()
+        cutPath.reset()
+
+        val rect = RectF(0f, 0f, width.toFloat(), height.toFloat())
+
+        // ticket base
+        ticketPath.addRoundRect(rect, radius, radius, Path.Direction.CW)
+
+        // cut circles
+        cutPath.addCircle(0f, dividerY, cutRadius, Path.Direction.CW)
+        cutPath.addCircle(width.toFloat(), dividerY, cutRadius, Path.Direction.CW)
+
+        // subtract circles
+        ticketPath.op(cutPath, Path.Op.DIFFERENCE)
+    }
+
+    private fun getDividerY(): Float {
         val header = findViewById<View?>(R.id.header)
-        return header?.measuredHeight?.takeIf { it > 0 }?.toFloat() ?: (height * 0.32f)
+        return header?.bottom?.toFloat() ?: (height * 0.32f)
     }
 
     private fun dp(v: Float) = v * resources.displayMetrics.density

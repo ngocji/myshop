@@ -23,12 +23,13 @@
     <color name="colorSecondaryHighlight">#8F9492</color>
     <color name="colorHighlight">#1A000000</color>
     <color name="colorTicket">#4DFFFFFF</color>
+    <color name="colorRefund">#4DFFFFFF</color>
 
     <color name="colorStateComplete">#56DE8A</color>
     <color name="colorStatePaid">#62A6ED</color>
     <color name="colorStateInProgress">#F08D37</color>
     <color name="colorStateRefund">#E74738</color>
-    <color name="colorFourthBackground">#474948</color>
+    <color name="colorFourthBackground">#4DFFFFFF</color>
     <color name="colorOverlayBlur">#1F000000</color>
     <color name="colorPrimaryAlpha10">#1A137EFC</color>
     <color name="colorHineText">#80FFFFFF</color>

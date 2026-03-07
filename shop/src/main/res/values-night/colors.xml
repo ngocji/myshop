@@ -23,6 +23,7 @@
     <color name="colorSecondaryHighlight">#313433</color>
     <color name="colorHighlight">#1A1E1D</color>
     <color name="colorTicket">#0DFFFFFF</color>
+    <color name="colorRefund">#5E6968</color>
 
     <color name="colorStateComplete">#56DE8A</color>
     <color name="colorStatePaid">#62A6ED</color>
