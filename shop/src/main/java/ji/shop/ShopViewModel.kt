@@ -100,40 +100,6 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         group?.let { groups.indexOfFirst { it.data.id == group.id } } ?: -1
     }
 
-    val productsFlow = groupState.filterNotNull().flatMapLatest {
-        safeResultFlow {
-            Repo.getProductsByCollection(
-                it.collectionId, it.id
-            )
-        }
-    }.mapWhenSuccess { items ->
-        items.map {
-            ProductItemUi(
-                it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
-            )
-        }
-    }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
-
-
-    val productCountNotifyFlow = combine(cartsState, productsFlow) { carts, products ->
-        if (products is ResultWrapper.Success) {
-            val items = products.data
-            val index = carts.data.mapNotNull { cart ->
-                val index = items.indexOfFirst { it.data.id == cart.product.id }
-                val item = items.getOrNull(index)
-                if (item != null) {
-                    item.count = cart.count
-                    index
-                } else {
-                    null
-                }
-            }
-            index.minOrNull() to index.maxOrNull()
-        } else {
-            null
-        }
-    }.filterNotNull()
-
     init {
         changeTabType(TabType.Sell)
     }
@@ -262,4 +228,35 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     fun updateUsedCardMethod(method: CardMethod) {
         usedCardMethod.tryEmit(method)
     }
+
+    fun getProductsFlow(collectionId: String, groupId: String) = safeResultFlow {
+        Repo.getProductsByCollection(
+            collectionId, groupId
+        )
+    }.mapWhenSuccess { items ->
+        items.map {
+            ProductItemUi(
+                it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
+            )
+        }
+    }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+
+    fun getProductsCountNotifyFlow(collectionId: String, groupId: String) = combine(cartsState, getProductsFlow(collectionId, groupId)) { carts, products ->
+        if (products is ResultWrapper.Success) {
+            val items = products.data
+            val index = carts.data.mapNotNull { cart ->
+                val index = items.indexOfFirst { it.data.id == cart.product.id }
+                val item = items.getOrNull(index)
+                if (item != null) {
+                    item.count = cart.count
+                    index
+                } else {
+                    null
+                }
+            }
+            index.minOrNull() to index.maxOrNull()
+        } else {
+            null
+        }
+    }.filterNotNull()
 }

@@ -3,29 +3,33 @@ package ji.shop.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.viewpager2.widget.ViewPager2
 import ji.shop.R
 import ji.shop.base.BaseFragment
 import ji.shop.base.adapter.FlexibleAdapter
-import ji.shop.base.adapter.Payload
 import ji.shop.base.viewBinding
 import ji.shop.data.Collection
-import ji.shop.data.Product
 import ji.shop.databinding.FragmentSellsBinding
-import ji.shop.dialog.AddProductDialog
 import ji.shop.exts.collect
 import ji.shop.exts.isTablet
+import ji.shop.fragments.items.SellsPagerAdapter
 import ji.shop.items.CollectionGridItemUi
 import ji.shop.items.CollectionLinearItemUi
-import ji.shop.items.CountChangOnItemListener
 import ji.shop.items.GroupItemUi
-import ji.shop.items.ProductItemUi
 
 class SellsFragment : BaseFragment(R.layout.fragment_sells) {
     private val binding by viewBinding(FragmentSellsBinding::bind)
     private var flexibleCollectionAdapter: FlexibleAdapter<CollectionGridItemUi>? = null
     private var flexibleCollectionSecondaryAdapter: FlexibleAdapter<CollectionLinearItemUi>? = null
     private var flexibleGroupAdapter: FlexibleAdapter<GroupItemUi>? = null
-    private var flexibleProductAdapter: FlexibleAdapter<ProductItemUi>? = null
+    private val callbackChangePager = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            shopViewModel.setViewGroup(
+                flexibleGroupAdapter?.getItem(position)?.data ?: return
+            )
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,17 +72,6 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
         collect(flow = shopViewModel.groupSelectedIndexFlow) { data ->
             doUpdateUiSelectedGroup(data)
         }
-
-        collectWithProgress(
-            stateWrapperView = binding.stateViewDetail,
-            flow = shopViewModel.productsFlow
-        ) { data ->
-            initProducts(data)
-        }
-
-        collect(flow = shopViewModel.productCountNotifyFlow) {
-            doUpdateProductCountUi(it)
-        }
     }
 
     private fun doUpdateViewCart(price: String?) {
@@ -106,8 +99,9 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
         }
 
         if (context.isTablet()) {
-            val index = data.first.indexOfFirst { it.data.id == shopViewModel.collectionState.value?.id }
-                .takeIf { it > -1 } ?: 0
+            val index =
+                data.first.indexOfFirst { it.data.id == shopViewModel.collectionState.value?.id }
+                    .takeIf { it > -1 } ?: 0
             if (flexibleCollectionAdapter?.isSelected(index) == false) {
                 flexibleCollectionAdapter?.toggleSelection(index)
             }
@@ -148,12 +142,16 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                 }
         }
 
-        val index = items.indexOfFirst { it.data.id == shopViewModel.groupState.value?.id }.takeIf { it > -1 } ?: 0
+        val index = items.indexOfFirst { it.data.id == shopViewModel.groupState.value?.id }
+            .takeIf { it > -1 } ?: 0
         if (flexibleGroupAdapter?.isSelected(index) == false) {
             flexibleGroupAdapter?.toggleSelection(index)
         }
         binding.recyclerViewGroups.itemAnimator = null
         binding.recyclerViewGroups.adapter = flexibleGroupAdapter
+        binding.viewPager.unregisterOnPageChangeCallback(callbackChangePager)
+        binding.viewPager.registerOnPageChangeCallback(callbackChangePager)
+        binding.viewPager.adapter = SellsPagerAdapter(this, items)
     }
 
     private fun doUpdateUiSelectedGroup(index: Int) {
@@ -164,45 +162,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                 toggleSelection(index)
             }
         }
-    }
-
-    private fun initProducts(items: List<ProductItemUi>) {
-        flexibleProductAdapter?.updateDataset(items) ?: run {
-            flexibleProductAdapter = FlexibleAdapter(items.toMutableList())
-                .addListener(object : CountChangOnItemListener {
-                    override fun onCountChanged(position: Int, count: Int) {
-                        shopViewModel.updateProductCountOfCart(
-                            flexibleProductAdapter?.getItem(
-                                position
-                            )?.data ?: return, count
-                        )
-                    }
-
-                    override fun onClick(
-                        adapter: FlexibleAdapter<*>,
-                        view: View,
-                        position: Int
-                    ) {
-                        doAddToCart(
-                            position,
-                            flexibleProductAdapter?.getItem(position)?.data ?: return
-                        )
-                    }
-                })
-            binding.recyclerViewProducts.adapter = flexibleProductAdapter
-        }
-    }
-
-    private fun doUpdateProductCountUi(range: Pair<Int?, Int?>) {
-        val start = range.first ?: return
-        val end = range.second ?: return
-        flexibleProductAdapter?.run {
-            if (start == end) {
-                notifyItemChanged(start, Payload.CHANGE_COUNT)
-            } else {
-                notifyItemRangeChanged(start, end + 1, Payload.CHANGE_COUNT)
-            }
-        }
+        binding.viewPager.setCurrentItem(index, false)
     }
 
     private fun doUpdateUiViewCollection(collection: Collection?) {
@@ -230,17 +190,5 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                     .start()
             }
         }
-    }
-
-    private fun doAddToCart(position: Int, product: Product) {
-        AddProductDialog.newInstance(shopViewModel.getCart(product), product) {
-            shopViewModel.addToCart(it)
-            flexibleProductAdapter?.run {
-                val item = getItem(position) ?: return@run
-                item.count = it.count
-                notifyItemChanged(position, Payload.CHANGE_COUNT)
-            }
-        }
-            .show(childFragmentManager)
     }
 }
