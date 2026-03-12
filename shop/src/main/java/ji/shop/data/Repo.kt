@@ -1,6 +1,7 @@
 package ji.shop.data
 
 import ji.shop.R
+import ji.shop.ShopSDK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -8,6 +9,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 
 object Repo {
+    private val api by lazy {
+        Api.create(token = ShopSDK.getAccessToken())
+    }
+
     suspend fun getShopCategory() = withContext(Dispatchers.IO) {
         buildList {
             add(
@@ -180,17 +185,50 @@ object Repo {
         return flowOf(
             listOf(
                 Cart(
-                    Product("p_1", "g_1", "c_1", "Product 1", 90.0, Status.COMPLETE, "Description 1", listOf(R.drawable.ic_product), emptyList(), emptyList()),
+                    Product(
+                        "p_1",
+                        "g_1",
+                        "c_1",
+                        "Product 1",
+                        90.0,
+                        Status.COMPLETE,
+                        "Description 1",
+                        listOf(R.drawable.ic_product),
+                        emptyList(),
+                        emptyList()
+                    ),
                     ProductSize("Small", 9.0),
                     1
                 ),
                 Cart(
-                    Product("p_2", "g_2", "c_2", "Product 2", 90.0, Status.COMPLETE, "Description 1", listOf(R.drawable.ic_product), emptyList(), emptyList()),
+                    Product(
+                        "p_2",
+                        "g_2",
+                        "c_2",
+                        "Product 2",
+                        90.0,
+                        Status.COMPLETE,
+                        "Description 1",
+                        listOf(R.drawable.ic_product),
+                        emptyList(),
+                        emptyList()
+                    ),
                     ProductSize("Small", 9.0),
                     1
                 ),
                 Cart(
-                    Product("p_3", "g_3", "c_3", "Product 3", 90.0, Status.COMPLETE, "Description 1", listOf(R.drawable.ic_product), emptyList(), emptyList()),
+                    Product(
+                        "p_3",
+                        "g_3",
+                        "c_3",
+                        "Product 3",
+                        90.0,
+                        Status.COMPLETE,
+                        "Description 1",
+                        listOf(R.drawable.ic_product),
+                        emptyList(),
+                        emptyList()
+                    ),
                     ProductSize("Small", 9.0),
                     1
                 ),
