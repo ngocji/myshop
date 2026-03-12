@@ -191,7 +191,19 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     }
 
     fun addToCarts(carts: List<Cart>) {
+        cartsState.update {
+            val currentCarts = it.data.toMutableSet()
 
+            carts.forEach { cart ->
+                val exists = currentCarts.find { c -> c.product.id == cart.product.id }
+                if (exists != null) {
+                    currentCarts.remove(exists)
+                }
+                currentCarts.add(cart)
+            }
+
+            WrapUpdateData(data = currentCarts)
+        }
     }
 
     fun getCartItems(): List<Cart> {

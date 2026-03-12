@@ -1,6 +1,7 @@
 package ji.shop.items
 
 import android.view.ViewGroup
+import ji.shop.R
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
@@ -62,7 +63,7 @@ class CartItemUi(
 
             tvName.text = data.product.name
             tvSize.text = data.size?.name.orEmpty()
-            image.load(data.product.images.firstOrNull())
+            image.load(data.product.images.firstOrNull(), error = R.drawable.ic_product)
             toggleCountView.setCount(count)
             tvPrice.text = NumberFormater.formatNumberLocale(data.getTotalPrice(count))
         }

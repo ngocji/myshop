@@ -180,17 +180,17 @@ object Repo {
         return flowOf(
             listOf(
                 Cart(
-                    Product("p_1", "g_1", "c_1", "Product 1", 90.0, Status.COMPLETE, "Description 1", emptyList(), emptyList(), emptyList()),
+                    Product("p_1", "g_1", "c_1", "Product 1", 90.0, Status.COMPLETE, "Description 1", listOf(R.drawable.ic_product), emptyList(), emptyList()),
                     ProductSize("Small", 9.0),
                     1
                 ),
                 Cart(
-                    Product("p_2", "g_2", "c_2", "Product 2", 90.0, Status.COMPLETE, "Description 1", emptyList(), emptyList(), emptyList()),
+                    Product("p_2", "g_2", "c_2", "Product 2", 90.0, Status.COMPLETE, "Description 1", listOf(R.drawable.ic_product), emptyList(), emptyList()),
                     ProductSize("Small", 9.0),
                     1
                 ),
                 Cart(
-                    Product("p_3", "g_3", "c_3", "Product 3", 90.0, Status.COMPLETE, "Description 1", emptyList(), emptyList(), emptyList()),
+                    Product("p_3", "g_3", "c_3", "Product 3", 90.0, Status.COMPLETE, "Description 1", listOf(R.drawable.ic_product), emptyList(), emptyList()),
                     ProductSize("Small", 9.0),
                     1
                 ),
