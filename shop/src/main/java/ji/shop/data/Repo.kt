@@ -2,8 +2,9 @@ package ji.shop.data
 
 import ji.shop.R
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 
 object Repo {
@@ -115,8 +116,12 @@ object Repo {
                                 name = "Product $it",
                                 price = 90.0,
                                 description = "Description $it",
-                                images = listOf(R.drawable.ic_inventory, R.drawable.ic_inventory, R.drawable.ic_inventory,
-                                    R.drawable.ic_inventory),
+                                images = listOf(
+                                    R.drawable.ic_inventory,
+                                    R.drawable.ic_inventory,
+                                    R.drawable.ic_inventory,
+                                    R.drawable.ic_inventory
+                                ),
                                 sizes = listOf(
                                     ProductSize("Small", 9.0),
                                     ProductSize("Medium", 10.0),
@@ -151,7 +156,7 @@ object Repo {
 
     suspend fun getTicket() = withContext(Dispatchers.IO) {
         Ticket(
-            image=  R.drawable.ic_card,
+            image = R.drawable.ic_card,
             name = "Summer Music Fest",
             date = System.currentTimeMillis(),
             ticketDayPass = "Festival Day Pass",
@@ -169,5 +174,27 @@ object Repo {
 
     fun getLastUsedCreditCard(): CreditInfo? {
         return CreditInfo(cardNumber = "678-774-0987")
+    }
+
+    fun getFavorites(): Flow<List<Cart>> {
+        return flowOf(
+            listOf(
+                Cart(
+                    Product("p_1", "g_1", "c_1", "Product 1", 90.0, Status.COMPLETE, "Description 1", emptyList(), emptyList(), emptyList()),
+                    ProductSize("Small", 9.0),
+                    1
+                ),
+                Cart(
+                    Product("p_2", "g_2", "c_2", "Product 2", 90.0, Status.COMPLETE, "Description 1", emptyList(), emptyList(), emptyList()),
+                    ProductSize("Small", 9.0),
+                    1
+                ),
+                Cart(
+                    Product("p_3", "g_3", "c_3", "Product 3", 90.0, Status.COMPLETE, "Description 1", emptyList(), emptyList(), emptyList()),
+                    ProductSize("Small", 9.0),
+                    1
+                ),
+            )
+        )
     }
 }

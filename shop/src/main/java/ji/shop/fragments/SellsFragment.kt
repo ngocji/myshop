@@ -10,6 +10,7 @@ import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
 import ji.shop.data.Collection
 import ji.shop.databinding.FragmentSellsBinding
+import ji.shop.dialog.FavoritesDialog
 import ji.shop.exts.collect
 import ji.shop.exts.isTablet
 import ji.shop.fragments.items.SellsPagerAdapter
@@ -49,6 +50,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
         with(binding) {
             btnBackToCollections?.setOnClickListener { shopViewModel.setViewCollection(null) }
             btnViewCart?.setOnClickListener { shopViewModel.viewCart() }
+            btnFavorites?.setOnClickListener { doViewFavorites() }
         }
     }
 
@@ -147,11 +149,11 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
         if (flexibleGroupAdapter?.isSelected(index) == false) {
             flexibleGroupAdapter?.toggleSelection(index)
         }
-        binding.recyclerViewGroups.itemAnimator = null
-        binding.recyclerViewGroups.adapter = flexibleGroupAdapter
-        binding.viewPager.unregisterOnPageChangeCallback(callbackChangePager)
-        binding.viewPager.registerOnPageChangeCallback(callbackChangePager)
-        binding.viewPager.adapter = SellsPagerAdapter(this, items)
+        binding.recyclerViewGroups?.itemAnimator = null
+        binding.recyclerViewGroups?.adapter = flexibleGroupAdapter
+        binding.viewPager?.unregisterOnPageChangeCallback(callbackChangePager)
+        binding.viewPager?.registerOnPageChangeCallback(callbackChangePager)
+        binding.viewPager?.adapter = SellsPagerAdapter(this, items)
     }
 
     private fun doUpdateUiSelectedGroup(index: Int) {
@@ -162,7 +164,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                 toggleSelection(index)
             }
         }
-        binding.viewPager.setCurrentItem(index, false)
+        binding.viewPager?.setCurrentItem(index, false)
     }
 
     private fun doUpdateUiViewCollection(collection: Collection?) {
@@ -173,7 +175,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
         val viewProducts = binding.viewProducts
         if (collection == null) {
             // revert
-            if (viewProducts.isVisible) {
+            if (viewProducts?.isVisible == true) {
                 viewProducts
                     .animate()
                     .alpha(0f)
@@ -181,7 +183,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                     .start()
             }
         } else {
-            if (!viewProducts.isVisible) {
+            if (viewProducts?.isVisible == false) {
                 viewProducts.alpha = 0f
                 viewProducts.isVisible = true
                 viewProducts
@@ -190,5 +192,12 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
                     .start()
             }
         }
+    }
+
+    private fun doViewFavorites() {
+        FavoritesDialog.newInstance { items ->
+            shopViewModel.addToCarts(items)
+        }
+            .show(childFragmentManager)
     }
 }

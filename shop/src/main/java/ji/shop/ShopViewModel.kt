@@ -179,7 +179,8 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     fun addToCart(cart: Cart) {
         cartsState.update {
             val carts = it.data.toMutableSet()
-            val extProduct = carts.find { c -> c.product.id == cart.product.id }
+            val extProduct = carts.find { c -> c.product.id == cart.product.id
+                    && c.size == cart.size }
             if (extProduct != null) {
                 carts.remove(extProduct)
             }
@@ -187,6 +188,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             carts.add(cart)
             WrapUpdateData(data = carts)
         }
+    }
+
+    fun addToCarts(carts: List<Cart>) {
+
     }
 
     fun getCartItems(): List<Cart> {

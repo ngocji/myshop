@@ -66,6 +66,20 @@
             app:layout_constraintTop_toBottomOf="@id/recycler_view_groups" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_favorites"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_arrow_favorite"
+        app:iconSize="@dimen/_32dp"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toBottomOf="@id/view_products"
+        app:layout_constraintEnd_toEndOf="@id/view_products"
+        app:layout_constraintStart_toEndOf="@id/view_products"
+        app:layout_constraintTop_toTopOf="@id/view_products"
+        app:layout_constraintVertical_bias="0.3" />
+
     <ji.shop.widget.StateWrapperView
         android:id="@+id/state_view"
         android:layout_width="0dp"

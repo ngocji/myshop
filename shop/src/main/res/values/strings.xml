@@ -73,4 +73,5 @@
     <string name="text_cvv">CVV\t</string>
     <string name="text_expriry_date">Expiry Date</string>
     <string name="text_expriry_date_hint">MM/YY</string>
+    <string name="text_favorites">Favorites</string>
 </resources>
