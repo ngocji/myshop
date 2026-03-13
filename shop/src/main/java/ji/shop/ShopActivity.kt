@@ -59,7 +59,11 @@ class ShopActivity : AppCompatActivity() {
         }
 
         collect(flow = viewModel.shopCategoriesFlow) { data ->
-            binding.shopCategoryDropDown.setData(data?.first, data?.second)
+            binding.shopCategoryDropDown.setData(data, viewModel.shopCategoryState.value)
+        }
+
+        collect(flow = viewModel.shopCategoryState) { shop ->
+            binding.shopCategoryDropDown.setSelect(shop)
         }
 
         collect(channel = viewModel.gotoFragmentEvent) {
@@ -95,22 +99,25 @@ class ShopActivity : AppCompatActivity() {
         ViewCartDialog.newInstance(viewModel.getCartItems()) { carts, isGotoCheckout ->
             viewModel.updateCarts(carts)
             if (isGotoCheckout) {
-                CheckoutDialog.newInstance(carts, viewModel.getUsedCardMethod(), object : CheckoutDialog.Listener {
-                    override fun onUpdateCustomerInfo(customerInfo: CustomerInfo?) {
-                        viewModel.updateCustomerInfo(customerInfo)
-                    }
-
-                    override fun onDone(method: CardMethod) {
-                        viewModel.updateUsedCardMethod(method)
-                        if (method == CardMethod.CardManually) {
-                            EditManualCardDialog
-                                .newInstance(viewModel.creditCardInfo.value) { newCreditCard ->
-                                    viewModel.updateCreditCard(newCreditCard)
-                                }
-                                .show(supportFragmentManager)
+                CheckoutDialog.newInstance(
+                    carts,
+                    viewModel.getUsedCardMethod(),
+                    object : CheckoutDialog.Listener {
+                        override fun onUpdateCustomerInfo(customerInfo: CustomerInfo?) {
+                            viewModel.updateCustomerInfo(customerInfo)
                         }
-                    }
-                })
+
+                        override fun onDone(method: CardMethod) {
+                            viewModel.updateUsedCardMethod(method)
+                            if (method == CardMethod.CardManually) {
+                                EditManualCardDialog
+                                    .newInstance(viewModel.creditCardInfo.value) { newCreditCard ->
+                                        viewModel.updateCreditCard(newCreditCard)
+                                    }
+                                    .show(supportFragmentManager)
+                            }
+                        }
+                    })
                     .show(supportFragmentManager)
             }
         }

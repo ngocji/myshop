@@ -7,4 +7,11 @@ sealed class ResultWrapper<out T> {
     object Empty : ResultWrapper<Nothing>()
     object Loading : ResultWrapper<Nothing>()
     object None : ResultWrapper<Nothing>()
+
+    fun safeValue(): T? {
+        return when (this) {
+            is Success -> data
+            else -> null
+        }
+    }
 }

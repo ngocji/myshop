@@ -13,19 +13,11 @@
         android:orientation="vertical"
         android:padding="@dimen/large_padding"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:spanCount="4"
         tools:listitem="@layout/item_product" />
 
-    <ji.shop.widget.StateWrapperView
-        android:id="@+id/state_view_detail"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/recycler_view_products" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,10 +35,7 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
     private fun initViews() {}
 
     private fun initObserves() {
-        collectWithProgress(
-            stateWrapperView = binding.stateViewDetail,
-            flow = shopViewModel.getProductsFlow(collectionId, groupId)
-        ) { data ->
+        collect(flow = shopViewModel.getProductsFlow(collectionId, groupId)) { data ->
             initProducts(data)
         }
 

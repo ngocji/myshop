@@ -4,4 +4,5 @@ data class Group(
     val id: String,
     val collectionId: String,
     val name: String,
+    val products: List<Product> = emptyList()
 )

@@ -21,7 +21,7 @@ class DropDownView @JvmOverloads constructor(
         gravity = Gravity.CENTER
     }
 
-    fun <T> setData(items: List<T>?, index: Int?) {
+    fun <T> setData(items: List<T>?, selectItem: T?) {
         val spinnerAdapter = ArrayAdapter(
             binding.spinner.context,
             android.R.layout.simple_spinner_item,
@@ -30,13 +30,21 @@ class DropDownView @JvmOverloads constructor(
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner.run {
             adapter = spinnerAdapter
-            setSelection(index ?: 0)
+            setSelect(selectItem)
         }
 
         doOnPreDraw { container ->
             binding.spinner.dropDownVerticalOffset = container.measuredHeight - 20
-            binding.spinner.dropDownHorizontalOffset = -context.resources.getDimensionPixelOffset(R.dimen.large_padding)
+            binding.spinner.dropDownHorizontalOffset =
+                -context.resources.getDimensionPixelOffset(R.dimen.large_padding)
             binding.spinner.dropDownWidth = container.measuredWidth
         }
+    }
+
+    fun <T> setSelect(item: T?) {
+        val index =
+            (binding.spinner.adapter as? ArrayAdapter<T>)?.getPosition(item)?.takeIf { it != -1 }
+                ?: return
+        binding.spinner.setSelection(index)
     }
 }

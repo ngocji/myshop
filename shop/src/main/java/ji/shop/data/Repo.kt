@@ -16,7 +16,6 @@ import ji.shop.data.domain.Status
 import ji.shop.data.domain.Ticket
 import ji.shop.data.dto.Api
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
@@ -30,72 +29,72 @@ object Repo {
         buildList {
             add(
                 ShopCategory(
-                    id = "shop_festival",
+                    id = "3",
                     name = "Festival Concessions"
                 )
             )
         }
     }
 
-    suspend fun getCollections() = withContext(Dispatchers.IO) {
-        delay(2000)
+    suspend fun getSellData(
+        posShopId: String = "",
+        venueId: String = ""
+    ) = withContext(Dispatchers.IO) {
+//        api.getSellHierarchy(
+//            posShopId = posShopId,
+//            venueId = venueId,
+//            authToken = ShopSDK.getAuthenticationToken()
+//        ).data?.collections?.map { it.toDomain() }
         buildList {
-            repeat(10) {
+            repeat(5) {
                 add(
                     Collection(
                         id = "c_$it",
-                        name = "Collections $it",
-                        image = listOf(R.drawable.ic_colection)
+                        name = "Collection $it",
+                        image = listOf(R.drawable.ic_colection),
+                        groups = fakeGroup("c_$it")
                     )
                 )
             }
         }
     }
 
-    suspend fun getProductsByCollection(collectionId: String, groupId: String) =
-        withContext(Dispatchers.IO) {
-            buildList {
-                repeat(10) {
-                    add(
-                        Product(
-                            id = "p_$it",
-                            groupId = "g_$it",
-                            collectionId = collectionId,
-                            name = "Product $it",
-                            price = 90.0,
-                            description = "Description $it",
-                            images = listOf(R.drawable.ic_product),
-                            status = Status.COMPLETE,
-                            sizes = listOf(
-                                ProductSize("Small", 9.0),
-                                ProductSize("Medium", 10.0),
-                                ProductSize("Large", 12.0),
-                                ProductSize("Extra Large", 14.0),
-                            ),
-                            additional = listOf(
-                                ProductAdditional(
-                                    name = "Mild Sauce",
-                                    price = 1.0
-                                ),
-                                ProductAdditional(
-                                    name = "Hot Sauce",
-                                    price = 1.0
-                                ),
-                                ProductAdditional(
-                                    name = "Xtreme Sauce",
-                                    price = 2.0
-                                )
-                            )
-                        )
+    private fun fakeGroup(collectionId: String): List<Group> {
+        return buildList {
+            repeat(5) {
+                add(
+                    Group(
+                        id = "g_$it",
+                        name = "Group $it",
+                        collectionId = collectionId,
+                        products = fakeProduct(collectionId, "g_$it")
                     )
-                }
+                )
             }
         }
+    }
 
-    suspend fun getGroups(collectionId: String) = withContext(Dispatchers.IO) {
-        buildList {
-            repeat(4) {
-                add(Group("g_$it", collectionId, "Group $it"))
+    private fun fakeProduct(collectionId: String, groupId: String): List<Product> {
+        return buildList {
+            repeat(5) {
+                add(
+                    Product(
+                        id = "p_$it",
+                        groupId = groupId,
+                        collectionId = collectionId,
+                        name = "Product $it",
+                        price = 90.0,
+                        description = "Description $it",
+                        images = listOf(R.drawable.ic_product),
+                        sizes = listOf(
+                            ProductSize("Small", 9.0),
+                            ProductSize("Medium", 10.0),
+                            ProductSize("Large", 12.0)
+                        ),
+                        status = Status.entries.toTypedArray().random(),
+                        additional = emptyList()
+                    )
+                )
             }
         }
     }
