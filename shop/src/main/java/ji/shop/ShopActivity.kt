@@ -4,10 +4,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import ji.shop.data.CardMethod
-import ji.shop.data.CustomerInfo
-import ji.shop.data.TabType
+import ji.shop.data.domain.CardMethod
+import ji.shop.data.domain.CustomerInfo
+import ji.shop.data.domain.TabType
 import ji.shop.databinding.ActivityShopBinding
 import ji.shop.dialog.CheckoutDialog
 import ji.shop.dialog.EditManualCardDialog

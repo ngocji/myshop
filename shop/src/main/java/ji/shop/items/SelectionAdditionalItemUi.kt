@@ -6,7 +6,7 @@ import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
 import ji.shop.base.adapter.Payload
-import ji.shop.data.ProductAdditional
+import ji.shop.data.domain.ProductAdditional
 import ji.shop.databinding.ItemSelectionAdditionalBinding
 import ji.shop.exts.layoutInflate
 import ji.shop.utils.NumberFormater

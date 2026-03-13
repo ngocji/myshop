@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import ji.shop.R
-import ji.shop.data.ResultWrapper
+import ji.shop.data.domain.ResultWrapper
 import ji.shop.databinding.LayoutStateEmptyBinding
 import ji.shop.databinding.LayoutStateErrorBinding
 import ji.shop.databinding.LayoutStateLoadingBinding

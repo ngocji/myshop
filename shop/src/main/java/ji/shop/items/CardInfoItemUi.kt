@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.data.CardMethod
+import ji.shop.data.domain.CardMethod
 import ji.shop.databinding.ItemCardInfoBinding
 import ji.shop.exts.layoutInflate
 

@@ -5,7 +5,7 @@ import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
 import ji.shop.base.adapter.Payload
-import ji.shop.data.Product
+import ji.shop.data.domain.Product
 import ji.shop.databinding.ItemProductBinding
 import ji.shop.exts.layoutInflate
 import ji.shop.exts.load

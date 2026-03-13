@@ -11,7 +11,7 @@ import androidx.core.content.FileProvider
 import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.viewBinding
-import ji.shop.data.CreditInfo
+import ji.shop.data.domain.CreditInfo
 import ji.shop.databinding.DialogEditManualCardBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet

@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ji.shop.base.adapter.FlexibleAdapter
-import ji.shop.data.Cart
-import ji.shop.data.ProductAdditional
+import ji.shop.data.domain.Cart
+import ji.shop.data.domain.ProductAdditional
 import ji.shop.items.CountChangOnItemListener
 import ji.shop.items.SelectionAdditionalItemUi
 

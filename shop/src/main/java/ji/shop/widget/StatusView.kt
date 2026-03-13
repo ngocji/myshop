@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import ji.shop.R
-import ji.shop.data.Status
+import ji.shop.data.domain.Status
 
 class StatusView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

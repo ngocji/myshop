@@ -1,4 +1,4 @@
-package ji.shop.data
+package ji.shop.data.domain
 
 data class Collection(
     val id: String,

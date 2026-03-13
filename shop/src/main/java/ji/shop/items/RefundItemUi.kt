@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.data.Cart
+import ji.shop.data.domain.Cart
 import ji.shop.databinding.ItemRefundBinding
 import ji.shop.databinding.ItemRefundTotalBinding
 import ji.shop.exts.layoutInflate

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
 import ji.shop.base.adapter.OnItemClickListener
-import ji.shop.data.ProductSize
+import ji.shop.data.domain.ProductSize
 import ji.shop.items.SelectionSizeItemUi
 
 class SelectionSizeItemsView @JvmOverloads constructor(

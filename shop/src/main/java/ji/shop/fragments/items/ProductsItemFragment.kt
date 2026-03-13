@@ -8,7 +8,7 @@ import ji.shop.base.BaseFragment
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.Payload
 import ji.shop.base.viewBinding
-import ji.shop.data.Product
+import ji.shop.data.domain.Product
 import ji.shop.databinding.FragmentSellsProductsItemBinding
 import ji.shop.dialog.AddProductDialog
 import ji.shop.exts.collect

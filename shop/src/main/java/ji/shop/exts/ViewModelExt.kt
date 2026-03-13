@@ -2,7 +2,7 @@ package ji.shop.exts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ji.shop.data.ResultWrapper
+import ji.shop.data.domain.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

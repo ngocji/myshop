@@ -1,4 +1,4 @@
-package ji.shop.data
+package ji.shop.data.domain
 
 enum class Status {
     COMPLETE,

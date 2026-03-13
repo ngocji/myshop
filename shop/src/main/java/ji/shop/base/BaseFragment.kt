@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import ji.shop.R
 import ji.shop.ShopViewModel
-import ji.shop.data.ResultWrapper
+import ji.shop.data.domain.ResultWrapper
 import ji.shop.exts.collect
 import ji.shop.exts.onBackPressedOverride
 import ji.shop.widget.StateWrapperView

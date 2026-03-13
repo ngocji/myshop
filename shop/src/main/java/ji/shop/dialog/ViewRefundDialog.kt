@@ -10,7 +10,7 @@ import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.viewBinding
-import ji.shop.data.Checkout
+import ji.shop.data.domain.Checkout
 import ji.shop.databinding.DialogViewRefundBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet

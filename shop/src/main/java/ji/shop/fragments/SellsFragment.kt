@@ -8,7 +8,7 @@ import ji.shop.R
 import ji.shop.base.BaseFragment
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
-import ji.shop.data.Collection
+import ji.shop.data.domain.Collection
 import ji.shop.databinding.FragmentSellsBinding
 import ji.shop.dialog.FavoritesDialog
 import ji.shop.exts.collect

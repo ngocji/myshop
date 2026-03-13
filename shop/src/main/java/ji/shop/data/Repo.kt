@@ -1,7 +1,20 @@
 package ji.shop.data
 
 import ji.shop.R
-import ji.shop.ShopSDK
+import ji.shop.data.domain.Cart
+import ji.shop.data.domain.Checkout
+import ji.shop.data.domain.Collection
+import ji.shop.data.domain.CreditInfo
+import ji.shop.data.domain.CustomerInfo
+import ji.shop.data.domain.Group
+import ji.shop.data.domain.Inventory
+import ji.shop.data.domain.Product
+import ji.shop.data.domain.ProductAdditional
+import ji.shop.data.domain.ProductSize
+import ji.shop.data.domain.ShopCategory
+import ji.shop.data.domain.Status
+import ji.shop.data.domain.Ticket
+import ji.shop.data.dto.Api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +23,7 @@ import kotlinx.coroutines.withContext
 
 object Repo {
     private val api by lazy {
-        Api.create(token = ShopSDK.getAccessToken())
+        Api.create()
     }
 
     suspend fun getShopCategory() = withContext(Dispatchers.IO) {

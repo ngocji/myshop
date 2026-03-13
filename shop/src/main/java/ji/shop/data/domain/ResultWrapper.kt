@@ -1,4 +1,4 @@
-package ji.shop.data
+package ji.shop.data.domain
 
 sealed class ResultWrapper<out T> {
     class Success<T>(val data: T) : ResultWrapper<T>()

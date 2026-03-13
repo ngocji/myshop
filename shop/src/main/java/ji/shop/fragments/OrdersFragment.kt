@@ -2,14 +2,12 @@ package ji.shop.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import ji.shop.R
 import ji.shop.base.BaseFragment
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.OnItemClickListener
 import ji.shop.base.viewBinding
-import ji.shop.data.Cart
-import ji.shop.data.Checkout
+import ji.shop.data.domain.Checkout
 import ji.shop.databinding.FragmentOrdersBinding
 import ji.shop.dialog.ViewRefundDialog
 import ji.shop.items.OrdersItemUi

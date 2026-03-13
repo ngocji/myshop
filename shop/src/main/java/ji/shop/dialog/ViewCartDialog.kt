@@ -9,7 +9,7 @@ import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
-import ji.shop.data.Cart
+import ji.shop.data.domain.Cart
 import ji.shop.databinding.DialogViewCartBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet

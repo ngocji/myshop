@@ -5,7 +5,7 @@ import androidx.core.view.isVisible
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.data.ProductSize
+import ji.shop.data.domain.ProductSize
 import ji.shop.databinding.ItemSelectionSizeBinding
 import ji.shop.exts.layoutInflate
 import ji.shop.utils.NumberFormater

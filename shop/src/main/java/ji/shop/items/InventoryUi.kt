@@ -7,7 +7,7 @@ import ji.shop.R
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.data.Inventory
+import ji.shop.data.domain.Inventory
 import ji.shop.databinding.ItemInventoryBinding
 import ji.shop.exts.layoutInflate
 import ji.shop.exts.load

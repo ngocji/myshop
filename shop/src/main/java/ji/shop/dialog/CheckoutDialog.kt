@@ -10,9 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.viewBinding
-import ji.shop.data.CardMethod
-import ji.shop.data.Cart
-import ji.shop.data.CustomerInfo
+import ji.shop.data.domain.CardMethod
+import ji.shop.data.domain.Cart
+import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.Repo
 import ji.shop.databinding.DialogViewCheckoutBinding
 import ji.shop.exts.height

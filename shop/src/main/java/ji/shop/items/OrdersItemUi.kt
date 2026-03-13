@@ -5,12 +5,10 @@ import androidx.core.view.isVisible
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.data.Cart
+import ji.shop.data.domain.Cart
 import ji.shop.databinding.ItemOrdersBinding
 import ji.shop.exts.layoutInflate
 import ji.shop.utils.DateFormater
-import ji.shop.widget.PopupAction
-import ji.shop.widget.PopupWindow
 
 data class OrdersItemUi(
     val cart: Cart

@@ -2,7 +2,6 @@ package ji.shop.fragments.items
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import ji.shop.data.Group
 import ji.shop.items.GroupItemUi
 
 class SellsPagerAdapter(
