@@ -7,7 +7,6 @@ object ShopSDK {
         "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJleHAiOjE3NzM0MDk4NTYsImlhdCI6MTc3MzQwODk1Nn0.uoV4wsaH5z4OavcyNcpRiyVD4-64rcb1p5aKiDCFy68"
     private var refreshToken: String = "F6LAontbgGwbCbgAZiM5BA"
 
-
     fun init(
         authenticationToken: String,
         accessToken: String,

@@ -13,12 +13,22 @@ interface Api {
         @Query("auth_token") authToken: String
     ): WrapResponse<SellDataDto>
 
+    @GET("api/v2/xxx")
+    suspend fun refreshToken(refreshToken: String): WrapResponse<TokenDto>
+
     companion object {
+        lateinit var api: Api
         fun create(): Api {
-            return buildApiService(
+            if (this::api.isInitialized) return api
+            api = buildApiService(
                 "https://api-staging.showslinger.com/",
-                buildOkHttpClient(enableLog = true, HeaderInterceptor())
+                buildOkHttpClient(
+                    enableLog = true,
+                    authenticator = RefreshTokenAuth(),
+                    HeaderInterceptor()
+                )
             )
+            return api
         }
     }
 }

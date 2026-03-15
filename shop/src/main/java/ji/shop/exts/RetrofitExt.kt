@@ -1,5 +1,6 @@
 package ji.shop.exts
 
+import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,7 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-fun buildOkHttpClient(enableLog: Boolean = true, vararg interceptors: Interceptor): OkHttpClient {
+fun buildOkHttpClient(enableLog: Boolean = true,
+                      authenticator: Authenticator? = null,
+                      vararg interceptors: Interceptor): OkHttpClient {
     val timeout = 15L
     return OkHttpClient.Builder()
         .apply {
@@ -18,6 +21,9 @@ fun buildOkHttpClient(enableLog: Boolean = true, vararg interceptors: Intercepto
 
             if (enableLog) {
                 addInterceptor(HttpLoggingInterceptor())
+            }
+            if (authenticator != null) {
+                authenticator(authenticator)
             }
         }
         .connectTimeout(timeout, TimeUnit.SECONDS)
