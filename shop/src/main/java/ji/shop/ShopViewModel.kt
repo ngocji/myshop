@@ -11,11 +11,11 @@ import ji.shop.data.domain.Collection
 import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.Group
+import ji.shop.data.domain.Group.Companion.GROUP_ONLY_ITEM_ID
 import ji.shop.data.domain.Product
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.TabType
 import ji.shop.data.domain.WrapUpdateData
-import ji.shop.exts.mapWhenSuccess
 import ji.shop.exts.safeFlow
 import ji.shop.exts.safeResultFlow
 import ji.shop.fragments.InventoryFragment
@@ -35,7 +35,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
@@ -78,39 +77,55 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
     val shopCategoryState = MutableStateFlow<ShopCategory?>(null)
 
-    val collectionsFlow =
-        combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop?.id }
+    val sellDataState =
+        combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
             .filterNotNull()
-            .flatMapLatest { shopId -> safeResultFlow { Repo.getSellData(shopId) } }
-            .mapWhenSuccess { items ->
-                val gridItems = items?.map {
-                    CollectionGridItemUi(it)
-                } ?: emptyList()
+            .flatMapLatest { shop -> safeResultFlow { Repo.getSellData(shop.id, shop.venueId) } }
+            .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-                val linearItems = items?.map {
-                    CollectionLinearItemUi(it)
-                } ?: emptyList()
-                gridItems to linearItems
-            }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+    val collectionsFlow = sellDataState
+        .mapLatest { result ->
+            val collections = result.safeValue()?.collections
+            val gridItems = collections?.map {
+                CollectionGridItemUi(it)
+            } ?: emptyList()
+            val linearItems = collections?.map {
+                CollectionLinearItemUi(it)
+            } ?: emptyList()
+            gridItems to linearItems
+        }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val collectionState = MutableStateFlow<Collection?>(null)
 
-    val groupsFlow =
-        collectionState.filterNotNull()
-            .mapLatest { it.groups }
-            .filterNotNull()
-            .mapLatest { items ->
-                if (items.firstOrNull()?.collectionId != groupState.value?.collectionId) {
-                    groupState.tryEmit(items.firstOrNull())
-                }
-                items.map {
-                    GroupItemUi(it)
-                }
-            }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+    val groupsFlow = combine(sellDataState, collectionState) { sellData, collection ->
+        collection?.groups ?: sellData.safeValue()?.groups ?: listOf(
+            Group(
+                GROUP_ONLY_ITEM_ID,
+                name = "",
+                products = sellData.safeValue()?.items ?: emptyList()
+            )
+        )
+    }
+        .filterNotNull()
+        .mapLatest { items ->
+            if (items.firstOrNull().let {
+                    it?.id == GROUP_ONLY_ITEM_ID || it?.collectionId != groupState.value?.collectionId
+                }) {
+                groupState.tryEmit(items.firstOrNull())
+            }
+            items.map {
+                GroupItemUi(it)
+            }
+        }
+        .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val groupState = MutableStateFlow<Group?>(null)
     val groupSelectedIndexFlow = combine(groupsFlow, groupState) { groups, group ->
         group?.let { groups.indexOfFirst { it.data.id == group.id } } ?: -1
+    }
+
+    val showDetailFlow = combine(collectionState, groupState) { collection, group ->
+        collection != null || group != null
     }
 
     init {
@@ -140,10 +155,6 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         triggerRefreshCollectionsFlow.update { it + 1 }
     }
 
-    fun isViewTheSameCollection(collection: Collection): Boolean {
-        return collectionState.value == collection
-    }
-
     fun setViewCollection(collection: Collection?) {
         collectionState.tryEmit(collection)
     }
@@ -168,7 +179,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 carts.add(
                     extProduct?.copy(count = count) ?: Cart(
                         product = product,
-                        size = product.sizes.firstOrNull(),
+                        size = product.variations.firstOrNull(),
                         count = count,
                         additional = emptyMap()
                     )
@@ -261,29 +272,24 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         usedCardMethod.tryEmit(method)
     }
 
-    fun getProductsFlow(collectionId: String, groupId: String) = safeFlow {
-        collectionsFlow.replayCache.firstOrNull()
-            ?.safeValue()
-            ?.first
-            ?.find { it.data.id == collectionId }
-            ?.data
-            ?.groups
-            ?.find { it.id == groupId }
-            ?.products
-    }
-        .map { items ->
-            items?.map {
+    fun getProductsFlow(groupId: String) = groupsFlow
+        .mapLatest { groups ->
+            groups.find { it.data.id == groupId }?.data?.products
+        }
+        .filterNotNull()
+        .mapLatest { items ->
+            items.map {
                 ProductItemUi(
                     it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
                 )
-            } ?: emptyList()
+            }
         }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    fun getProductsCountNotifyFlow(collectionId: String, groupId: String) =
-        combine(cartsState, getProductsFlow(collectionId, groupId)) { carts, products ->
+    fun getProductsCountNotifyFlow(groupId: String) =
+        combine(cartsState, getProductsFlow(groupId)) { carts, products ->
             val index = carts.data.mapNotNull { cart ->
-                val index = products?.indexOfFirst { it.data.id == cart.product.id } ?: -1
-                val item = products?.getOrNull(index)
+                val index = products.indexOfFirst { it.data.id == cart.product.id } ?: -1
+                val item = products.getOrNull(index)
                 if (item != null) {
                     item.count = cart.count
                     index
@@ -293,4 +299,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             }
             index.minOrNull() to index.maxOrNull()
         }.filterNotNull()
+
+    fun setViewShopCategory(item: ShopCategory) {
+        shopCategoryState.tryEmit(item)
+        collectionState.tryEmit(null)
+        groupState.tryEmit(null)
+    }
 }

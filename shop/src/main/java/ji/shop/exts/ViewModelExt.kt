@@ -44,3 +44,12 @@ fun <T, R> Flow<ResultWrapper<T>>.mapWhenSuccess(block: (T) -> R) = this.mapLate
         else -> ResultWrapper.None
     }
 }
+
+fun <T, R> ResultWrapper<T>.mapWhenSuccess(block: (T) -> R) = this.let { result ->
+    when (result) {
+        is ResultWrapper.Success<T> -> ResultWrapper.Success(block(result.data))
+        is ResultWrapper.Loading -> ResultWrapper.Loading
+        is ResultWrapper.Failure -> ResultWrapper.Failure(result.error)
+        else -> ResultWrapper.None
+    }
+}

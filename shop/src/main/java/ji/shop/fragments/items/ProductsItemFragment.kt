@@ -17,9 +17,6 @@ import ji.shop.items.ProductItemUi
 
 class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item) {
     private val binding by viewBinding(FragmentSellsProductsItemBinding::bind)
-    private val collectionId by lazy {
-        arguments?.getString(EXTRA_COLLECTION_ID).orEmpty()
-    }
     private val groupId by lazy {
         arguments?.getString(EXTRA_GROUP_ID).orEmpty()
     }
@@ -35,11 +32,11 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
     private fun initViews() {}
 
     private fun initObserves() {
-        collect(flow = shopViewModel.getProductsFlow(collectionId, groupId)) { data ->
+        collect(flow = shopViewModel.getProductsFlow(groupId)) { data ->
             initProducts(data)
         }
 
-        collect(flow = shopViewModel.getProductsCountNotifyFlow(collectionId, groupId)) {
+        collect(flow = shopViewModel.getProductsCountNotifyFlow(groupId)) {
             doUpdateProductCountUi(it)
         }
     }
@@ -97,12 +94,10 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
     }
 
     companion object {
-        private const val EXTRA_COLLECTION_ID = "collection_id"
         private const val EXTRA_GROUP_ID = "extra_group_id"
-        fun newInstance(collectionId: String, groupId: String): ProductsItemFragment {
+        fun newInstance(groupId: String): ProductsItemFragment {
             return ProductsItemFragment().apply {
                 arguments = bundleOf(
-                    EXTRA_COLLECTION_ID to collectionId,
                     EXTRA_GROUP_ID to groupId
                 )
             }

@@ -11,10 +11,7 @@ class SellsPagerAdapter(
     fragment
 ) {
     override fun createFragment(index: Int): Fragment {
-        return ProductsItemFragment.newInstance(
-            groups[index].data.collectionId,
-            groups[index].data.id
-        )
+        return ProductsItemFragment.newInstance(groups[index].data.id)
     }
 
     override fun getItemCount(): Int {

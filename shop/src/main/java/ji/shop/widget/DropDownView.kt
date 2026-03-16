@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.core.view.doOnPreDraw
@@ -21,7 +23,7 @@ class DropDownView @JvmOverloads constructor(
         gravity = Gravity.CENTER
     }
 
-    fun <T> setData(items: List<T>?, selectItem: T?) {
+    fun <T> setData(items: List<T>?, selectItem: T?, onSelected: (T) -> Unit) {
         val spinnerAdapter = ArrayAdapter(
             binding.spinner.context,
             android.R.layout.simple_spinner_item,
@@ -30,6 +32,19 @@ class DropDownView @JvmOverloads constructor(
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner.run {
             adapter = spinnerAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    items?.getOrNull(position)?.let { onSelected(it) }
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
             setSelect(selectItem)
         }
 

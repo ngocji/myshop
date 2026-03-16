@@ -59,7 +59,9 @@ class ShopActivity : AppCompatActivity() {
         }
 
         collect(flow = viewModel.shopCategoriesFlow) { data ->
-            binding.shopCategoryDropDown.setData(data, viewModel.shopCategoryState.value)
+            binding.shopCategoryDropDown.setData(data, viewModel.shopCategoryState.value) {item ->
+                viewModel.setViewShopCategory(item)
+            }
         }
 
         collect(flow = viewModel.shopCategoryState) { shop ->

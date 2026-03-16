@@ -2,25 +2,23 @@ package ji.shop.data.domain
 
 data class Product(
     val id: String,
-    val groupId: String,
-    val collectionId: String,
     val name: String,
     val price: Double,
     val status: Status,
     val description: String,
     val images: List<Any?>,
-    val sizes: List<ProductSize>,
-    val additional: List<ProductAdditional>
+    val variations: List<ProductVariation>,
+    val modifiers: List<ProductModifier>
 ) {
-    fun isSingleSelection() = sizes.size <= 1 && additional.isEmpty()
+    fun isSingleSelection() = variations.size <= 1 && modifiers.isEmpty()
 }
 
-data class ProductSize(
+data class ProductVariation(
     val name: String,
     val price: Double
 )
 
-data class ProductAdditional(
+data class ProductModifier(
     val name: String,
     val price: Double
 )

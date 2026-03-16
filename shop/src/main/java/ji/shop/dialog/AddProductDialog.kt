@@ -68,10 +68,10 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
             tvProductName.text = product?.name ?: ""
             imageProduct.load(product?.images?.firstOrNull())
             selectionSizeItemsView.setData(
-                items = product?.sizes ?: emptyList(),
-                selectedIndex = product?.sizes?.indexOfFirst { it.name == currentCart?.size?.name }
+                items = product?.variations ?: emptyList(),
+                selectedIndex = product?.variations?.indexOfFirst { it.name == currentCart?.size?.name }
                     .let { if (it == null || it < 0) 0 else it })
-            selectionAdditionalItemsView.setData(currentCart, product?.additional ?: emptyList())
+            selectionAdditionalItemsView.setData(currentCart, product?.modifiers ?: emptyList())
             doUpdatePrice()
         }
     }

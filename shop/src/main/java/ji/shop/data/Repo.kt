@@ -1,24 +1,20 @@
 package ji.shop.data
 
 import ji.shop.R
-import ji.shop.ShopSDK
 import ji.shop.data.domain.Cart
 import ji.shop.data.domain.Checkout
 import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
-import ji.shop.data.domain.Group
 import ji.shop.data.domain.Inventory
 import ji.shop.data.domain.Product
-import ji.shop.data.domain.ProductAdditional
-import ji.shop.data.domain.ProductSize
+import ji.shop.data.domain.ProductModifier
+import ji.shop.data.domain.ProductVariation
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.Status
 import ji.shop.data.domain.Ticket
 import ji.shop.data.dto.Api
 import ji.shop.data.dto.toDomain
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 
 object Repo {
@@ -30,22 +26,30 @@ object Repo {
         buildList {
             add(
                 ShopCategory(
-                    id = "3",
-                    name = "Festival Concessions"
+                    id = "1",
+                    venueId = "90",
+                    name = "Only Items"
+                )
+            )
+
+            add(
+                ShopCategory(
+                    id = "2",
+                    venueId = "90",
+                    name = "Collections"
                 )
             )
         }
     }
 
     suspend fun getSellData(
-        posShopId: String = "",
-        venueId: String = ""
+        posShopId: String,
+        venueId: String
     ) = withContext(Dispatchers.IO) {
         api.getSellHierarchy(
             posShopId = posShopId,
-            venueId = venueId,
-            authToken = ShopSDK.getAccessToken()
-        ).data?.collections?.map { it.toDomain() }
+            venueId = venueId
+        ).data?.toDomain()
     }
 
     suspend fun getInventories() = withContext(Dispatchers.IO) {
@@ -77,8 +81,6 @@ object Repo {
                         Cart(
                             product = Product(
                                 id = "p_$it",
-                                groupId = "g_$it",
-                                collectionId = collectionId,
                                 name = "Product $it",
                                 price = 90.0,
                                 description = "Description $it",
@@ -88,23 +90,23 @@ object Repo {
                                     R.drawable.ic_inventory,
                                     R.drawable.ic_inventory
                                 ),
-                                sizes = listOf(
-                                    ProductSize("Small", 9.0),
-                                    ProductSize("Medium", 10.0),
-                                    ProductSize("Large", 12.0),
-                                    ProductSize("Extra Large", 14.0),
+                                variations = listOf(
+                                    ProductVariation("Small", 9.0),
+                                    ProductVariation("Medium", 10.0),
+                                    ProductVariation("Large", 12.0),
+                                    ProductVariation("Extra Large", 14.0),
                                 ),
                                 status = Status.entries.toTypedArray().random(),
-                                additional = listOf(
-                                    ProductAdditional(
+                                modifiers = listOf(
+                                    ProductModifier(
                                         name = "Mild Sauce",
                                         price = 1.0
                                     ),
-                                    ProductAdditional(
+                                    ProductModifier(
                                         name = "Hot Sauce",
                                         price = 1.0
                                     ),
-                                    ProductAdditional(
+                                    ProductModifier(
                                         name = "Xtreme Sauce",
                                         price = 2.0
                                     )
@@ -140,100 +142,5 @@ object Repo {
 
     fun getLastUsedCreditCard(): CreditInfo? {
         return CreditInfo(cardNumber = "678-774-0987")
-    }
-
-    fun getFavorites(): Flow<List<Cart>> {
-        return flowOf(
-            listOf(
-                Cart(
-                    Product(
-                        "p_1",
-                        "g_1",
-                        "c_1",
-                        "Product 1",
-                        90.0,
-                        Status.COMPLETE,
-                        "Description 1",
-                        listOf(R.drawable.ic_product),
-                        emptyList(),
-                        emptyList()
-                    ),
-                    ProductSize("Small", 9.0),
-                    1
-                ),
-                Cart(
-                    Product(
-                        "p_2",
-                        "g_2",
-                        "c_2",
-                        "Product 2",
-                        90.0,
-                        Status.COMPLETE,
-                        "Description 1",
-                        listOf(R.drawable.ic_product),
-                        emptyList(),
-                        emptyList()
-                    ),
-                    ProductSize("Small", 9.0),
-                    1
-                ),
-                Cart(
-                    Product(
-                        "p_3",
-                        "g_3",
-                        "c_3",
-                        "Product 3",
-                        90.0,
-                        Status.COMPLETE,
-                        "Description 1",
-                        listOf(R.drawable.ic_product),
-                        emptyList(),
-                        emptyList()
-                    ),
-                    ProductSize("Small", 9.0),
-                    1
-                ),
-            )
-        )
-    }
-
-    private fun fakeGroup(collectionId: String): List<Group> {
-        return buildList {
-            repeat(5) {
-                add(
-                    Group(
-                        id = "g_$it",
-                        name = "Group $it",
-                        collectionId = collectionId,
-                        products = fakeProduct(collectionId, "g_$it")
-                    )
-                )
-            }
-        }
-    }
-
-    private fun fakeProduct(collectionId: String, groupId: String): List<Product> {
-        return buildList {
-            repeat(5) {
-                add(
-                    Product(
-                        id = "p_$it",
-                        groupId = groupId,
-                        collectionId = collectionId,
-                        name = "Product $it",
-                        price = 90.0,
-                        description = "Description $it",
-                        images = listOf(R.drawable.ic_product),
-                        sizes = listOf(
-                            ProductSize("Small", 9.0),
-                            ProductSize("Medium", 10.0),
-                            ProductSize("Large", 12.0)
-                        ),
-                        status = Status.entries.toTypedArray().random(),
-                        additional = emptyList()
-                    )
-                )
-            }
-        }
     }
 }

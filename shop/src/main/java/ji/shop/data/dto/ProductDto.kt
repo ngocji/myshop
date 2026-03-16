@@ -31,17 +31,21 @@ data class ProductDto(
     val status: Boolean?,
 
     @SerializedName("is_pause")
-    val isPause: Boolean?
+    val isPause: Boolean?,
+
+    @SerializedName("is_favorite")
+    val isFavorite: Boolean?,
+
+    @SerializedName("variations")
+    val variations: List<VariationDto>?,
+
+    @SerializedName("modifiers")
+    val modifiers: List<ModifierDto>?
 )
 
-fun ProductDto.toDomain(
-    collectionId: String,
-    groupId: String,
-): Product {
+fun ProductDto.toDomain(): Product {
     return Product(
         id = id.orEmpty(),
-        groupId = groupId,
-        collectionId = collectionId,
         name = name.orEmpty(),
         price = onlinePrice ?: 0.0,
         // todo update status for product
@@ -52,7 +56,7 @@ fun ProductDto.toDomain(
         },
         description = description.orEmpty(),
         images = listOf(imageUrl),
-        sizes = emptyList(),
-        additional = emptyList()
+        variations = emptyList(),
+        modifiers = emptyList()
     )
 }

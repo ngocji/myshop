@@ -6,13 +6,13 @@ import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
 import ji.shop.base.adapter.Payload
-import ji.shop.data.domain.ProductAdditional
+import ji.shop.data.domain.ProductModifier
 import ji.shop.databinding.ItemSelectionAdditionalBinding
 import ji.shop.exts.layoutInflate
 import ji.shop.utils.NumberFormater
 
 data class SelectionAdditionalItemUi(
-    val data: ProductAdditional,
+    val data: ProductModifier,
     var count: Int
 ) : ItemUI<ItemSelectionAdditionalBinding>() {
     override fun createViewHolder(

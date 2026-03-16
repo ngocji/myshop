@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.data.domain.Cart
-import ji.shop.data.domain.ProductAdditional
+import ji.shop.data.domain.ProductModifier
 import ji.shop.items.CountChangOnItemListener
 import ji.shop.items.SelectionAdditionalItemUi
 
@@ -25,13 +25,13 @@ class SelectionAdditionalItemsView @JvmOverloads constructor(
         flexibleAdapter.addListener(onItemClickListener)
     }
 
-    fun setData(cart: Cart?, items: List<ProductAdditional>) {
+    fun setData(cart: Cart?, items: List<ProductModifier>) {
         flexibleAdapter.updateDataset(items.map {
             SelectionAdditionalItemUi(it, cart?.additional?.get(it) ?: 0)
         })
     }
 
-    fun getMapCount(): Map<ProductAdditional, Int> {
+    fun getMapCount(): Map<ProductModifier, Int> {
         return flexibleAdapter.items.associate {
             it.data to it.count
         }

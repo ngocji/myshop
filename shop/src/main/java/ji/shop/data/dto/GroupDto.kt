@@ -21,13 +21,11 @@ data class GroupDto(
     val items: List<ProductDto>?
 )
 
-fun GroupDto.toDomain(
-    collectionId: String
-): Group {
+fun GroupDto.toDomain(collectionId: String? = null): Group {
     return Group(
         id = id.orEmpty(),
-        collectionId = collectionId,
         name = name.orEmpty(),
-        products = items?.map { it.toDomain(id.orEmpty(), collectionId) } ?: emptyList()
+        collectionId = collectionId,
+        products = items?.map { it.toDomain() } ?: emptyList()
     )
 }

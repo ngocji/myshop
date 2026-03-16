@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
 import ji.shop.base.adapter.OnItemClickListener
-import ji.shop.data.domain.ProductSize
+import ji.shop.data.domain.ProductVariation
 import ji.shop.items.SelectionSizeItemUi
 
 class SelectionSizeItemsView @JvmOverloads constructor(
@@ -31,7 +31,7 @@ class SelectionSizeItemsView @JvmOverloads constructor(
         flexibleAdapter.addListener(onItemClickListener)
     }
 
-    fun setData(items: List<ProductSize>, selectedIndex: Int = 0) {
+    fun setData(items: List<ProductVariation>, selectedIndex: Int = 0) {
         flexibleAdapter.clearAdjustSelection()
         flexibleAdapter.updateDataset(items.map {
             SelectionSizeItemUi(it)
@@ -41,7 +41,7 @@ class SelectionSizeItemsView @JvmOverloads constructor(
         }
     }
 
-    fun getSelected(): ProductSize? {
+    fun getSelected(): ProductVariation? {
         return flexibleAdapter.getSelectedItems().firstOrNull()?.data
     }
 }

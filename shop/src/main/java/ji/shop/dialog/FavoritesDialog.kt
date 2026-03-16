@@ -58,24 +58,24 @@ class FavoritesDialog : BaseDialog(R.layout.dialog_favorite) {
     }
 
     private fun initData() {
-        collect(flow = Repo.getFavorites()) { items ->
-            flexibleAdapter =
-                FlexibleAdapter(items.map { CartItemUi(it) }.toMutableList())
-                    .addListener(object : CountChangOnItemListener {
-                        override fun onCountChanged(position: Int, count: Int) {
-                            doUpdatePrice()
-                        }
-
-                        override fun onClick(
-                            adapter: FlexibleAdapter<*>,
-                            view: View,
-                            position: Int
-                        ) {
-                        }
-                    })
-            binding.recyclerView.adapter = flexibleAdapter
-            doUpdatePrice()
-        }
+//        collect(flow = Repo.getFavorites()) { items ->
+//            flexibleAdapter =
+//                FlexibleAdapter(items.map { CartItemUi(it) }.toMutableList())
+//                    .addListener(object : CountChangOnItemListener {
+//                        override fun onCountChanged(position: Int, count: Int) {
+//                            doUpdatePrice()
+//                        }
+//
+//                        override fun onClick(
+//                            adapter: FlexibleAdapter<*>,
+//                            view: View,
+//                            position: Int
+//                        ) {
+//                        }
+//                    })
+//            binding.recyclerView.adapter = flexibleAdapter
+//            doUpdatePrice()
+//        }
     }
 
     private fun obtainItems(): List<Cart> {

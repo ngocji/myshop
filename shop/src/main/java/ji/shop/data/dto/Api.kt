@@ -9,8 +9,7 @@ interface Api {
     @GET("api/v2/pos/get_pos_sell_hierarchy")
     suspend fun getSellHierarchy(
         @Query("pos_shop_id") posShopId: String,
-        @Query("venue_id") venueId: String,
-        @Query("auth_token") authToken: String
+        @Query("venue_id") venueId: String
     ): WrapResponse<SellDataDto>
 
     @GET("api/v2/pos/get_pos_orders_by_item")
@@ -35,7 +34,7 @@ interface Api {
     ): WrapResponse<ViewOrderDto>
 
     @GET("api/v2/xxx")
-    suspend fun refreshToken(refreshToken: String): WrapResponse<TokenDto>
+    suspend fun refreshToken(@Query("refresh_token") refreshToken: String): WrapResponse<TokenDto>
 
     companion object {
         lateinit var api: Api
