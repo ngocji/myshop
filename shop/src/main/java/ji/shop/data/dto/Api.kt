@@ -13,6 +13,27 @@ interface Api {
         @Query("auth_token") authToken: String
     ): WrapResponse<SellDataDto>
 
+    @GET("api/v2/pos/get_pos_orders_by_item")
+    suspend fun getOrders(
+        @Query("pos_item_id") posItemId: String,
+        @Query("venue_id") venueId: String,
+        @Query("auth_token") authToken: String
+    ): WrapResponse<OrderDto>
+
+    @GET("api/v2/pos/get_pos_order_detail")
+    suspend fun getOrderDetail(
+        @Query("pos_item_id") posItemId: String,
+        @Query("venue_id") venueId: String,
+        @Query("auth_token") authToken: String
+    ): WrapResponse<OrderDto>
+
+    @GET("api/v2/pos/get_pos_order_view")
+    suspend fun getViewOrder(
+        @Query("pos_order_id") posOrderId: String,
+        @Query("venue_id") venueId: String,
+        @Query("auth_token") authToken: String
+    ): WrapResponse<ViewOrderDto>
+
     @GET("api/v2/xxx")
     suspend fun refreshToken(refreshToken: String): WrapResponse<TokenDto>
 
