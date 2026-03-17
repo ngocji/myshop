@@ -1,6 +1,7 @@
 package ji.shop.data.dto
 
 import ji.shop.ShopSDK
+import ji.shop.utils.Log
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -16,14 +17,25 @@ class RefreshTokenAuth : Authenticator {
         val refreshToken = ShopSDK.getRefreshToken()
 
         val newToken = runBlocking {
-            Api.create().refreshToken(refreshToken).data
+            try {
+                Api.create().refreshToken(
+                    RequestGetRefreshToken(
+                        refreshToken = refreshToken,
+                        email = ShopSDK.getEmail(),
+                        password = ShopSDK.getPassword()
+                    )
+                )
+            } catch (e: Exception) {
+                return@runBlocking null
+            }
         }
+        Log.d("Refresh token: $newToken")
 
         if (newToken != null) {
             ShopSDK.initToken(
-                authenticationToken = newToken.authenticationToken,
-                accessToken = newToken.accessToken,
-                refreshToken = newToken.refreshToken
+                authenticationToken = newToken.authenticationToken.orEmpty(),
+                accessToken = newToken.accessToken.orEmpty(),
+                refreshToken = newToken.refreshToken.orEmpty()
             )
         } else {
             onAuthFailedAction?.invoke()
@@ -46,6 +58,6 @@ class RefreshTokenAuth : Authenticator {
     }
 
     companion object {
-        var onAuthFailedAction: (()-> Unit)? = null
+        var onAuthFailedAction: (() -> Unit)? = null
     }
 }

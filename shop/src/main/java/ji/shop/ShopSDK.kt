@@ -26,4 +26,12 @@ object ShopSDK {
     fun getAccessToken() = accessToken
     fun getRefreshToken() = refreshToken
     fun getVenueId() = venueId
+
+    fun getEmail(): String {
+        return "paulv@showslinger.com"
+    }
+
+    fun getPassword(): String {
+        return "12345"
+    }
 }

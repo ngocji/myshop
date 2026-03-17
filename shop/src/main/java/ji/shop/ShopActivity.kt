@@ -3,10 +3,13 @@ package ji.shop
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.TabType
+import ji.shop.data.dto.RefreshTokenAuth
 import ji.shop.databinding.ActivityShopBinding
 import ji.shop.dialog.CheckoutDialog
 import ji.shop.dialog.EditManualCardDialog
@@ -14,6 +17,8 @@ import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.dialog.ViewCartDialog
 import ji.shop.exts.collect
 import ji.shop.utils.FragmentUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ShopActivity : AppCompatActivity() {
     private val viewModel by viewModels<ShopViewModel>()
@@ -25,6 +30,12 @@ class ShopActivity : AppCompatActivity() {
         setContentView(binding.root)
         initViews()
         initObserves()
+        RefreshTokenAuth.onAuthFailedAction = {
+            // todo navigate to login
+            lifecycleScope.launch(Dispatchers.Main) {
+                binding.flReplace.isVisible = false
+            }
+        }
     }
 
     private fun initViews() {
@@ -44,8 +55,6 @@ class ShopActivity : AppCompatActivity() {
     }
 
     private fun initObserves() {
-
-
         collect(flow = viewModel.isNfcEnabledState) { enable ->
             binding.btnNfc.isSelected = enable
         }

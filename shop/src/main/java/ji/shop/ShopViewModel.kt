@@ -13,6 +13,7 @@ import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.Group
 import ji.shop.data.domain.Group.Companion.GROUP_ONLY_ITEM_ID
 import ji.shop.data.domain.Product
+import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.TabType
 import ji.shop.data.domain.WrapUpdateData
@@ -36,6 +37,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 
@@ -81,8 +83,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
             .filterNotNull()
             .flatMapLatest { shop -> safeResultFlow { Repo.getSellData(shop.posShopId) } }
+            .onStart { emit(ResultWrapper.Loading) }
             .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
+    val collectionState = MutableStateFlow<Collection?>(null)
     val collectionsFlow = sellDataState
         .mapLatest { result ->
             val collections = result.safeValue()?.collections
@@ -95,8 +99,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             gridItems to linearItems
         }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    val collectionState = MutableStateFlow<Collection?>(null)
-
+    val groupState = MutableStateFlow<Group?>(null)
     val groupsFlow = combine(sellDataState, collectionState) { sellData, collection ->
         collection?.groups ?: sellData.safeValue()?.groups ?: listOf(
             Group(
@@ -119,7 +122,6 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
         .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    val groupState = MutableStateFlow<Group?>(null)
     val groupSelectedIndexFlow = combine(groupsFlow, groupState) { groups, group ->
         group?.let { groups.indexOfFirst { it.data.id == group.id } } ?: -1
     }
