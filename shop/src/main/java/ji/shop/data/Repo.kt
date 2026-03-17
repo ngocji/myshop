@@ -26,13 +26,10 @@ object Repo {
         api.getShopCategories(ShopSDK.getVenueId()).data?.map { it.toDomain() }
     }
 
-    suspend fun getSellData(
-        posShopId: String,
-        venueId: String
-    ) = withContext(Dispatchers.IO) {
+    suspend fun getSellData(posShopId: String) = withContext(Dispatchers.IO) {
         api.getSellHierarchy(
             posShopId = posShopId,
-            venueId = venueId
+            venueId = ShopSDK.getVenueId()
         ).data?.toDomain()
     }
 

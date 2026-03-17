@@ -80,7 +80,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     val sellDataState =
         combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
             .filterNotNull()
-            .flatMapLatest { shop -> safeResultFlow { Repo.getSellData(shop.posShopId, shop.posShopId) } }
+            .flatMapLatest { shop -> safeResultFlow { Repo.getSellData(shop.posShopId) } }
             .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val collectionsFlow = sellDataState
