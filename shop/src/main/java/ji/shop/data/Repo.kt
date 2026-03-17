@@ -1,6 +1,7 @@
 package ji.shop.data
 
 import ji.shop.R
+import ji.shop.ShopSDK
 import ji.shop.data.domain.Cart
 import ji.shop.data.domain.Checkout
 import ji.shop.data.domain.CreditInfo
@@ -9,7 +10,6 @@ import ji.shop.data.domain.Inventory
 import ji.shop.data.domain.Product
 import ji.shop.data.domain.ProductModifier
 import ji.shop.data.domain.ProductVariation
-import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.Status
 import ji.shop.data.domain.Ticket
 import ji.shop.data.dto.Api
@@ -22,24 +22,8 @@ object Repo {
         Api.create()
     }
 
-    suspend fun getShopCategory() = withContext(Dispatchers.IO) {
-        buildList {
-            add(
-                ShopCategory(
-                    id = "1",
-                    venueId = "90",
-                    name = "Only Items"
-                )
-            )
-
-            add(
-                ShopCategory(
-                    id = "2",
-                    venueId = "90",
-                    name = "Collections"
-                )
-            )
-        }
+    suspend fun getShopCategories() = withContext(Dispatchers.IO) {
+        api.getShopCategories(ShopSDK.getVenueId()).data?.map { it.toDomain() }
     }
 
     suspend fun getSellData(

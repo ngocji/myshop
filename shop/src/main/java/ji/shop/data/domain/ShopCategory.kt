@@ -1,8 +1,8 @@
 package ji.shop.data.domain
 
 data class ShopCategory(
-    val id: String,
-    val venueId: String,
+    val posItemId: String,
+    val posShopId: String,
     val name: String
 ) {
     override fun toString(): String {

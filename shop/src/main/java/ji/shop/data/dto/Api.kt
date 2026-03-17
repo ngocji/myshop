@@ -6,6 +6,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface Api {
+    @GET("api/v2/pos/get_pos_list_by_venue?page=1&limit=100")
+    suspend fun getShopCategories(@Query("venue_id") venueId: String): WrapResponse<List<ShopCategoryDto>>
+
     @GET("api/v2/pos/get_pos_sell_hierarchy")
     suspend fun getSellHierarchy(
         @Query("pos_shop_id") posShopId: String,

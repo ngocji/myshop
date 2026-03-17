@@ -20,7 +20,7 @@ class RefreshTokenAuth : Authenticator {
         }
 
         if (newToken != null) {
-            ShopSDK.init(
+            ShopSDK.initToken(
                 authenticationToken = newToken.authenticationToken,
                 accessToken = newToken.accessToken,
                 refreshToken = newToken.refreshToken

@@ -69,9 +69,9 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     val tabTabTypeState = MutableStateFlow(TabType.Sell)
 
     val shopCategoriesFlow = safeFlow {
-        val categories = Repo.getShopCategory()
+        val categories = Repo.getShopCategories()
         if (shopCategoryState.value == null) {
-            shopCategoryState.tryEmit(categories.firstOrNull())
+            shopCategoryState.tryEmit(categories?.firstOrNull())
         }
         categories
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
@@ -80,7 +80,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     val sellDataState =
         combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
             .filterNotNull()
-            .flatMapLatest { shop -> safeResultFlow { Repo.getSellData(shop.id, shop.venueId) } }
+            .flatMapLatest { shop -> safeResultFlow { Repo.getSellData(shop.posShopId, shop.posShopId) } }
             .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     val collectionsFlow = sellDataState
