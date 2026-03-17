@@ -38,7 +38,7 @@ interface Api {
         @Query("auth_token") authToken: String
     ): WrapResponse<ViewOrderDto>
 
-    @POST("user/refresh_token")
+    @POST("/user/refresh_token")
     suspend fun refreshToken(@Body request: RequestGetRefreshToken): TokenDto?
 
     companion object {
