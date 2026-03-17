@@ -34,73 +34,11 @@ object Repo {
     }
 
     suspend fun getInventories() = withContext(Dispatchers.IO) {
-        buildList {
-            repeat(8) {
-                add(
-                    Inventory(
-                        image = R.drawable.ic_inventory,
-                        "Coca Cola $it",
-                        false,
-                        28,
-                        2.291,
-                        193.0,
-                        2.291,
-                        (20..100).random(),
-                        2.291
-                    )
-                )
-            }
-        }
+        api.getInventories(ShopSDK.getVenueId()).data?.map { it.toDomain() } ?: emptyList()
     }
 
-    suspend fun getOrder(collectionId: String) = withContext(Dispatchers.IO) {
-        Checkout(
-            "c_",
-            items = buildList {
-                repeat(10) {
-                    add(
-                        Cart(
-                            product = Product(
-                                id = "p_$it",
-                                name = "Product $it",
-                                price = 90.0,
-                                description = "Description $it",
-                                images = listOf(
-                                    R.drawable.ic_inventory,
-                                    R.drawable.ic_inventory,
-                                    R.drawable.ic_inventory,
-                                    R.drawable.ic_inventory
-                                ),
-                                variations = listOf(
-                                    ProductVariation("Small", 9.0),
-                                    ProductVariation("Medium", 10.0),
-                                    ProductVariation("Large", 12.0),
-                                    ProductVariation("Extra Large", 14.0),
-                                ),
-                                status = Status.entries.toTypedArray().random(),
-                                modifiers = listOf(
-                                    ProductModifier(
-                                        name = "Mild Sauce",
-                                        price = 1.0
-                                    ),
-                                    ProductModifier(
-                                        name = "Hot Sauce",
-                                        price = 1.0
-                                    ),
-                                    ProductModifier(
-                                        name = "Xtreme Sauce",
-                                        price = 2.0
-                                    )
-                                )
-                            ),
-                            count = 3
-                        )
-                    )
-                }
-            },
-            customerInfo = CustomerInfo("Bill Evans", "bill.evans@gmail.com", "678-774-0987"),
-            creditInfo = CreditInfo(cardNumber = "678-774-0987")
-        )
+    suspend fun getOrder(posItemId: String?) = withContext(Dispatchers.IO) {
+        api.getOrders(posItemId, ShopSDK.getVenueId()).data?.map { it.toDomain() }
     }
 
     suspend fun getTicket() = withContext(Dispatchers.IO) {

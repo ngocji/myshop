@@ -1,6 +1,8 @@
 package ji.shop.data.dto
 
 import com.google.gson.annotations.SerializedName
+import ji.shop.data.domain.Order
+import ji.shop.data.domain.Status
 
 data class OrderDto(
 
@@ -32,3 +34,22 @@ data class OrderDto(
     val status: String?,
 
     )
+
+fun OrderDto.toDomain() : Order {
+    return Order(
+        posItemId = posItemId.orEmpty(),
+        posOrderId = posOrderId.orEmpty(),
+        name = buyerName.orEmpty(),
+        quantity = quantity ?: 0,
+        total = total ?: 0.0,
+        currencySymbol = currencySymbol.orEmpty(),
+        time = time.orEmpty(),
+        paymentMethod = paymentMethod.orEmpty(),
+        status = status?.toStatus() ?: Status.IN_PROGRESS
+    )
+}
+
+fun String.toStatus() : Status {
+    return Status.valueOf(this)
+}
+

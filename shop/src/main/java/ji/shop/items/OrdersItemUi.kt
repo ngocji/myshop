@@ -5,13 +5,12 @@ import androidx.core.view.isVisible
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
-import ji.shop.data.domain.Cart
+import ji.shop.data.domain.Order
 import ji.shop.databinding.ItemOrdersBinding
 import ji.shop.exts.layoutInflate
-import ji.shop.utils.DateFormater
 
 data class OrdersItemUi(
-    val cart: Cart
+    val order: Order
 ) : ItemUI<ItemOrdersBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
@@ -50,13 +49,13 @@ data class OrdersItemUi(
         payloads: List<Any?>
     ) {
         withBinding(holder) {
-            rcvAvatar?.setData(cart.product.images)
-            tvProductName.text = cart.product.name
-            tvQty.text = cart.count.toString()
-            tvTime.text = DateFormater.format(cart.date, "hh:mm a")
-            tvOrderMethod?.text = cart.count.toString()
-            tvStatus.setState(cart.product.status)
-            tvNote?.text = cart.product.description
+            //rcvAvatar?.setData(cart.product.images)
+            tvProductName.text = order.name
+            tvQty.text = order.quantity.toString()
+            tvTime.text = order.time
+            tvOrderMethod?.text = order.paymentMethod
+            tvStatus.setState(order.status)
+            //tvNote?.text = cart.product.description
         }
     }
 }

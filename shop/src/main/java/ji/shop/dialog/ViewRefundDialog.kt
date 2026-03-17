@@ -73,7 +73,7 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
     }
 
     companion object {
-        fun newInstance(checkout: Checkout): ViewRefundDialog {
+        fun newInstance(postOrderId: String): ViewRefundDialog {
             return ViewRefundDialog().apply {
                 this.checkout = checkout
             }

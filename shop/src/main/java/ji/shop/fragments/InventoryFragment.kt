@@ -8,7 +8,6 @@ import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.FlexibleAdapter.Companion.SINGLE
 import ji.shop.base.viewBinding
 import ji.shop.databinding.FragmentInventoryBinding
-import ji.shop.exts.collect
 import ji.shop.items.InventoryUi
 
 class InventoryFragment : BaseFragment(R.layout.fragment_inventory) {

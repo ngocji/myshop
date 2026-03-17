@@ -250,9 +250,11 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    val orderFlow = safeResultFlow {
-        Repo.getOrder("")
-    }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+    val orderFlow =
+        combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
+            .filterNotNull()
+            .flatMapLatest { shop -> safeResultFlow { Repo.getOrder(shop.posItemId) } }
+            .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
     fun viewCart() {
         viewCartEvent.trySend(Unit)
