@@ -15,16 +15,15 @@ import ji.shop.base.viewBinding
 import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.Cart
 import ji.shop.data.domain.CustomerInfo
+import ji.shop.data.domain.ResultWrapper
 import ji.shop.databinding.DialogViewCheckoutBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
 import ji.shop.exts.width
 import ji.shop.items.CheckoutTicketUi
-import ji.shop.utils.Log
 import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
@@ -93,53 +92,57 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
     }
 
     private fun reloadFees() {
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val fees = viewModel.getShoppingFees(items, usedCardMethod)
-            Log.d("Reload fees: $fees")
-            if (fees == null) {
-                withContext(Dispatchers.Main) {
-                    errorLoadFees()
-                }
-                return@launch
-            }
-            val totalPrice = NumberFormater.formatNumberLocale(fees.totalMoney)
-            val feesTitleValue = listOf(
-                getString(R.string.text_coupon_discount) to NumberFormater.formatNumberLocale(fees.couponDiscount),
-                getString(R.string.text_face_value) to NumberFormater.formatNumberLocale(fees.basePrice),
-                getString(R.string.text_donation) to NumberFormater.formatNumberLocale(0.0),
-                getString(R.string.text_service_fee) to NumberFormater.formatNumberLocale(fees.estFee),
-                getString(R.string.text_subtotal) to NumberFormater.formatNumberLocale(fees.subTotal),
-                getString(R.string.text_taxes) to NumberFormater.formatNumberLocale(fees.estSalesTax),
-                getString(R.string.text_total) to totalPrice
-            )
-
-            val checkoutItems = items?.groupBy { it.shop }
-                ?.mapNotNull { entry ->
-                    val shop = entry.key
-                    if (shop != null) {
-                        CheckoutTicketUi(
-                            shopCategory = shop,
-                            carts = entry.value,
-                            cardMethod = usedCardMethod
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getShoppingFees(items, usedCardMethod)
+                .collect { resultWrapper ->
+                    binding.stateView.updateState(resultWrapper)
+                    if (resultWrapper is ResultWrapper.Success) {
+                        val fees = resultWrapper.safeValue() ?: return@collect
+                        val totalPrice = NumberFormater.formatNumberLocale(fees.totalMoney)
+                        val feesTitleValue = listOf(
+                            getString(R.string.text_coupon_discount) to NumberFormater.formatNumberLocale(
+                                fees.couponDiscount
+                            ),
+                            getString(R.string.text_face_value) to NumberFormater.formatNumberLocale(
+                                fees.basePrice
+                            ),
+                            getString(R.string.text_donation) to NumberFormater.formatNumberLocale(
+                                0.0
+                            ),
+                            getString(R.string.text_service_fee) to NumberFormater.formatNumberLocale(
+                                fees.estFee
+                            ),
+                            getString(R.string.text_subtotal) to NumberFormater.formatNumberLocale(
+                                fees.subTotal
+                            ),
+                            getString(R.string.text_taxes) to NumberFormater.formatNumberLocale(fees.estSalesTax),
+                            getString(R.string.text_total) to totalPrice
                         )
-                    } else {
-                        null
+
+                        val checkoutItems = items?.groupBy { it.shop }
+                            ?.mapNotNull { entry ->
+                                val shop = entry.key
+                                if (shop != null) {
+                                    CheckoutTicketUi(
+                                        shopCategory = shop,
+                                        carts = entry.value,
+                                        cardMethod = usedCardMethod
+                                    )
+                                } else {
+                                    null
+                                }
+                            }
+
+                        with(binding) {
+                            ticketView.isVisible = true
+                            tvTotal.text = totalPrice
+                            titleValuesView.setBoldValue(false)
+                            titleValuesView.setData(*feesTitleValue.toTypedArray())
+                            updateCheckoutTickets(checkoutItems ?: emptyList())
+                        }
                     }
                 }
-
-            withContext(Dispatchers.Main) {
-                with(binding) {
-                    tvTotal.text = totalPrice
-                    titleValuesView.setBoldValue(false)
-                    titleValuesView.setData(*feesTitleValue.toTypedArray())
-                    updateCheckoutTickets(checkoutItems ?: emptyList())
-                }
-            }
         }
-    }
-
-    private fun errorLoadFees() {
-        // todo show error load fees
     }
 
     private fun updateCheckoutTickets(items: List<CheckoutTicketUi>) {

@@ -117,6 +117,7 @@
                 android:id="@+id/group_variations_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_padding"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/large_2_padding"
                 android:paddingVertical="@dimen/large_padding">
@@ -142,8 +143,7 @@
                 android:id="@+id/group_modifiers_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_padding"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

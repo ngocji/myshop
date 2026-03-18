@@ -319,8 +319,8 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             productItems.filter { it.isFavorite }
         }
 
-    suspend fun getShoppingFees(items: List<Cart>?, usedCardMethod: CardMethod): TemporaryFees? {
-        return Repo.getTemporaryShoppingCart(
+    fun getShoppingFees(items: List<Cart>?, usedCardMethod: CardMethod) = safeResultFlow {
+        Repo.getTemporaryShoppingCart(
             carts = items ?: emptyList(),
             cardMethod = usedCardMethod
         )

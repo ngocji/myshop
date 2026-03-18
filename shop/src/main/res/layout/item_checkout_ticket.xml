@@ -24,6 +24,7 @@
 
     <ji.shop.widget.CheckoutProductItemsView
         android:id="@+id/checkout_product_items_view"
+        android:layout_marginBottom="@dimen/normal_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

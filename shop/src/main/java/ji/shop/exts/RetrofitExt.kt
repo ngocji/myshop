@@ -20,7 +20,7 @@ fun buildOkHttpClient(enableLog: Boolean = true,
             }
 
             if (enableLog) {
-                addInterceptor(HttpLoggingInterceptor())
+                addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
             }
             if (authenticator != null) {
                 authenticator(authenticator)

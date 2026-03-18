@@ -32,4 +32,8 @@
         <attr name="cs_text" format="string" />
         <attr name="cs_image_start" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="StateWrapperView">
+        <attr name="st_progress_background" format="color" />
+    </declare-styleable>
 </resources>

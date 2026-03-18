@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import ji.shop.R
 import ji.shop.data.domain.ResultWrapper
@@ -26,6 +27,14 @@ class StateWrapperView @JvmOverloads constructor(
         findViewById<View>(R.id.btn_retry)?.setOnClickListener {
             updateState(ResultWrapper.Loading)
             listener?.onRetry()
+        }
+
+        attrs?.let {
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.StateWrapperView)
+            val progressBackground = typedArray.getColor(R.styleable.StateWrapperView_st_progress_background,
+                ContextCompat.getColor(context, R.color.colorBackground))
+            findViewById<View>(R.id.progress_view)?.setBackgroundColor(progressBackground)
+            typedArray.recycle()
         }
     }
 
