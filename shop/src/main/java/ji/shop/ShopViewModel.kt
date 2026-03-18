@@ -16,6 +16,7 @@ import ji.shop.data.domain.Product
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.TabType
+import ji.shop.data.domain.TemporaryFees
 import ji.shop.data.domain.WrapUpdateData
 import ji.shop.exts.mapWhenSuccess
 import ji.shop.exts.safeFlow
@@ -286,7 +287,8 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     fun getProductsCountNotifyFlow(groupId: String) =
         combine(cartsState, getProductsFlow(groupId)) { carts, products ->
             val index = carts.data.mapNotNull { cart ->
-                val index = products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
+                val index =
+                    products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
                 val item = products.getOrNull(index)
                 if (item != null) {
                     item.count = cart.count
@@ -316,4 +318,11 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
             productItems.filter { it.isFavorite }
         }
+
+    suspend fun getShoppingFees(items: List<Cart>?, usedCardMethod: CardMethod): TemporaryFees? {
+        return Repo.getTemporaryShoppingCart(
+            carts = items ?: emptyList(),
+            cardMethod = usedCardMethod
+        )
+    }
 }

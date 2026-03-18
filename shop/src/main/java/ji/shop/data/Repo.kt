@@ -2,17 +2,12 @@ package ji.shop.data
 
 import ji.shop.R
 import ji.shop.ShopSDK
+import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.Cart
-import ji.shop.data.domain.Checkout
 import ji.shop.data.domain.CreditInfo
-import ji.shop.data.domain.CustomerInfo
-import ji.shop.data.domain.Inventory
-import ji.shop.data.domain.Product
-import ji.shop.data.domain.ProductModifier
-import ji.shop.data.domain.ProductVariation
-import ji.shop.data.domain.Status
 import ji.shop.data.domain.Ticket
 import ji.shop.data.dto.Api
+import ji.shop.data.dto.createShoppingCartRequest
 import ji.shop.data.dto.RequestRefund
 import ji.shop.data.dto.toDomain
 import kotlinx.coroutines.Dispatchers
@@ -71,4 +66,14 @@ object Repo {
     fun getLastUsedCreditCard(): CreditInfo? {
         return CreditInfo(cardNumber = "678-774-0987")
     }
+
+    suspend fun getTemporaryShoppingCart(carts: List<Cart>, cardMethod: CardMethod) =
+        withContext(Dispatchers.IO) {
+            api.getTemporaryShoppingCartFees(
+                createShoppingCartRequest(
+                    carts = carts,
+                    cardMethod = cardMethod
+                )
+            ).data?.toDomain()
+        }
 }

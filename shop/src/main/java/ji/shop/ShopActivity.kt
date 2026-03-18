@@ -120,7 +120,7 @@ class ShopActivity : AppCompatActivity() {
 
                         override fun onDone(method: CardMethod) {
                             viewModel.updateUsedCardMethod(method)
-                            if (method == CardMethod.CardManually) {
+                            if (method == CardMethod.Credit) {
                                 EditManualCardDialog
                                     .newInstance(viewModel.creditCardInfo.value) { newCreditCard ->
                                         viewModel.updateCreditCard(newCreditCard)

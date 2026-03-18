@@ -56,6 +56,9 @@ interface Api {
     @POST("/user/refresh_token")
     suspend fun refreshToken(@Body request: RequestGetRefreshToken): TokenDto?
 
+    @POST("pos/get_pos_temporary_shopping_cart_fees")
+    suspend fun getTemporaryShoppingCartFees(@Body request: RequestPostShoppingCart): WrapResponse<TemporaryFeesDto>
+
     companion object {
         lateinit var api: Api
         fun create(): Api {

@@ -1,24 +1,26 @@
 package ji.shop.dialog
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import ji.shop.R
+import ji.shop.ShopViewModel
 import ji.shop.base.BaseDialog
+import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
 import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.Cart
 import ji.shop.data.domain.CustomerInfo
-import ji.shop.data.Repo
 import ji.shop.databinding.DialogViewCheckoutBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
 import ji.shop.exts.width
-import ji.shop.utils.DateFormater
+import ji.shop.items.CheckoutTicketUi
+import ji.shop.utils.Log
 import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,12 +32,15 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
     private var items: List<Cart>? = null
     private var listener: Listener? = null
     private var usedCardMethod: CardMethod = CardMethod.Cash
+    private var flexibleCheckoutTickets: FlexibleAdapter<CheckoutTicketUi>? = null
+
+    private val viewModel by activityViewModels<ShopViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        initData()
-        initTicket()
+        toggleCardMethod(usedCardMethod)
+        reloadFees()
     }
 
     override fun doOnWindow(window: Window) {
@@ -56,9 +61,11 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         with(binding) {
             btnCash.setOnClickListener {
                 toggleCardMethod(CardMethod.Cash)
+                reloadFees()
             }
             btnCredit.setOnClickListener {
-                toggleCardMethod(CardMethod.CardManually)
+                toggleCardMethod(CardMethod.Credit)
+                reloadFees()
             }
             btnAddCustomerInfo.setOnClickListener { }
             btnTickets.setOnClickListener { toggleTicketView() }
@@ -73,7 +80,7 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         usedCardMethod = cardMethod
         with(binding) {
             btnCash.alpha = if (usedCardMethod == CardMethod.Cash) 1f else 0.5f
-            btnCredit.alpha = if (usedCardMethod == CardMethod.CardManually) 1f else 0.5f
+            btnCredit.alpha = if (usedCardMethod == CardMethod.Credit) 1f else 0.5f
         }
     }
 
@@ -85,33 +92,61 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         )
     }
 
-    private fun initData() {
-        with(binding) {
-            val itemPrice = items?.sumOf { it.getTotalPrice() } ?: 0.0
-            val tax = itemPrice * 0.038f
-            tvTotal.text = NumberFormater.formatNumberLocale(itemPrice + tax)
-            toggleCardMethod(usedCardMethod)
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun initTicket() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            val ticket = Repo.getTicket()
-            val info = ticket.info.map { entry ->
-                entry.key to NumberFormater.formatNumberLocale(entry.value)
+    private fun reloadFees() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val fees = viewModel.getShoppingFees(items, usedCardMethod)
+            Log.d("Reload fees: $fees")
+            if (fees == null) {
+                withContext(Dispatchers.Main) {
+                    errorLoadFees()
+                }
+                return@launch
             }
+            val totalPrice = NumberFormater.formatNumberLocale(fees.totalMoney)
+            val feesTitleValue = listOf(
+                getString(R.string.text_coupon_discount) to NumberFormater.formatNumberLocale(fees.couponDiscount),
+                getString(R.string.text_face_value) to NumberFormater.formatNumberLocale(fees.basePrice),
+                getString(R.string.text_donation) to NumberFormater.formatNumberLocale(0.0),
+                getString(R.string.text_service_fee) to NumberFormater.formatNumberLocale(fees.estFee),
+                getString(R.string.text_subtotal) to NumberFormater.formatNumberLocale(fees.subTotal),
+                getString(R.string.text_taxes) to NumberFormater.formatNumberLocale(fees.estSalesTax),
+                getString(R.string.text_total) to totalPrice
+            )
+
+            val checkoutItems = items?.groupBy { it.shop }
+                ?.mapNotNull { entry ->
+                    val shop = entry.key
+                    if (shop != null) {
+                        CheckoutTicketUi(
+                            shopCategory = shop,
+                            carts = entry.value,
+                            cardMethod = usedCardMethod
+                        )
+                    } else {
+                        null
+                    }
+                }
+
             withContext(Dispatchers.Main) {
                 with(binding) {
-                    tvName.text = ticket.name
-                    tvTime.text = DateFormater.format(ticket.date, "EEE, MMM dd, yyyy, hh:mm a")
-                    tvFestival.text = "${items?.size ?: 0}x${ticket.ticketDayPass}}"
-                    tvFestivalValue.text = "${items?.size ?: 0}x${tvTotal.text}"
+                    tvTotal.text = totalPrice
                     titleValuesView.setBoldValue(false)
-                    titleValuesView.setData(*info.toTypedArray())
+                    titleValuesView.setData(*feesTitleValue.toTypedArray())
+                    updateCheckoutTickets(checkoutItems ?: emptyList())
                 }
             }
         }
+    }
+
+    private fun errorLoadFees() {
+        // todo show error load fees
+    }
+
+    private fun updateCheckoutTickets(items: List<CheckoutTicketUi>) {
+        flexibleCheckoutTickets?.updateDataset(items) ?: run {
+            flexibleCheckoutTickets = FlexibleAdapter(items.toMutableList())
+        }
+        binding.recyclerViewTickets.adapter = flexibleCheckoutTickets
     }
 
     interface Listener {

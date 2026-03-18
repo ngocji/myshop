@@ -31,9 +31,15 @@ data class Cart(
         }
         return super.equals(other)
     }
-    fun getTotalPrice(count: Int = this.count): Double {
-        val perItem = product.price + (variation?.price ?: 0.0) + modifiers.map { it.value.getTotalPrice() }.sum()
-        return perItem * count
+
+    fun getPricePerItem(cardMethod: CardMethod? = null): Double {
+        val productPrice = if (cardMethod == CardMethod.Cash) product.cashPrice else product.onlinePrice
+        val variationPrice = if (cardMethod == CardMethod.Cash) variation?.cashPrice else variation?.onlinePrice
+
+        return productPrice + (variationPrice ?: 0.0) + modifiers.map { it.value.getTotalPrice() }.sum()
+    }
+    fun getTotalPrice(count: Int = this.count, cardMethod: CardMethod? = null): Double {
+        return getPricePerItem(cardMethod) * count
     }
 
     override fun hashCode(): Int {
