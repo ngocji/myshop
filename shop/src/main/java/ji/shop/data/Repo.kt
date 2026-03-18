@@ -41,6 +41,10 @@ object Repo {
         api.getOrders(posItemId, ShopSDK.getVenueId()).data?.map { it.toDomain() }
     }
 
+    suspend fun getRefund(posOrderId: String?) = withContext(Dispatchers.IO) {
+        api.getRefundInformation(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
+    }
+
     suspend fun getTicket() = withContext(Dispatchers.IO) {
         Ticket(
             image = R.drawable.ic_card,

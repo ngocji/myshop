@@ -42,6 +42,12 @@ interface Api {
         @Query("auth_token") authToken: String
     ): WrapResponse<ViewOrderDto>
 
+    @GET("pos/get_pos_refund_information")
+    suspend fun getRefundInformation(
+        @Query("pos_order_id") posOrderId: String?,
+        @Query("venue_id") venueId: String,
+    ): WrapResponse<RefundDto>
+
     @POST("/user/refresh_token")
     suspend fun refreshToken(@Body request: RequestGetRefreshToken): TokenDto?
 
