@@ -7,11 +7,14 @@ import android.view.View
 import android.view.Window
 import androidx.lifecycle.lifecycleScope
 import ji.shop.R
+import ji.shop.ShopSDK
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.viewBinding
 import ji.shop.data.Repo
+import ji.shop.data.dto.RequestRefund
+import ji.shop.data.dto.toRequest
 import ji.shop.databinding.DialogViewRefundBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
@@ -25,6 +28,7 @@ import kotlin.math.roundToInt
 class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
     private val binding by viewBinding(DialogViewRefundBinding::bind)
     private var postOrderId: String? = null
+    private var requestRefund: RequestRefund? = null
     private var flexibleAdapter: FlexibleAdapter<ItemUI<*>>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,16 +59,18 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
             btnRefund.setOnClickListener {
-                //ViewCardInfoDialog.newInstance(checkout).show(childFragmentManager)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    Repo.refundPosOrder(requestRefund)
+                    //ViewCardInfoDialog.newInstance(checkout).show(childFragmentManager)
+                }
             }
         }
     }
 
     private fun initData() {
-
         viewLifecycleOwner.lifecycleScope.launch {
             val refund = Repo.getRefund(postOrderId)
-
+            requestRefund = refund?.toRequest(postOrderId, ShopSDK.getVenueId())
             withContext(Dispatchers.Main) {
                 val data = (refund?.items.orEmpty()
                     .map { RefundItemUi.RefundItem(it) } +

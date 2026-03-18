@@ -48,6 +48,11 @@ interface Api {
         @Query("venue_id") venueId: String,
     ): WrapResponse<RefundDto>
 
+    @POST("pos/refund_pos_order")
+    suspend fun refundPosOrder(
+        @Body refund: RequestRefund?
+    ): WrapResponse<RefundDto>
+
     @POST("/user/refresh_token")
     suspend fun refreshToken(@Body request: RequestGetRefreshToken): TokenDto?
 

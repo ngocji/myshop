@@ -13,6 +13,7 @@ import ji.shop.data.domain.ProductVariation
 import ji.shop.data.domain.Status
 import ji.shop.data.domain.Ticket
 import ji.shop.data.dto.Api
+import ji.shop.data.dto.RequestRefund
 import ji.shop.data.dto.toDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -43,6 +44,10 @@ object Repo {
 
     suspend fun getRefund(posOrderId: String?) = withContext(Dispatchers.IO) {
         api.getRefundInformation(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
+    }
+
+    suspend fun refundPosOrder(refund: RequestRefund?) = withContext(Dispatchers.IO) {
+        api.refundPosOrder(refund)
     }
 
     suspend fun getTicket() = withContext(Dispatchers.IO) {
