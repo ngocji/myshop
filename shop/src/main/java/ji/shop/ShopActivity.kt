@@ -155,6 +155,7 @@ class ShopActivity : AppCompatActivity() {
         collectOne(viewModel.createCheckout(method, creditInfo)) { result ->
             when (result) {
                 is ResultWrapper.Success -> {
+                    showProgress(false)
                     if (result.data?.isSuccess == true) {
                         // success create checkout
                         Toast.makeText(this, getString(R.string.text_success), Toast.LENGTH_SHORT)
@@ -165,10 +166,16 @@ class ShopActivity : AppCompatActivity() {
                     }
                 }
 
-                is ResultWrapper.Loading -> {}
-                is ResultWrapper.Failure -> {}
+                is ResultWrapper.Loading -> {showProgress(true)}
+                is ResultWrapper.Failure -> {
+                    showProgress(false)
+                }
                 else -> {}
             }
         }
+    }
+
+    private fun showProgress(show: Boolean) {
+        binding.incGlobalLoading.root.isVisible = show
     }
 }
