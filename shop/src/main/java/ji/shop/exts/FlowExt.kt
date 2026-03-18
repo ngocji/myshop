@@ -6,10 +6,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
+fun <T> AppCompatActivity.collectOne(
+    flow: Flow<T>,
+    action: (t: T) -> Unit
+) {
+    lifecycleScope.launch {
+        flow.collect {
+            action(it)
+        }
+    }
+}
 
 fun <T> AppCompatActivity.collect(
     state: Lifecycle.State = Lifecycle.State.STARTED,

@@ -1,13 +1,16 @@
 package ji.shop
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import ji.shop.data.domain.CardMethod
+import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
+import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.TabType
 import ji.shop.data.dto.RefreshTokenAuth
 import ji.shop.databinding.ActivityShopBinding
@@ -16,6 +19,7 @@ import ji.shop.dialog.EditManualCardDialog
 import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.dialog.ViewCartDialog
 import ji.shop.exts.collect
+import ji.shop.exts.collectOne
 import ji.shop.utils.FragmentUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,7 +72,7 @@ class ShopActivity : AppCompatActivity() {
         }
 
         collect(flow = viewModel.shopCategoriesFlow) { data ->
-            binding.shopCategoryDropDown.setData(data, viewModel.shopCategoryState.value) {item ->
+            binding.shopCategoryDropDown.setData(data, viewModel.shopCategoryState.value) { item ->
                 viewModel.setViewShopCategory(item)
             }
         }
@@ -119,13 +123,14 @@ class ShopActivity : AppCompatActivity() {
                         }
 
                         override fun onDone(method: CardMethod) {
-                            viewModel.updateUsedCardMethod(method)
                             if (method == CardMethod.Credit) {
                                 EditManualCardDialog
                                     .newInstance(viewModel.creditCardInfo.value) { newCreditCard ->
-                                        viewModel.updateCreditCard(newCreditCard)
+                                        doCreateCheckout(method, newCreditCard)
                                     }
                                     .show(supportFragmentManager)
+                            } else {
+                                doCreateCheckout(method, null)
                             }
                         }
                     })
@@ -143,6 +148,27 @@ class ShopActivity : AppCompatActivity() {
                 viewModel.setNfcEnabled(true)
             }
                 .show(supportFragmentManager)
+        }
+    }
+
+    private fun doCreateCheckout(method: CardMethod, creditInfo: CreditInfo?) {
+        collectOne(viewModel.createCheckout(method, creditInfo)) { result ->
+            when (result) {
+                is ResultWrapper.Success -> {
+                    if (result.data?.isSuccess == true) {
+                        // success create checkout
+                        Toast.makeText(this, getString(R.string.text_success), Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(this, result.data?.message.orEmpty(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                is ResultWrapper.Loading -> {}
+                is ResultWrapper.Failure -> {}
+                else -> {}
+            }
         }
     }
 }

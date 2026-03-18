@@ -4,6 +4,7 @@ import ji.shop.exts.buildApiService
 import ji.shop.exts.buildOkHttpClient
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -57,6 +58,16 @@ interface Api {
 
     @POST("pos/get_pos_temporary_shopping_cart_fees")
     suspend fun getTemporaryShoppingCartFees(@Body request: RequestPostShoppingCart): WrapResponse<TemporaryFeesDto>
+
+    @POST("pos/create_pos_shopping_cart_order")
+    suspend fun createShoppingCartOrder(@Body request: RequestPostShoppingCart): CheckoutResponseDto?
+
+    @PATCH("box_offices/process_complete_cart")
+    suspend fun processCompleteCartOrder(
+        @Query("email") email: String,
+        @Query("cart_id") cartId: String,
+        @Body deviceInfoRequest: DeviceInfoRequest
+    ): WrapResponse<Any>
 
     companion object {
         lateinit var api: Api

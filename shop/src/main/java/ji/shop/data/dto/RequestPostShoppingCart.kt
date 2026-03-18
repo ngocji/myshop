@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 import ji.shop.ShopSDK
 import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.Cart
+import ji.shop.data.domain.CreditInfo
+import ji.shop.data.domain.CustomerInfo
 import ji.shop.utils.Log
 
 data class RequestPostShoppingCart(
@@ -154,7 +156,12 @@ data class ModifierOptionItemRequest(
     val total: Int? = null
 )
 
-fun createShoppingCartRequest(carts: List<Cart>, cardMethod: CardMethod): RequestPostShoppingCart {
+fun createShoppingCartRequest(
+    carts: List<Cart>,
+    cardMethod: CardMethod,
+    creditInfo: CreditInfo? = null,
+    customerInfo: CustomerInfo? = null
+): RequestPostShoppingCart {
     val shopCartsMap = mutableMapOf<String, ShopCartRequest>()
     carts.groupBy { it.shop }.forEach { (shop, shopCarts) ->
         if (shop != null) {
@@ -202,7 +209,14 @@ fun createShoppingCartRequest(carts: List<Cart>, cardMethod: CardMethod): Reques
     return RequestPostShoppingCart(
         shoppingCart = shopCartsMap,
         paymentMethod = cardMethod.name,
-        venueId = ShopSDK.getVenueId()
+        venueId = ShopSDK.getVenueId(),
+        email = customerInfo?.email,
+        information = InformationRequest(
+            fullName = customerInfo?.name,
+            phone = customerInfo?.phoneNumber,
+            email = customerInfo?.email
+        ),
+        discountCode = null,
     ).also {
         Log.d("Request shoping cart:\n${Gson().toJson(it)}")
     }

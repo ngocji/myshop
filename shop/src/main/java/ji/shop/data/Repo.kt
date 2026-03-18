@@ -5,10 +5,11 @@ import ji.shop.ShopSDK
 import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.Cart
 import ji.shop.data.domain.CreditInfo
+import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.Ticket
 import ji.shop.data.dto.Api
-import ji.shop.data.dto.createShoppingCartRequest
 import ji.shop.data.dto.RequestRefund
+import ji.shop.data.dto.createShoppingCartRequest
 import ji.shop.data.dto.toDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -71,6 +72,14 @@ object Repo {
         return CreditInfo(cardNumber = "678-774-0987")
     }
 
+    fun getLastCustomerInfo(): CustomerInfo? {
+        return CustomerInfo(
+            name = "Nguyen Van A",
+            email = "text@mail.com",
+            phoneNumber = "0000000000"
+        )
+    }
+
     suspend fun getTemporaryShoppingCart(carts: List<Cart>, cardMethod: CardMethod) =
         withContext(Dispatchers.IO) {
             api.getTemporaryShoppingCartFees(
@@ -79,5 +88,32 @@ object Repo {
                     cardMethod = cardMethod
                 )
             ).data?.toDomain()
+        }
+
+    suspend fun createShoppingCart(
+        carts: List<Cart>,
+        cardMethod: CardMethod,
+        creditInfo: CreditInfo?,
+        customerInfo: CustomerInfo?
+    ) =
+        withContext(Dispatchers.IO) {
+            val checkoutResponse = api.createShoppingCartOrder(
+                createShoppingCartRequest(
+                    carts = carts,
+                    cardMethod = cardMethod,
+                    creditInfo = creditInfo,
+                    customerInfo = customerInfo ?: getLastCustomerInfo()
+                )
+            )
+//            if (checkoutResponse?.success == true && !checkoutResponse.cartId.isNullOrBlank()) {
+//                val processResponse = api.processCompleteCartOrder(
+//                    email = ShopSDK.getEmail(),
+//                    cartId = checkoutResponse.cartId,
+//                    deviceInfoRequest = DeviceInfoRequest()
+//                )
+//                checkoutResponse.toDomain()
+//            } else {
+            checkoutResponse?.toDomain()
+//            }
         }
 }

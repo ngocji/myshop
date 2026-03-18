@@ -16,8 +16,8 @@ import ji.shop.data.domain.Product
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.TabType
-import ji.shop.data.domain.TemporaryFees
 import ji.shop.data.domain.WrapUpdateData
+import ji.shop.exts.applyWhenSuccess
 import ji.shop.exts.mapWhenSuccess
 import ji.shop.exts.safeFlow
 import ji.shop.exts.safeResultFlow
@@ -325,4 +325,22 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             cardMethod = usedCardMethod
         )
     }
+
+    fun createCheckout(method: CardMethod, creditInfo: CreditInfo?) = safeResultFlow {
+        usedCardMethod.tryEmit(method)
+        creditCardInfo.tryEmit(creditInfo)
+
+        Repo.createShoppingCart(
+            carts = cartsState.value.data,
+            cardMethod = method,
+            creditInfo = creditInfo,
+            customerInfo = customerInfoState.value
+        )
+    }
+        .applyWhenSuccess {
+            // clear carts
+            if (this?.isSuccess == true) {
+                cartsState.tryEmit(WrapUpdateData(mutableListOf()))
+            }
+        }
 }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -51,5 +52,12 @@ fun <T, R> ResultWrapper<T>.mapWhenSuccess(block: (T) -> R) = this.let { result 
         is ResultWrapper.Loading -> ResultWrapper.Loading
         is ResultWrapper.Failure -> ResultWrapper.Failure(result.error)
         else -> ResultWrapper.None
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <T> Flow<ResultWrapper<T>>.applyWhenSuccess(block: T.() -> Unit) = this.onEach { result ->
+    if (result is ResultWrapper.Success) {
+        block(result.data)
     }
 }

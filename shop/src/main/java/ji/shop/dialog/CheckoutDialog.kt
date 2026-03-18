@@ -76,6 +76,7 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
     }
 
     private fun toggleCardMethod(cardMethod: CardMethod) {
+        if (usedCardMethod == cardMethod) return
         usedCardMethod = cardMethod
         with(binding) {
             btnCash.alpha = if (usedCardMethod == CardMethod.Cash) 1f else 0.5f
