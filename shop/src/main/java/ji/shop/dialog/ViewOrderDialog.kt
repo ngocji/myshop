@@ -58,36 +58,13 @@ class ViewOrderDialog : BaseDialog(R.layout.dialog_view_order) {
     private fun initViews() {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
-            btnRefund.setOnClickListener {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    Repo.refundPosOrder(requestRefund)
-                    withContext(Dispatchers.Main) {
-                        //ViewCardInfoDialog.newInstance(checkout).show(childFragmentManager)
-                    }
-                }
-            }
+
         }
     }
 
     private fun initData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val refund = Repo.getRefund(postOrderId)
-            requestRefund = refund?.toRequest(postOrderId, ShopSDK.getVenueId())
-            withContext(Dispatchers.Main) {
-                val data = (refund?.items.orEmpty()
-                    .map { RefundItemUi.RefundItem(it) } +
-                        RefundItemUi.TotalRefundItem(refund?.summary?.refundableAmount))
-                    .toMutableList()
 
-                flexibleAdapter = FlexibleAdapter(data)
-                binding.recyclerView.adapter = flexibleAdapter
-
-                refund?.customerInfo?.apply {
-                    binding.tvName.text = name
-                    binding.tvPhone.text = phoneNumber
-                    binding.tvMail.text = email
-                }
-            }
         }
     }
 

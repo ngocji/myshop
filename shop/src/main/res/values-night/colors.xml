@@ -33,4 +33,5 @@
     <color name="colorOverlayBlur">#1F000000</color>
     <color name="colorPrimaryAlpha10">#1A137EFC</color>
     <color name="colorHineText">#80FFFFFF</color>
+    <color name="lineColor">#33FFFFFF</color>
 </resources>

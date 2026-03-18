@@ -36,4 +36,9 @@
     <declare-styleable name="StateWrapperView">
         <attr name="st_progress_background" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="TitleView">
+        <attr name="tv_title" format="string" />
+        <attr name="tv_value" format="string" />
+    </declare-styleable>
 </resources>

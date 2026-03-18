@@ -21,9 +21,12 @@
     <TextView
         android:id="@+id/tv_name"
         style="@style/fontSemiBold"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_6dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toStartOf="@+id/img_Visibility"
         app:layout_constraintBottom_toBottomOf="@id/img_picture"
         app:layout_constraintStart_toEndOf="@id/img_picture"
         app:layout_constraintTop_toTopOf="@id/img_picture"
