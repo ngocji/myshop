@@ -1,6 +1,7 @@
 package ji.shop.items
 
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
@@ -13,8 +14,8 @@ import ji.shop.utils.NumberFormater
 
 data class ProductItemUi(
     val data: Product,
-    var count: Int,
-    val isUseToggleCount: Boolean
+    var count: Int = 0,
+    private val isSignSelectionProduct: Boolean = data.isSingleSelection()
 ) : ItemUI<ItemProductBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
@@ -29,7 +30,7 @@ data class ProductItemUi(
             )
         ).apply {
             withBinding(this) {
-                toggleCountView.setHideWhenCountingZero(!isUseToggleCount)
+                toggleCountView.setHideWhenCountingZero(false)
                 toggleCountView.setListener { newCount ->
                     val item = adapter.getItem(absoluteAdapterPosition) as? ProductItemUi
                     item?.count = newCount
@@ -54,7 +55,6 @@ data class ProductItemUi(
                 payloads.forEach { obj ->
                     if (obj == Payload.CHANGE_COUNT || obj == Payload.CHANGE_USE_TOGGLE_COUNT) {
                         toggleCountView.setCount(count)
-                        toggleCountView.setHideWhenCountingZero(!isUseToggleCount)
                         return@withBinding
                     }
                 }
@@ -63,8 +63,12 @@ data class ProductItemUi(
             tvName.text = data.name
             tvPrice.text = NumberFormater.formatNumberLocale(data.price)
             image.load(data.images.firstOrNull())
-            toggleCountView.setCount(count)
-            toggleCountView.setHideWhenCountingZero(!isUseToggleCount)
+            if (isSignSelectionProduct) {
+                toggleCountView.isVisible = true
+                toggleCountView.setCount(count)
+            } else {
+                toggleCountView.isVisible = false
+            }
         }
     }
 }

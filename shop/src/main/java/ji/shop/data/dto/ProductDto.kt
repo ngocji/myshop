@@ -47,7 +47,8 @@ fun ProductDto.toDomain(): Product {
     return Product(
         id = id.orEmpty(),
         name = name.orEmpty(),
-        price = onlinePrice ?: 0.0,
+        onlinePrice = onlinePrice ?: 0.0,
+        cashPrice = cashPrice ?: 0.0,
         // todo update status for product
         status = when {
             status == true && isPause == false -> Status.COMPLETE
@@ -56,7 +57,8 @@ fun ProductDto.toDomain(): Product {
         },
         description = description.orEmpty(),
         images = listOf(imageUrl),
-        variations = emptyList(),
-        modifiers = emptyList()
+        variations = variations?.map { it.toDomain() } ?: emptyList(),
+        modifiers = modifiers?.map { it.toDomain() } ?: emptyList(),
+        isFavorite = isFavorite ?: false
     )
 }

@@ -46,7 +46,7 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
             flexibleProductAdapter = FlexibleAdapter(items.toMutableList())
                 .addListener(object : CountChangOnItemListener {
                     override fun onCountChanged(position: Int, count: Int) {
-                        shopViewModel.updateProductCountOfCart(
+                        shopViewModel.addToCart(
                             flexibleProductAdapter?.getItem(
                                 position
                             )?.data ?: return, count
@@ -82,12 +82,14 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
     }
 
     private fun doAddToCart(position: Int, product: Product) {
-        AddProductDialog.newInstance(shopViewModel.getCart(product), product) {
+        AddProductDialog.newInstance(product) {
             shopViewModel.addToCart(it)
-            flexibleProductAdapter?.run {
-                val item = getItem(position) ?: return@run
-                item.count = it.count
-                notifyItemChanged(position, Payload.CHANGE_COUNT)
+            if (product.isSingleSelection()) {
+                flexibleProductAdapter?.run {
+                    val item = getItem(position) ?: return@run
+                    item.count = it.count
+                    notifyItemChanged(position, Payload.CHANGE_COUNT)
+                }
             }
         }
             .show(childFragmentManager)

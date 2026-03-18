@@ -1,9 +1,11 @@
 package ji.shop.dialog
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
+import androidx.core.view.isVisible
 import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
@@ -20,9 +22,22 @@ import kotlin.math.roundToInt
 
 class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     private val binding by viewBinding(DialogAddProductBinding::bind)
-    private var currentCart: Cart? = null
     private var product: Product? = null
     private var onAdd: ((Cart) -> Unit)? = null
+    private val onCountChangedListener = object : CountChangOnItemListener {
+        override fun onCountChanged(position: Int, count: Int) {
+            doUpdatePrice()
+        }
+
+        override fun onClick(
+            adapter: FlexibleAdapter<*>,
+            view: View,
+            position: Int
+        ) {
+            doUpdatePrice()
+        }
+    }
+
     override fun doOnWindow(window: Window) {
         super.doOnWindow(window)
         window.setLayout(
@@ -43,19 +58,9 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     private fun initViews() {
         with(binding) {
             toggleCountView?.setListener { doUpdatePrice() }
-            selectionSizeItemsView.setListener { _, _, _ -> doUpdatePrice() }
-            selectionAdditionalItemsView.setListener(object : CountChangOnItemListener {
-                override fun onCountChanged(position: Int, count: Int) {
-                    doUpdatePrice()
-                }
 
-                override fun onClick(
-                    adapter: FlexibleAdapter<*>,
-                    view: View,
-                    position: Int
-                ) {
-                }
-            })
+            selectionVariationItemsView.setListener(onCountChangedListener)
+            groupModifiersView.setListener(onCountChangedListener)
 
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
             btnAddToCart.setOnClickListener { doAddToCart() }
@@ -64,14 +69,14 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
 
     private fun initData() {
         with(binding) {
-            toggleCountView?.setCount(currentCart?.count?.takeIf { it > 0 } ?: 1)
+            toggleCountView?.setCount(1)
             tvProductName.text = product?.name ?: ""
             imageProduct.load(product?.images?.firstOrNull())
-            selectionSizeItemsView.setData(
-                items = product?.variations ?: emptyList(),
-                selectedIndex = product?.variations?.indexOfFirst { it.name == currentCart?.size?.name }
-                    .let { if (it == null || it < 0) 0 else it })
-            selectionAdditionalItemsView.setData(currentCart, product?.modifiers ?: emptyList())
+
+            groupVariationsView.isVisible = !product?.variations.isNullOrEmpty()
+            selectionVariationItemsView.setData(items = product?.variations ?: emptyList())
+
+            groupModifiersView.setData(product?.modifiers ?: emptyList())
             doUpdatePrice()
         }
     }
@@ -83,6 +88,7 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
         dismissAllowingStateLoss()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun doUpdatePrice() {
         val cart = obtainCart()
         val totalPrice = NumberFormater.formatNumberLocale(cart?.getTotalPrice() ?: 0.0)
@@ -92,23 +98,19 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     }
 
     private fun obtainCart(): Cart? {
-        val size = binding.selectionSizeItemsView.getSelected()
-        val additional = binding.selectionAdditionalItemsView.getMapCount()
-        return currentCart?.copy(
-            size = size,
-            additional = additional
-        ) ?: Cart(
+        val size = binding.selectionVariationItemsView.getSelected()
+        val modifiers = binding.groupModifiersView.getSelectedData()
+        return Cart(
             product = product ?: return null,
-            size = size,
-            additional = additional,
+            variation = size,
+            modifiers = modifiers,
             count = binding.toggleCountView?.currentCount ?: 1
         )
     }
 
     companion object {
-        fun newInstance(cart: Cart?, product: Product, onAdd: (Cart) -> Unit): AddProductDialog {
+        fun newInstance(product: Product, onAdd: (Cart) -> Unit): AddProductDialog {
             return AddProductDialog().apply {
-                this.currentCart = cart
                 this.product = product
                 this.onAdd = onAdd
             }

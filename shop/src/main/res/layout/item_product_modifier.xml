@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ji.shop.widget.GradientStrokeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/large_2_padding"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/large_2_padding"
+    android:paddingVertical="@dimen/large_padding">
+
+    <TextView
+        android:id="@+id/tv_add_title"
+        style="@style/fontDemiBold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        tools:text="@string/text_add" />
+
+    <ji.shop.widget.SelectionModifierOptionItemsView
+        android:id="@+id/selection_additional_items_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_selection_modifier_option" />
+</ji.shop.widget.GradientStrokeLinearLayout>

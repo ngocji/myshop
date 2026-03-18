@@ -62,7 +62,7 @@ class CartItemUi(
             }
 
             tvName.text = data.product.name
-            tvSize.text = data.size?.name.orEmpty()
+            tvSize.text = data.variation?.name.orEmpty()
             image.load(data.product.images.firstOrNull(), error = R.drawable.ic_product)
             toggleCountView.setCount(count)
             tvPrice.text = NumberFormater.formatNumberLocale(data.getTotalPrice(count))

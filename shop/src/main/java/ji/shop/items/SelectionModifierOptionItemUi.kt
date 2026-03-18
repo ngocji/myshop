@@ -6,22 +6,22 @@ import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.adapter.ItemViewHolder
 import ji.shop.base.adapter.Payload
-import ji.shop.data.domain.ProductModifier
-import ji.shop.databinding.ItemSelectionAdditionalBinding
+import ji.shop.data.domain.ModifierOption
+import ji.shop.databinding.ItemSelectionModifierOptionBinding
 import ji.shop.exts.layoutInflate
 import ji.shop.utils.NumberFormater
 
-data class SelectionAdditionalItemUi(
-    val data: ProductModifier,
+data class SelectionModifierOptionItemUi(
+    val data: ModifierOption,
     var count: Int
-) : ItemUI<ItemSelectionAdditionalBinding>() {
+) : ItemUI<ItemSelectionModifierOptionBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
         parent: ViewGroup,
         viewType: Int
     ): ItemViewHolder {
         return ItemViewHolder(
-            ItemSelectionAdditionalBinding.inflate(
+            ItemSelectionModifierOptionBinding.inflate(
                 parent.layoutInflate(),
                 parent,
                 false
@@ -29,7 +29,8 @@ data class SelectionAdditionalItemUi(
         ).apply {
             withBinding(this) {
                 toggleCountView.setListener { newCount ->
-                    val item = adapter.getItem(absoluteAdapterPosition) as? SelectionAdditionalItemUi
+                    val item =
+                        adapter.getItem(absoluteAdapterPosition) as? SelectionModifierOptionItemUi
                     item?.count = newCount
                     adapter.notifyListeners {
                         if (this is CountChangOnItemListener) {

@@ -75,6 +75,7 @@
                 android:layout_height="242dp" />
 
             <ji.shop.widget.GradientStrokeLinearLayout
+                android:id="@+id/group_variations_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/large_padding"
@@ -83,44 +84,31 @@
                 android:paddingVertical="@dimen/large_padding">
 
                 <TextView
-                    android:id="@+id/tv_size_title"
+                    android:id="@+id/tv_variation_title"
                     style="@style/fontDemiBold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_choose_1"
+                    android:text="@string/text_variation"
                     android:textSize="20sp" />
 
                 <ji.shop.widget.SelectionSizeItemsView
-                    android:id="@+id/selection_size_items_view"
+                    android:id="@+id/selection_variation_items_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_selection_size" />
             </ji.shop.widget.GradientStrokeLinearLayout>
 
-            <ji.shop.widget.GradientStrokeLinearLayout
+            <ji.shop.widget.GroupModifiersView
+                android:id="@+id/group_modifiers_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/large_padding"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/large_2_padding"
-                android:paddingVertical="@dimen/large_padding">
+                android:paddingVertical="@dimen/large_padding" />
 
-                <TextView
-                    android:id="@+id/tv_add_title"
-                    style="@style/fontDemiBold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/text_add"
-                    android:textSize="20sp" />
-
-                <ji.shop.widget.SelectionAdditionalItemsView
-                    android:id="@+id/selection_additional_items_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_selection_additional" />
-            </ji.shop.widget.GradientStrokeLinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

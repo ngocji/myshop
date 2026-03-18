@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
+import androidx.fragment.app.activityViewModels
 import ji.shop.R
+import ji.shop.ShopViewModel
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
@@ -23,6 +25,7 @@ import kotlin.math.roundToInt
 
 class FavoritesDialog : BaseDialog(R.layout.dialog_favorite) {
     private val binding by viewBinding(DialogFavoriteBinding::bind)
+    private val viewModel by activityViewModels<ShopViewModel>()
     private var flexibleAdapter: FlexibleAdapter<CartItemUi>? = null
     private var actionCheckout: ((List<Cart>) -> Unit)? = null
     private var selectedItems = emptyList<Cart>()
@@ -58,7 +61,7 @@ class FavoritesDialog : BaseDialog(R.layout.dialog_favorite) {
     }
 
     private fun initData() {
-//        collect(flow = Repo.getFavorites()) { items ->
+//        collect(flow = viewModel.getFavorites()) { items ->
 //            flexibleAdapter =
 //                FlexibleAdapter(items.map { CartItemUi(it) }.toMutableList())
 //                    .addListener(object : CountChangOnItemListener {

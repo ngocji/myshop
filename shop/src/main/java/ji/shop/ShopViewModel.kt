@@ -17,6 +17,7 @@ import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.TabType
 import ji.shop.data.domain.WrapUpdateData
+import ji.shop.exts.mapWhenSuccess
 import ji.shop.exts.safeFlow
 import ji.shop.exts.safeResultFlow
 import ji.shop.fragments.InventoryFragment
@@ -49,7 +50,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     // state for user
     val myBalanceState = MutableStateFlow(0.0)
-    val cartsState = MutableStateFlow(WrapUpdateData<Set<Cart>>(emptySet()))
+    val cartsState = MutableStateFlow(WrapUpdateData<MutableList<Cart>>(mutableListOf()))
     val isNfcEnabledState = MutableStateFlow(false)
 
     val customerInfoState = MutableStateFlow<CustomerInfo?>(null)
@@ -61,7 +62,6 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         wrap.data.sumOf { it.getTotalPrice() }.takeIf { it > 0 }
             ?.let { NumberFormater.formatNumberLocale(it) }
     }
-
 
     // trigger refresh
     private val triggerRefreshCollectionsFlow = MutableStateFlow<Int>(0)
@@ -169,23 +169,21 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         return cartsState.value.data.find { it.product.id == product.id }?.count ?: 0
     }
 
-    fun updateProductCountOfCart(product: Product, count: Int) {
+    fun addToCart(product: Product, count: Int) {
         cartsState.update {
-            val carts = it.data.toMutableSet()
+            val carts = it.data
             val extProduct = carts.find { c -> c.product.id == product.id }
             if (extProduct != null) {
                 carts.remove(extProduct)
             }
 
             if (count > 0) {
-                carts.add(
-                    extProduct?.copy(count = count) ?: Cart(
-                        product = product,
-                        size = product.variations.firstOrNull(),
-                        count = count,
-                        additional = emptyMap()
-                    )
+                val newCart = extProduct?.copy(count = count) ?: Cart(
+                    product = product,
+                    count = count,
                 )
+                newCart.compute(shopCategoryState.value)
+                carts.add(newCart)
             }
 
             WrapUpdateData(data = carts)
@@ -198,17 +196,12 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun isNfcEnabled() = isNfcEnabledState.value
 
-    fun getCart(product: Product): Cart? {
-        return cartsState.value.data.find { it.product.id == product.id }
-    }
-
     fun addToCart(cart: Cart) {
         cartsState.update {
-            val carts = it.data.toMutableSet()
-            val extProduct = carts.find { c ->
-                c.product.id == cart.product.id
-                        && c.size == cart.size
-            }
+            cart.compute(shopCategoryState.value)
+
+            val carts = it.data
+            val extProduct = carts.find { c -> c.generatedId == cart.generatedId }
             if (extProduct != null) {
                 carts.remove(extProduct)
             }
@@ -220,10 +213,11 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun addToCarts(carts: List<Cart>) {
         cartsState.update {
-            val currentCarts = it.data.toMutableSet()
+            val currentCarts = it.data
 
             carts.forEach { cart ->
-                val exists = currentCarts.find { c -> c.product.id == cart.product.id }
+                cart.compute(shopCategoryState.value)
+                val exists = currentCarts.find { c -> c.generatedId == cart.generatedId }
                 if (exists != null) {
                     currentCarts.remove(exists)
                 }
@@ -240,7 +234,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun updateCarts(carts: List<Cart>) {
         cartsState.update {
-            WrapUpdateData(data = carts.toSet())
+            WrapUpdateData(data = carts.toMutableList())
         }
     }
 
@@ -284,7 +278,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         .mapLatest { items ->
             items.map {
                 ProductItemUi(
-                    it, count = getProductCountOfCart(it), isUseToggleCount = it.isSingleSelection()
+                    it, count = if (it.isSingleSelection()) getProductCountOfCart(it) else 0
                 )
             }
         }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
@@ -292,7 +286,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     fun getProductsCountNotifyFlow(groupId: String) =
         combine(cartsState, getProductsFlow(groupId)) { carts, products ->
             val index = carts.data.mapNotNull { cart ->
-                val index = products.indexOfFirst { it.data.id == cart.product.id } ?: -1
+                val index = products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
                 val item = products.getOrNull(index)
                 if (item != null) {
                     item.count = cart.count
@@ -309,4 +303,17 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         collectionState.tryEmit(null)
         groupState.tryEmit(null)
     }
+
+
+    fun getFavorites() = sellDataState
+        .mapWhenSuccess { data ->
+            val productItems = data?.collections?.flatMap { collection ->
+                collection.groups.flatMap { group ->
+                    group.products
+                }
+            } ?: data?.groups?.flatMap { it.products }
+            ?: data?.items ?: emptyList()
+
+            productItems.filter { it.isFavorite }
+        }
 }
