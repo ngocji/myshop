@@ -10,7 +10,6 @@ import ji.shop.base.viewBinding
 import ji.shop.data.domain.Order
 import ji.shop.databinding.FragmentOrdersBinding
 import ji.shop.dialog.ViewRefundDialog
-import ji.shop.exts.collect
 import ji.shop.items.OrdersItemUi
 import ji.shop.widget.PopupAction
 import ji.shop.widget.PopupWindow
@@ -47,6 +46,7 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                         position: Int
                     ) {
                         if (view.id == R.id.img_action) {
+                            val posOrderId = flexibleOrdersAdapter?.getItem(position)?.order?.posOrderId
                             val popupWindow = PopupWindow(
                                 view.context,
                                 view,
@@ -54,11 +54,12 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                                     override fun onActionClick(action: PopupAction) {
                                         when (action) {
                                             PopupAction.VIEW_ORDER -> {
+
                                             }
 
                                             PopupAction.REFUND -> {
-                                                /*ViewRefundDialog.newInstance(checkout)
-                                                    .show(childFragmentManager)*/
+                                                ViewRefundDialog.newInstance(posOrderId)
+                                                    .show(childFragmentManager)
                                             }
 
                                             PopupAction.COUPONS_REPORT -> {

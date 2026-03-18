@@ -37,9 +37,8 @@ interface Api {
 
     @GET("pos/get_pos_order_view")
     suspend fun getViewOrder(
-        @Query("pos_order_id") posOrderId: String,
+        @Query("pos_order_id") posOrderId: String?,
         @Query("venue_id") venueId: String,
-        @Query("auth_token") authToken: String
     ): WrapResponse<ViewOrderDto>
 
     @GET("pos/get_pos_refund_information")

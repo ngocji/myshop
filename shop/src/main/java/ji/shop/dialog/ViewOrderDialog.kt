@@ -15,7 +15,7 @@ import ji.shop.base.viewBinding
 import ji.shop.data.Repo
 import ji.shop.data.dto.RequestRefund
 import ji.shop.data.dto.toRequest
-import ji.shop.databinding.DialogViewRefundBinding
+import ji.shop.databinding.DialogViewOrderBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
 import ji.shop.exts.width
@@ -25,8 +25,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
-class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
-    private val binding by viewBinding(DialogViewRefundBinding::bind)
+class ViewOrderDialog : BaseDialog(R.layout.dialog_view_order) {
+    private val binding by viewBinding(DialogViewOrderBinding::bind)
     private var postOrderId: String? = null
     private var requestRefund: RequestRefund? = null
     private var flexibleAdapter: FlexibleAdapter<ItemUI<*>>? = null
@@ -92,8 +92,8 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
     }
 
     companion object {
-        fun newInstance(postOrderId: String?): ViewRefundDialog {
-            return ViewRefundDialog().apply {
+        fun newInstance(postOrderId: String?): ViewOrderDialog {
+            return ViewOrderDialog().apply {
                 this.postOrderId = postOrderId
             }
         }
