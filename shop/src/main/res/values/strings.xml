@@ -79,4 +79,9 @@
     <string name="text_loading">Loading...</string>
     <string name="text_payment">Payment</string>
     <string name="text_success">Success!</string>
+    <string name="text_coupon_applied">Coupon Applied</string>
+    <string name="text_coupon_code">Coupon Code</string>
+    <string name="text_discount_type">Discount Type</string>
+    <string name="text_discount_value">Discount Value</string>
+    <string name="text_discount_amount">Discount Amount</string>
 </resources>

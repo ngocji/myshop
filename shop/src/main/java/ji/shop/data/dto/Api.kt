@@ -42,6 +42,12 @@ interface Api {
         @Query("venue_id") venueId: String,
     ): WrapResponse<ViewOrderDto>
 
+    @GET("pos/get_pos_coupons_report")
+    suspend fun getCouponsReport(
+        @Query("pos_order_id") posOrderId: String?,
+        @Query("venue_id") venueId: String,
+    ): WrapResponse<ViewOrderDto>
+
     @GET("pos/get_pos_refund_information")
     suspend fun getRefundInformation(
         @Query("pos_order_id") posOrderId: String?,

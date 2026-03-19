@@ -46,6 +46,10 @@ object Repo {
         api.getViewOrder(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
     }
 
+    suspend fun getCouponsReport(posOrderId: String?) = withContext(Dispatchers.IO) {
+        api.getCouponsReport(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
+    }
+
     suspend fun refundPosOrder(refund: RequestRefund?) = withContext(Dispatchers.IO) {
         api.refundPosOrder(refund)
     }
