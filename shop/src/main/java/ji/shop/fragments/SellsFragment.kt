@@ -181,9 +181,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
 
     private fun doUpdateUiSelectedGroup(index: Int) {
         flexibleGroupAdapter?.run {
-            if (index == -1) {
-                clearSelection()
-            } else if (!isSelected(index)) {
+            if (!isSelected(index)) {
                 toggleSelection(index)
             }
         }
