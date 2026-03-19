@@ -38,7 +38,7 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        toggleCardMethod(usedCardMethod)
+        toggleCardMethod(usedCardMethod, true)
         reloadFees()
     }
 
@@ -75,8 +75,8 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         }
     }
 
-    private fun toggleCardMethod(cardMethod: CardMethod) {
-        if (usedCardMethod == cardMethod) return
+    private fun toggleCardMethod(cardMethod: CardMethod, force: Boolean = false) {
+        if (usedCardMethod == cardMethod && !force) return
         usedCardMethod = cardMethod
         with(binding) {
             btnCash.alpha = if (usedCardMethod == CardMethod.Cash) 1f else 0.5f
