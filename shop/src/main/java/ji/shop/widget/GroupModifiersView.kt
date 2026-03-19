@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import ji.shop.R
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.data.domain.ProductModifier
 import ji.shop.data.domain.WrapperOptionModifier
@@ -43,7 +44,9 @@ class GroupModifiersView @JvmOverloads constructor(
                     onCountChangedListener?.onClick(adapter, view, position)
                 }
             })
-            addView(binding.root)
+            addView(binding.root, LayoutParams(-1,-2).apply {
+                setMargins(0,0,0,context.resources.getDimensionPixelOffset(R.dimen.large_2_padding))
+            })
         }
     }
 

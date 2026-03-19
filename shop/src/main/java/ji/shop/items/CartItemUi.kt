@@ -1,6 +1,7 @@
 package ji.shop.items
 
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import ji.shop.R
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
@@ -62,7 +63,14 @@ class CartItemUi(
             }
 
             tvName.text = data.product.name
-            tvSize.text = data.variation?.name.orEmpty()
+            data.getVariationAndModifier().also {
+                if (it.isEmpty()) {
+                    tvSize.isVisible = false
+                } else {
+                    tvSize.isVisible = true
+                    tvSize.text = it
+                }
+            }
             image.load(data.product.images.firstOrNull(), error = R.drawable.ic_product)
             toggleCountView.setCount(count)
             tvPrice.text = NumberFormater.formatNumberLocale(data.getTotalPrice(count))

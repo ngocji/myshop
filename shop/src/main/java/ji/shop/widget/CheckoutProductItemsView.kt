@@ -23,7 +23,10 @@ class CheckoutProductItemsView @JvmOverloads constructor(
         removeAllViews()
         carts.forEach { cart ->
             val binding = ItemCheckoutProductViewBinding.inflate(inflater)
-            binding.tvName.text = "${cart.count}x${cart.product.name}"
+            binding.tvName.text = buildString {
+                append("${cart.count}x${cart.product.name}")
+                append(cart.getVariationAndModifier())
+            }
             binding.tvTotalPrice.text = "1x ${NumberFormater.formatNumberLocale(cart.getPricePerItem(cardMethod = cardMethod))}"
             addView(binding.root)
         }

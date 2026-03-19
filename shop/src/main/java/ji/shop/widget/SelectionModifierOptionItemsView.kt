@@ -41,13 +41,18 @@ class SelectionModifierOptionItemsView @JvmOverloads constructor(
 
     fun getSelectedOptions(): Pair<ProductModifier, WrapperOptionModifier>? {
         return productModifier?.let { productModifier ->
-            productModifier to WrapperOptionModifier(
-                items = flexibleAdapter.items
-                    .filter { it.count > 0 }
-                    .map {
-                        it.data to it.count
-                    }
-            )
+            val items = flexibleAdapter.items
+                .filter { it.count > 0 }
+                .map {
+                    it.data to it.count
+                }
+            if (items.isNotEmpty()) {
+                productModifier to WrapperOptionModifier(
+                    items = items
+                )
+            } else {
+                null
+            }
         }
     }
 }
