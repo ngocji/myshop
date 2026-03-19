@@ -81,6 +81,11 @@ class ViewCouponReportDialog : BaseDialog(R.layout.dialog_coupons_report) {
                             tvSubTotal.setValue(NumberFormater.formatNumberLocale(subtotal))
                             tvTax.setValue(NumberFormater.formatNumberLocale(tax))
                             tvTotal.setValue(NumberFormater.formatNumberLocale(total))
+
+                            tvCouponCode.setValue(couponCode)
+                            tvDiscountType.setValue(discountType)
+                            tvDiscountValue.setValue(discountValue)
+                            tvDiscountAmount.setValue(NumberFormater.formatNumberLocale(discountAmount))
                         }
                     }
                 }

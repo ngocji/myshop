@@ -13,7 +13,12 @@ data class SummaryViewOrder(
     val paymentText: String,
     val subtotal: Double,
     val tax: Double,
-    val total: Double
+    val total: Double,
+    val couponCode: String = "",
+    val discountType: String = "",
+    val discountValue: String = "",
+    val discountAmount: Int = 0,
+    val discountAmountRaw: Double = 0.0
 )
 
 data class OrderInfo(

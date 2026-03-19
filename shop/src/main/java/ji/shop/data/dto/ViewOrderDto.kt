@@ -61,6 +61,21 @@ data class SummaryDto(
 
     @SerializedName("payment_text")
     val paymentText: String?,
+
+    @SerializedName("coupon_code")
+    val couponCode: String?,
+
+    @SerializedName("discount_type")
+    val discountType: String?,
+
+    @SerializedName("discount_value")
+    val discountValue: String?,
+
+    @SerializedName("discount_amount")
+    val discountAmount: Int?,
+
+    @SerializedName("discount_amount_raw")
+    val discountAmountRaw: Double?
 )
 
 fun ViewOrderDto.toDomain() : ViewOrder {
@@ -78,7 +93,12 @@ fun SummaryDto.toDomain() : SummaryViewOrder {
         paymentText = paymentText.orEmpty(),
         subtotal = subtotal ?: 0.0,
         tax = tax ?: 0.0,
-        total = total ?: 0.0
+        total = total ?: 0.0,
+        couponCode = couponCode.orEmpty(),
+        discountType = discountType.orEmpty(),
+        discountValue = discountValue.orEmpty(),
+        discountAmount = discountAmount ?: 0,
+        discountAmountRaw = discountAmountRaw ?: 0.0
     )
 }
 
