@@ -36,7 +36,9 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
             initProducts(data)
         }
 
-        collect(flow = shopViewModel.getProductsCountNotifyFlow(groupId)) {
+        collect(
+            flow = shopViewModel.getProductsCountNotifyFlow(
+            groupId, { flexibleProductAdapter?.items ?: emptyList() })) {
             doUpdateProductCountUi(it)
         }
     }

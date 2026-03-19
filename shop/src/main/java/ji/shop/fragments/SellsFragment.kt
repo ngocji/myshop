@@ -219,7 +219,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
 
     private fun doViewFavorites() {
         FavoritesDialog.newInstance { items ->
-            shopViewModel.addToCarts(items)
+            shopViewModel.addToCarts(items, true)
         }
             .show(childFragmentManager)
     }

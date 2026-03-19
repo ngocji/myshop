@@ -26,6 +26,7 @@ import ji.shop.fragments.OrdersFragment
 import ji.shop.fragments.SellsFragment
 import ji.shop.items.CollectionGridItemUi
 import ji.shop.items.CollectionLinearItemUi
+import ji.shop.items.FavoriteProductItemUi
 import ji.shop.items.GroupItemUi
 import ji.shop.items.InventoryUi
 import ji.shop.items.ProductItemUi
@@ -212,7 +213,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
     }
 
-    fun addToCarts(carts: List<Cart>) {
+    fun addToCarts(carts: List<Cart>, merge: Boolean) {
         cartsState.update {
             val currentCarts = it.data
 
@@ -222,7 +223,15 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 if (exists != null) {
                     currentCarts.remove(exists)
                 }
-                currentCarts.add(cart)
+                if (merge && !cart.product.isSingleSelection()) {
+                    currentCarts.add(
+                        cart.copy(
+                            count = (exists?.count ?: 0) + cart.count
+                        )
+                    )
+                } else {
+                    currentCarts.add(cart)
+                }
             }
 
             WrapUpdateData(data = currentCarts)
@@ -284,9 +293,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             }
         }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    fun getProductsCountNotifyFlow(groupId: String) =
-        combine(cartsState, getProductsFlow(groupId)) { carts, products ->
+    fun getProductsCountNotifyFlow(groupId: String, productsAction: ()-> List<ProductItemUi>) = cartsState
+        .mapLatest { carts ->
             val index = carts.data.mapNotNull { cart ->
+                val products = productsAction()
                 val index =
                     products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
                 val item = products.getOrNull(index)
@@ -298,7 +308,8 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 }
             }
             index.minOrNull() to index.maxOrNull()
-        }.filterNotNull()
+        }
+        .filterNotNull()
 
     fun setViewShopCategory(item: ShopCategory) {
         shopCategoryState.tryEmit(item)
@@ -317,6 +328,12 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             ?: data?.items ?: emptyList()
 
             productItems.filter { it.isFavorite }
+                .map {
+                    FavoriteProductItemUi(
+                        data = it,
+                        count = getProductCountOfCart(it)
+                    )
+                }
         }
 
     fun getShoppingFees(items: List<Cart>?, usedCardMethod: CardMethod) = safeResultFlow {
