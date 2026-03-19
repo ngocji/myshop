@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
+import androidx.core.view.isVisible
 import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
 import ji.shop.data.domain.Cart
 import ji.shop.databinding.DialogViewCartBinding
+import ji.shop.exts.changeEnabled
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
 import ji.shop.exts.width
@@ -93,6 +95,13 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
 
     private fun doUpdatePrice() {
         val items = obtainItems()
+        if (items.isEmpty()) {
+            binding.titleValuesView.isVisible = false
+            binding.btnCheckout.changeEnabled(false)
+            return
+        }
+        binding.titleValuesView.isVisible = true
+        binding.btnCheckout.changeEnabled(true)
         val total = items.sumOf { it.getTotalPrice() }
         val tax = total * 0.038f
         binding.titleValuesView.setData(
