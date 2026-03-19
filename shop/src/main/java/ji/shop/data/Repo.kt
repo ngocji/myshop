@@ -43,7 +43,7 @@ object Repo {
     }
 
     suspend fun getViewOrder(posOrderId: String?) = withContext(Dispatchers.IO) {
-        api.getViewOrder(posOrderId, ShopSDK.getVenueId())
+        api.getViewOrder(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
     }
 
     suspend fun refundPosOrder(refund: RequestRefund?) = withContext(Dispatchers.IO) {

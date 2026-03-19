@@ -7,19 +7,17 @@ import android.view.View
 import android.view.Window
 import androidx.lifecycle.lifecycleScope
 import ji.shop.R
-import ji.shop.ShopSDK
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.viewBinding
 import ji.shop.data.Repo
-import ji.shop.data.dto.RequestRefund
-import ji.shop.data.dto.toRequest
 import ji.shop.databinding.DialogViewOrderBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
 import ji.shop.exts.width
-import ji.shop.items.RefundItemUi
+import ji.shop.items.ViewOrderItemUi
+import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,7 +26,6 @@ import kotlin.math.roundToInt
 class ViewOrderDialog : BaseDialog(R.layout.dialog_view_order) {
     private val binding by viewBinding(DialogViewOrderBinding::bind)
     private var postOrderId: String? = null
-    private var requestRefund: RequestRefund? = null
     private var flexibleAdapter: FlexibleAdapter<ItemUI<*>>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,13 +55,37 @@ class ViewOrderDialog : BaseDialog(R.layout.dialog_view_order) {
     private fun initViews() {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
-
         }
     }
 
     private fun initData() {
         viewLifecycleOwner.lifecycleScope.launch {
+            val viewOrder = Repo.getViewOrder(postOrderId)
 
+            withContext(Dispatchers.Main) {
+                val data = viewOrder?.items?.map { ViewOrderItemUi(it) } ?: emptyList()
+                flexibleAdapter = FlexibleAdapter(data.toMutableList())
+                binding.recyclerView.adapter = flexibleAdapter
+
+                with(binding) {
+                    viewOrder?.orderInfo?.apply {
+                        tvName.text = buyerName
+                        tvPhone.text = buyerPhone
+                        tvMail.text = buyerEmail
+                        tvTime.text = time
+                        tvPaymentMethod.text = paymentMethod
+                        tvPaid.text = "Paid"
+                        tvTitle.text = String.format(getString(R.string.text_order), posOrderId)
+
+                        viewOrder.summary?.apply {
+                            tvTotalCount.setTitle(String.format(getString(R.string.text_format_total_items), itemsCount))
+                            tvSubTotal.setValue(NumberFormater.formatNumberLocale(subtotal))
+                            tvTax.setValue(NumberFormater.formatNumberLocale(tax))
+                            tvTotal.setValue(NumberFormater.formatNumberLocale(total))
+                        }
+                    }
+                }
+            }
         }
     }
 

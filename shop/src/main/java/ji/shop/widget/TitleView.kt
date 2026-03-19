@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import ji.shop.R
 import ji.shop.databinding.ItemTitleBinding
 
@@ -23,6 +24,8 @@ class TitleView @JvmOverloads constructor(
             with(binding) {
                 tvTitle.text = typedArray.getString(R.styleable.TitleView_tv_title)
                 tvValue.text = typedArray.getString(R.styleable.TitleView_tv_value)
+                val isVisible = typedArray.getBoolean(R.styleable.TitleView_line_isVisible, true)
+                line.visibility = if (isVisible) VISIBLE else INVISIBLE
             }
         }
     }

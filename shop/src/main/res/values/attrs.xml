@@ -40,5 +40,6 @@
     <declare-styleable name="TitleView">
         <attr name="tv_title" format="string" />
         <attr name="tv_value" format="string" />
+        <attr name="line_isVisible" format="boolean" />
     </declare-styleable>
 </resources>

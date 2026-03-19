@@ -41,10 +41,10 @@
         app:iconTint="@null"
         app:layout_constraintBottom_toBottomOf="@+id/tvTime"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv" />
+        app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/tvTitle"
         style="@style/fontSemiBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,8 +64,8 @@
         android:drawablePadding="@dimen/_8dp"
         android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_clock"
-        app:layout_constraintStart_toStartOf="@+id/tv"
-        app:layout_constraintTop_toBottomOf="@+id/tv"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         tools:text="3:20 PM" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -227,7 +227,7 @@
             app:layout_constraintTop_toBottomOf="@+id/title">
 
             <ji.shop.widget.TitleView
-                android:id="@+id/TvTotalCount"
+                android:id="@+id/tvTotalCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -236,30 +236,31 @@
                 app:tv_title="3 Items" />
 
             <ji.shop.widget.TitleView
-                android:id="@+id/TvSubTotal"
+                android:id="@+id/tvSubTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TvTotalCount"
+                app:layout_constraintTop_toBottomOf="@+id/tvTotalCount"
                 app:tv_title="@string/text_subtotal" />
 
             <ji.shop.widget.TitleView
-                android:id="@+id/TvTax"
+                android:id="@+id/tvTax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TvSubTotal"
+                app:layout_constraintTop_toBottomOf="@+id/tvSubTotal"
                 app:tv_title="@string/text_tax" />
 
             <ji.shop.widget.TitleView
-                android:id="@+id/TvTotal"
+                android:id="@+id/tvTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TvTax"
+                app:layout_constraintTop_toBottomOf="@+id/tvTax"
+                app:line_isVisible="false"
                 app:tv_title="@string/text_total" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -290,6 +291,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/payment"
+                app:line_isVisible="false"
                 app:tv_title="Card **** 4582" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

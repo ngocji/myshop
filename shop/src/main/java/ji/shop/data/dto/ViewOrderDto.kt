@@ -1,11 +1,20 @@
 package ji.shop.data.dto
 
 import com.google.gson.annotations.SerializedName
+import ji.shop.data.domain.OrderInfo
+import ji.shop.data.domain.SummaryViewOrder
+import ji.shop.data.domain.ViewOrder
 
 data class ViewOrderDto(
 
     @SerializedName("order")
-    val order: OrderInfoDto?
+    val order: OrderInfoDto?,
+
+    @SerializedName("summary")
+    val summary: SummaryDto,
+
+    @SerializedName("items")
+    val items: List<ItemDto>?
 )
 
 data class OrderInfoDto(
@@ -28,7 +37,10 @@ data class OrderInfoDto(
     val status: String?,
 
     @SerializedName("time")
-    val time: String?
+    val time: String?,
+
+    @SerializedName("payment_text")
+    val paymentText: String?
 )
 
 data class SummaryDto(
@@ -50,3 +62,33 @@ data class SummaryDto(
     @SerializedName("payment_text")
     val paymentText: String?,
 )
+
+fun ViewOrderDto.toDomain() : ViewOrder {
+    return ViewOrder(
+        orderInfo = order?.toDomains(),
+        items = items?.map { it.toDomain() } ?: emptyList(),
+        summary = summary.toDomain()
+    )
+}
+
+fun SummaryDto.toDomain() : SummaryViewOrder {
+    return SummaryViewOrder(
+        currencySymbol = currencySymbol.orEmpty(),
+        itemsCount = itemsCount ?: 0,
+        paymentText = paymentText.orEmpty(),
+        subtotal = subtotal ?: 0.0,
+        tax = tax ?: 0.0,
+        total = total ?: 0.0
+    )
+}
+
+fun OrderInfoDto.toDomains() : OrderInfo {
+    return OrderInfo(
+        buyerEmail = buyerEmail.orEmpty(),
+        buyerName = buyerName.orEmpty(),
+        buyerPhone = buyerPhone.orEmpty(),
+        paymentMethod = paymentMethod.orEmpty(),
+        posOrderId = posOrderId.orEmpty(),
+        time = time.orEmpty()
+    )
+}

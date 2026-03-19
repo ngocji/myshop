@@ -12,6 +12,7 @@
         android:id="@+id/img_picture"
         android:layout_width="@dimen/image_inventory"
         android:layout_height="@dimen/image_inventory"
+        android:scaleType="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/img_Visibility"
         app:layout_constraintTop_toTopOf="@id/img_Visibility"

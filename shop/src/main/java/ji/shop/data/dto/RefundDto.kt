@@ -31,7 +31,11 @@ data class ItemDto(
     @SerializedName("quantity_refundable")
     val quantityRefundable: Int?,
     @SerializedName("unit_price")
-    val unitPrice: Double?
+    val unitPrice: Double?,
+    @SerializedName("image_url")
+    val imageUrl: String?,
+    @SerializedName("variation_name")
+    val variationName: String?
 )
 
 data class SummaryRefundDto(
