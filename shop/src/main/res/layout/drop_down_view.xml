@@ -8,14 +8,16 @@
     android:minWidth="200dp"
     tools:parentTag="android.widget.LinearLayout">
 
-    <Spinner
+    <TextView
         android:id="@+id/spinner"
         android:layout_width="0dp"
-        android:popupBackground="@drawable/bg_secondary_rounded_with_stroke"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
         android:layout_marginStart="@dimen/large_padding"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:inputType="none"
+        android:popupBackground="@drawable/bg_secondary_rounded_with_stroke" />
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"

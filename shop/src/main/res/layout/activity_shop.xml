@@ -24,6 +24,7 @@
 
             <ji.shop.widget.DropDownView
                 android:id="@+id/shop_category_drop_down"
+                android:minWidth="150dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

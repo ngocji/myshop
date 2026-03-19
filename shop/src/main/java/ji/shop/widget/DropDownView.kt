@@ -4,62 +4,39 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.LinearLayout
-import androidx.core.view.doOnPreDraw
 import ji.shop.R
 import ji.shop.databinding.DropDownViewBinding
+import ji.shop.dialog.SelectionDropdownPopup
 
 class DropDownView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
     private val binding: DropDownViewBinding
+    private var items: List<Any>? = null
+    private var selectItem: Any? = null
+    private var onSelected: ((Any) -> Unit)? = null
 
     init {
         binding = DropDownViewBinding.inflate(LayoutInflater.from(context), this)
         setBackgroundResource(R.drawable.bg_secondary_rounded_with_stroke)
         gravity = Gravity.CENTER
+        setOnClickListener { doShowSelection() }
     }
 
-    fun <T> setData(items: List<T>?, selectItem: T?, onSelected: (T) -> Unit) {
-        val spinnerAdapter = ArrayAdapter(
-            binding.spinner.context,
-            android.R.layout.simple_spinner_item,
-            items ?: emptyList()
-        )
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinner.run {
-            adapter = spinnerAdapter
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    p0: AdapterView<*>?,
-                    p1: View?,
-                    position: Int,
-                    p3: Long
-                ) {
-                    items?.getOrNull(position)?.let { onSelected(it) }
-                }
+    fun <T : Any> setData(items: List<T>?, selectItem: T?, onSelected: (T) -> Unit) {
+        this.items = items
+        this.selectItem = selectItem
+        this.onSelected = onSelected as? ((Any) -> Unit)?
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            setSelect(selectItem)
-        }
-
-        doOnPreDraw { container ->
-            binding.spinner.dropDownVerticalOffset = container.measuredHeight - 20
-            binding.spinner.dropDownHorizontalOffset =
-                -context.resources.getDimensionPixelOffset(R.dimen.large_padding)
-            binding.spinner.dropDownWidth = container.measuredWidth
-        }
+        setSelect(selectItem)
     }
 
     fun <T> setSelect(item: T?) {
-        val index =
-            (binding.spinner.adapter as? ArrayAdapter<T>)?.getPosition(item)?.takeIf { it != -1 }
-                ?: return
-        binding.spinner.setSelection(index)
+        binding.spinner.text = item?.toString() ?: ""
+    }
+
+    private fun doShowSelection() {
+        SelectionDropdownPopup(context, items ?: emptyList(), onSelected ?: {}).show(this)
     }
 }
