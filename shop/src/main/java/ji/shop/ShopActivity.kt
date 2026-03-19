@@ -111,31 +111,28 @@ class ShopActivity : AppCompatActivity() {
     }
 
     private fun doViewCart() {
-        ViewCartDialog.newInstance(viewModel.getCartItems()) { carts, isGotoCheckout ->
-            viewModel.updateCarts(carts)
-            if (isGotoCheckout) {
-                CheckoutDialog.newInstance(
-                    carts,
-                    viewModel.getUsedCardMethod(),
-                    object : CheckoutDialog.Listener {
-                        override fun onUpdateCustomerInfo(customerInfo: CustomerInfo?) {
-                            viewModel.updateCustomerInfo(customerInfo)
-                        }
+        ViewCartDialog.newInstance { updatedCarts ->
+            CheckoutDialog.newInstance(
+                updatedCarts,
+                viewModel.getUsedCardMethod(),
+                object : CheckoutDialog.Listener {
+                    override fun onUpdateCustomerInfo(customerInfo: CustomerInfo?) {
+                        viewModel.updateCustomerInfo(customerInfo)
+                    }
 
-                        override fun onDone(method: CardMethod) {
-                            if (method == CardMethod.Credit) {
-                                EditManualCardDialog
-                                    .newInstance(viewModel.creditCardInfo.value) { newCreditCard ->
-                                        doCreateCheckout(method, newCreditCard)
-                                    }
-                                    .show(supportFragmentManager)
-                            } else {
-                                doCreateCheckout(method, null)
-                            }
+                    override fun onDone(method: CardMethod) {
+                        if (method == CardMethod.Credit) {
+                            EditManualCardDialog
+                                .newInstance(viewModel.creditCardInfo.value) { newCreditCard ->
+                                    doCreateCheckout(method, newCreditCard)
+                                }
+                                .show(supportFragmentManager)
+                        } else {
+                            doCreateCheckout(method, null)
                         }
-                    })
-                    .show(supportFragmentManager)
-            }
+                    }
+                })
+                .show(supportFragmentManager)
         }
             .show(supportFragmentManager)
     }
@@ -166,10 +163,14 @@ class ShopActivity : AppCompatActivity() {
                     }
                 }
 
-                is ResultWrapper.Loading -> {showProgress(true)}
+                is ResultWrapper.Loading -> {
+                    showProgress(true)
+                }
+
                 is ResultWrapper.Failure -> {
                     showProgress(false)
                 }
+
                 else -> {}
             }
         }

@@ -17,12 +17,19 @@ class GroupModifiersView @JvmOverloads constructor(
     private val layoutInflater by lazy { LayoutInflater.from(context) }
     private var onCountChangedListener: CountChangOnItemListener? = null
 
-    fun setData(items: List<ProductModifier>) {
+    fun setData(
+        items: List<ProductModifier>,
+        selectedData: Map<ProductModifier, WrapperOptionModifier>
+    ) {
         removeAllViews()
         items.forEach { item ->
             val binding = ItemProductModifierBinding.inflate(layoutInflater)
             binding.tvAddTitle.text = item.name
-            binding.selectionAdditionalItemsView.setData(item, item.options)
+            binding.selectionAdditionalItemsView.setData(
+                modifier = item,
+                items = item.options,
+                selectedData = selectedData[item]
+            )
             binding.selectionAdditionalItemsView.setListener(object : CountChangOnItemListener {
                 override fun onCountChanged(position: Int, count: Int) {
                     onCountChangedListener?.onCountChanged(position, count)

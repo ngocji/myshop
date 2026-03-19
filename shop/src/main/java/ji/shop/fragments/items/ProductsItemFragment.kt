@@ -38,7 +38,8 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
 
         collect(
             flow = shopViewModel.getProductsCountNotifyFlow(
-            groupId, { flexibleProductAdapter?.items ?: emptyList() })) {
+                groupId, { flexibleProductAdapter?.items ?: emptyList() })
+        ) {
             doUpdateProductCountUi(it)
         }
     }
@@ -84,12 +85,15 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
     }
 
     private fun doAddToCart(position: Int, product: Product) {
-        AddProductDialog.newInstance(product) {
-            shopViewModel.addToCart(it)
+        AddProductDialog.newInstance(
+            currentCart = shopViewModel.getCartByProduct(product),
+            product
+        ) { cart, cartId ->
+            shopViewModel.addToCart(cart, cartId, true)
             if (product.isSingleSelection()) {
                 flexibleProductAdapter?.run {
                     val item = getItem(position) ?: return@run
-                    item.count = it.count
+                    item.count = cart.count
                     notifyItemChanged(position, Payload.CHANGE_COUNT)
                 }
             }

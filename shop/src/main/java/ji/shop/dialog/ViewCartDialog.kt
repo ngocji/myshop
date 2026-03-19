@@ -1,12 +1,13 @@
 package ji.shop.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import ji.shop.R
+import ji.shop.ShopViewModel
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
@@ -19,14 +20,14 @@ import ji.shop.exts.width
 import ji.shop.items.CartItemUi
 import ji.shop.items.CountChangOnItemListener
 import ji.shop.utils.NumberFormater
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.math.roundToInt
 
 class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
     private val binding by viewBinding(DialogViewCartBinding::bind)
+    private val shopViewModel by activityViewModels<ShopViewModel>()
     private var flexibleAdapter: FlexibleAdapter<CartItemUi>? = null
-    private var items: List<Cart>? = null
-    private var actionCheckout: ((List<Cart>, Boolean) -> Unit)? = null
-    private var isGotoCheckout=false
+    private var actionCheckout: ((cart: List<Cart>) -> Unit)? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,37 +49,39 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
         window.setGravity(if (isTablet) Gravity.END else Gravity.BOTTOM)
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        val newItems = obtainItems()
-        actionCheckout?.invoke(newItems, isGotoCheckout)
-    }
-
     private fun initViews() {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
             btnCheckout.setOnClickListener {
-                isGotoCheckout=true
+                actionCheckout?.invoke(obtainItems())
                 dismissAllowingStateLoss()
             }
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun initData() {
-        flexibleAdapter =
-            FlexibleAdapter(items?.map { CartItemUi(it) }?.toMutableList() ?: mutableListOf())
-                .addListener(object : CountChangOnItemListener {
-                    override fun onCountChanged(position: Int, count: Int) {
-                        doUpdatePrice()
-                    }
+        val items = shopViewModel.getCartItems()
+            .map { data ->
+                CartItemUi(data)
+            }
+        flexibleAdapter?.updateDataset(items) ?: run {
+            flexibleAdapter =
+                FlexibleAdapter(items.toMutableList())
+                    .addListener(object : CountChangOnItemListener {
+                        override fun onCountChanged(position: Int, count: Int) {
+                            doUpdatePrice()
+                        }
 
-                    override fun onClick(
-                        adapter: FlexibleAdapter<*>,
-                        view: View,
-                        position: Int
-                    ) {
-                    }
-                })
+                        override fun onClick(
+                            adapter: FlexibleAdapter<*>,
+                            view: View,
+                            position: Int
+                        ) {
+                            doModifyItem(flexibleAdapter?.getItem(position)?.data, position)
+                        }
+                    })
+        }
         binding.recyclerView.adapter = flexibleAdapter
         doUpdatePrice()
     }
@@ -95,6 +98,8 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
 
     private fun doUpdatePrice() {
         val items = obtainItems()
+        shopViewModel.updateCarts(items)
+
         if (items.isEmpty()) {
             binding.titleValuesView.isVisible = false
             binding.btnCheckout.changeEnabled(false)
@@ -114,13 +119,58 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
                 NumberFormater.formatNumberLocale(tax)
             )
         )
-        actionCheckout?.invoke(items, false)
     }
 
+    private fun doModifyItem(item: Cart?, position: Int) {
+        item ?: return
+        AddProductDialog.newInstance(
+            currentCart = item,
+            product = item.product,
+            onAdd = { cart, cartId ->
+                flexibleAdapter?.run {
+                    cart.compute(shopViewModel.shopCategoryState.value)
+                    if (cart.generatedId == cartId) {
+                        // nothing changed
+                        return@run
+                    }
+                    val prevIndex = items.indexOfFirst { it.data.generatedId == cartId }
+                    val existsIndex = items.indexOfFirst { it.data.generatedId == cart.generatedId }
+                    when {
+                        existsIndex != -1 -> {
+                            // merge
+                            val newItem = items[existsIndex].data.let { ext ->
+                                ext.copy(
+                                    count = ext.count + cart.count
+                                )
+                            }
+                            setItem(existsIndex, CartItemUi(data = newItem))
+                            if (prevIndex != -1) {
+                                removeItem(prevIndex)
+                            }
+                        }
+
+                        prevIndex != -1 -> {
+                            // replace
+                            setItem(prevIndex, CartItemUi(data = cart))
+                        }
+
+                        else -> {
+                            // add new
+                            addItem(CartItemUi(data = cart))
+                        }
+                    }
+
+                    doUpdatePrice()
+                }
+            }
+        )
+            .show(childFragmentManager)
+    }
+
+
     companion object {
-        fun newInstance(items: List<Cart>, actionCheckout: (List<Cart>, Boolean) -> Unit): ViewCartDialog {
+        fun newInstance(actionCheckout: (cart: List<Cart>) -> Unit): ViewCartDialog {
             return ViewCartDialog().apply {
-                this.items = items
                 this.actionCheckout = actionCheckout
             }
         }

@@ -127,8 +127,15 @@ class FavoritesDialog : BaseDialog(R.layout.dialog_favorite) {
             return
         }
         AddProductDialog.newInstance(
+            currentCart = item.data.isSingleSelection().takeIf { it }
+                ?.let { selectedItems.find { it.product.id == item.data.id } },
             product = item.data,
-            onAdd = { cart ->
+            onAdd = { cart, cartId ->
+                // remove old cart
+                if (cartId != null) {
+                    selectedItems.removeAll { it.generatedId == cartId }
+                }
+
                 cart.compute(viewModel.shopCategoryState.value)
                 val exists = selectedItems.find { it.generatedId == cart.generatedId }
                 if (exists != null) {

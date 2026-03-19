@@ -27,10 +27,15 @@ class SelectionModifierOptionItemsView @JvmOverloads constructor(
         flexibleAdapter.addListener(onItemClickListener)
     }
 
-    fun setData(modifier: ProductModifier, items: List<ModifierOption>) {
+    fun setData(
+        modifier: ProductModifier,
+        items: List<ModifierOption>,
+        selectedData: WrapperOptionModifier?
+    ) {
         this.productModifier = modifier
-        flexibleAdapter.updateDataset(items.map {
-            SelectionModifierOptionItemUi(it, 0)
+        flexibleAdapter.updateDataset(items.map { option ->
+            val count = selectedData?.items?.find { it.first.id == option.id }?.second ?: 0
+            SelectionModifierOptionItemUi(option, count)
         })
     }
 

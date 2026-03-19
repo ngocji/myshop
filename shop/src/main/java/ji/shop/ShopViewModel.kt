@@ -198,17 +198,27 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun isNfcEnabled() = isNfcEnabledState.value
 
-    fun addToCart(cart: Cart) {
+    fun addToCart(cart: Cart, prevCartId: String?, merge: Boolean) {
         cartsState.update {
             cart.compute(shopCategoryState.value)
 
             val carts = it.data
-            val extProduct = carts.find { c -> c.generatedId == cart.generatedId }
-            if (extProduct != null) {
-                carts.remove(extProduct)
+            carts.removeAll { c -> c.generatedId == prevCartId }
+
+            val exists = carts.find { c -> c.generatedId == cart.generatedId }
+            if (exists != null) {
+                carts.remove(exists)
             }
 
-            carts.add(cart)
+            if (merge && !cart.product.isSingleSelection()) {
+                carts.add(
+                    cart.copy(
+                        count = (exists?.count ?: 0) + cart.count
+                    )
+                )
+            } else {
+                carts.add(cart)
+            }
             WrapUpdateData(data = carts)
         }
     }
@@ -293,23 +303,24 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             }
         }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    fun getProductsCountNotifyFlow(groupId: String, productsAction: ()-> List<ProductItemUi>) = cartsState
-        .mapLatest { carts ->
-            val index = carts.data.mapNotNull { cart ->
-                val products = productsAction()
-                val index =
-                    products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
-                val item = products.getOrNull(index)
-                if (item != null) {
-                    item.count = cart.count
-                    index
-                } else {
-                    null
+    fun getProductsCountNotifyFlow(groupId: String, productsAction: () -> List<ProductItemUi>) =
+        cartsState
+            .mapLatest { carts ->
+                val index = carts.data.mapNotNull { cart ->
+                    val products = productsAction()
+                    val index =
+                        products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
+                    val item = products.getOrNull(index)
+                    if (item != null) {
+                        item.count = cart.count
+                        index
+                    } else {
+                        null
+                    }
                 }
+                index.minOrNull() to index.maxOrNull()
             }
-            index.minOrNull() to index.maxOrNull()
-        }
-        .filterNotNull()
+            .filterNotNull()
 
     fun setViewShopCategory(item: ShopCategory) {
         shopCategoryState.tryEmit(item)
@@ -360,4 +371,12 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 cartsState.tryEmit(WrapUpdateData(mutableListOf()))
             }
         }
+
+    fun getCartByProduct(product: Product): Cart? {
+        return if (product.isSingleSelection()) {
+            cartsState.value.data.find { it.product.id == product.id }
+        } else {
+            null
+        }
+    }
 }

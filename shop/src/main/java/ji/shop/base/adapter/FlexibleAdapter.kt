@@ -128,8 +128,9 @@ class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
     }
 
     fun clearSelection() {
-        val selectedPositions = selectedItems.mapNotNull { item -> items.indexOf(item).takeIf {  it != -1 } }
-            .sortedDescending()
+        val selectedPositions =
+            selectedItems.mapNotNull { item -> items.indexOf(item).takeIf { it != -1 } }
+                .sortedDescending()
         selectedItems.clear()
         selectedPositions.forEach { notifyItemChanged(it, Payload.SELECTION) }
     }
@@ -138,11 +139,26 @@ class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
         return items.getOrNull(position)
     }
 
-    fun notifyListeners(action: OnItemClickListener.()-> Unit) {
+    fun setItem(position: Int, item: T) {
+        items[position] = item
+        notifyItemChanged(position)
+    }
+
+    fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun addItem(item: T) {
+        items.add(item)
+        notifyItemInserted(itemCount)
+    }
+
+    fun notifyListeners(action: OnItemClickListener.() -> Unit) {
         listeners.forEach(action)
     }
 
-    fun find(action: T.() -> Boolean):T? {
+    fun find(action: T.() -> Boolean): T? {
         return items.find(action)
     }
 
