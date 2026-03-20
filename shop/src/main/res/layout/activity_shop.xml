@@ -24,14 +24,14 @@
 
             <ji.shop.widget.DropDownView
                 android:id="@+id/shop_category_drop_down"
-                android:minWidth="150dp"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_weight="0.5" />
 
             <ji.shop.widget.ToggleToolbarIcon
                 android:id="@+id/btn_stream"
