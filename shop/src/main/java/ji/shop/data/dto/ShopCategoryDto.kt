@@ -5,7 +5,7 @@ import ji.shop.data.domain.ShopCategory
 
 data class ShopCategoryDto(
     @SerializedName("pos_item_id")
-    val posItemId: String?,
+    val posItemId: String?, // todo remote
 
     @SerializedName("pos_shop_id")
     val posShopId: String?,
@@ -48,7 +48,7 @@ data class ShopCategoryDto(
 )
 
 fun ShopCategoryDto.toDomain() = ShopCategory(
-    posItemId = posItemId ?: "",
+    posItemId = posShopId ?: "",
     posShopId = posShopId ?: "",
     name = name ?: ""
 )

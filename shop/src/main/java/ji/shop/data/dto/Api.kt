@@ -9,7 +9,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface Api {
-    @GET("pos/get_pos_list_by_venue?page=1&limit=100")
+    @GET("pos/get_pos_shops_by_venue")
     suspend fun getShopCategories(@Query("venue_id") venueId: String): WrapResponse<List<ShopCategoryDto>>
 
     @GET("pos/get_pos_sell_hierarchy")
