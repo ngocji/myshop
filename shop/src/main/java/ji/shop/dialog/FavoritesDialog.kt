@@ -123,7 +123,7 @@ class FavoritesDialog : BaseDialog(R.layout.dialog_favorite) {
     }
 
     private fun doShowAddToCart(item: FavoriteProductItemUi?) {
-        if (item == null) {
+        if (item == null || item.data.isSoldOut) {
             return
         }
         AddProductDialog.newInstance(

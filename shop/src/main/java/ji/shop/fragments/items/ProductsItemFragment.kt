@@ -85,6 +85,7 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
     }
 
     private fun doAddToCart(position: Int, product: Product) {
+        if (product.isSoldOut) return
         AddProductDialog.newInstance(
             currentCart = shopViewModel.getCartByProduct(product),
             product

@@ -63,11 +63,16 @@ data class ProductItemUi(
             tvName.text = data.name
             tvPrice.text = NumberFormater.formatNumberLocale(data.price)
             image.load(data.images.firstOrNull())
-            if (isSignSelectionProduct) {
-                toggleCountView.isVisible = true
-                toggleCountView.setCount(count)
-            } else {
+            if (data.isSoldOut) {
                 toggleCountView.isVisible = false
+                tvSold.isVisible = true
+            } else {
+                if (isSignSelectionProduct) {
+                    toggleCountView.isVisible = true
+                    toggleCountView.setCount(count)
+                } else {
+                    toggleCountView.isVisible = false
+                }
             }
         }
     }
