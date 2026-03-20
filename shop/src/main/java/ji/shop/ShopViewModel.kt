@@ -71,6 +71,9 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     // state for shop
     val tabTabTypeState = MutableStateFlow(TabType.Sell)
+    val collectionState = MutableStateFlow<Collection?>(null)
+    val shopCategoryState = MutableStateFlow<ShopCategory?>(null)
+    val groupState = MutableStateFlow<Group?>(null)
 
     val shopCategoriesFlow = safeFlow {
         val categories = Repo.getShopCategories()
@@ -79,16 +82,20 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
         categories
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
-    val shopCategoryState = MutableStateFlow<ShopCategory?>(null)
 
     val sellDataState =
         combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
             .filterNotNull()
-            .flatMapLatest { shop -> safeResultFlow { Repo.getSellData(shop.posShopId) } }
-            .onStart { emit(ResultWrapper.Loading) }
+            .flatMapLatest { shop ->
+                setViewCollection(null)
+                setViewGroup(null)
+                safeResultFlow { Repo.getSellData(shop.posShopId) }
+            }
+            .onStart {
+                emit(ResultWrapper.Loading)
+            }
             .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    val collectionState = MutableStateFlow<Collection?>(null)
     val collectionsFlow = sellDataState
         .mapLatest { result ->
             val collections = result.safeValue()?.collections
@@ -101,8 +108,11 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
             gridItems to linearItems
         }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    val groupState = MutableStateFlow<Group?>(null)
     val groupsFlow = combine(sellDataState, collectionState) { sellData, collection ->
+        if (sellData !is ResultWrapper.Success || (collection == null && !sellData.safeValue()?.collections.isNullOrEmpty())) {
+            // wait select collection
+            return@combine null
+        }
         collection?.groups ?: sellData.safeValue()?.groups ?: listOf(
             Group(
                 GROUP_ONLY_ITEM_ID,
@@ -114,7 +124,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         .filterNotNull()
         .mapLatest { items ->
             if (items.firstOrNull().let {
-                    it?.id == GROUP_ONLY_ITEM_ID || it?.collectionId != groupState.value?.collectionId
+                    it?.id == GROUP_ONLY_ITEM_ID || it?.collectionId != groupState.value?.collectionId || collectionState.value == null
                 }) {
                 groupState.tryEmit(items.firstOrNull())
             }
