@@ -74,6 +74,11 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
             tvProductName.text = product?.name ?: ""
             imageProduct.load(product?.images?.firstOrNull())
 
+            if (product?.visibility == true) {
+                tvDescription?.isVisible = true
+                tvDescription?.text = product?.description.orEmpty()
+            }
+
             groupVariationsView.isVisible = !product?.variations.isNullOrEmpty()
             selectionVariationItemsView.setData(
                 items = product?.variations ?: emptyList(),

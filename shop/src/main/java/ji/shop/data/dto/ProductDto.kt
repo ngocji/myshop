@@ -36,6 +36,12 @@ data class ProductDto(
     @SerializedName("is_favorite")
     val isFavorite: Boolean?,
 
+    @SerializedName("visibility")
+    val visibility: Boolean?,
+
+    @SerializedName("is_marked_sold_out")
+    val isMarkedSoldOut: Boolean?,
+
     @SerializedName("variations")
     val variations: List<VariationDto>?,
 
@@ -59,6 +65,8 @@ fun ProductDto.toDomain(): Product {
         images = listOf(imageUrl),
         variations = variations?.map { it.toDomain() } ?: emptyList(),
         modifiers = modifiers?.map { it.toDomain() } ?: emptyList(),
-        isFavorite = isFavorite ?: false
+        isFavorite = isFavorite ?: false,
+        visibility = visibility ?: false,
+        isSoldOut = isMarkedSoldOut ?: false
     )
 }

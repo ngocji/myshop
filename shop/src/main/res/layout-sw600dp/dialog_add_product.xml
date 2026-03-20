@@ -96,6 +96,18 @@
         app:layout_constraintTop_toBottomOf="@id/toggle_count_view"
         tools:text="$17.00" />
 
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/small_padding"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@id/btn_add_to_cart"
+        app:layout_constraintEnd_toEndOf="@id/tv_total_price"
+        app:layout_constraintStart_toStartOf="@id/tv_total_price"
+        app:layout_constraintTop_toBottomOf="@id/tv_total_price"
+        tools:text="Description" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
         android:layout_width="0dp"

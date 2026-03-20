@@ -10,7 +10,9 @@ data class Product(
     val images: List<Any?>,
     val variations: List<ProductVariation>,
     val modifiers: List<ProductModifier>,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val visibility: Boolean,
+    val isSoldOut: Boolean
 ) {
     val price get() = onlinePrice
     fun isSingleSelection() = variations.size <= 1 && modifiers.isEmpty()
