@@ -68,11 +68,9 @@ interface Api {
     @POST("pos/create_pos_shopping_cart_order")
     suspend fun createShoppingCartOrder(@Body request: RequestPostShoppingCart): CheckoutResponseDto?
 
-    @PATCH("box_offices/process_complete_cart")
-    suspend fun processCompleteCartOrder(
-        @Query("email") email: String,
-        @Query("cart_id") cartId: String,
-        @Body deviceInfoRequest: DeviceInfoRequest
+    @PATCH("pos/process_complete_cart")
+    suspend fun processCompleteCart(
+        @Query("cart_id") cartId: String
     ): WrapResponse<Any>
 
     companion object {

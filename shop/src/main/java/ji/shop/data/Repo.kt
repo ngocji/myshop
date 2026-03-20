@@ -4,6 +4,7 @@ import ji.shop.R
 import ji.shop.ShopSDK
 import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.Cart
+import ji.shop.data.domain.CheckoutResult
 import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.Ticket
@@ -109,15 +110,16 @@ object Repo {
                     customerInfo = customerInfo ?: getLastCustomerInfo()
                 )
             )
-//            if (checkoutResponse?.success == true && !checkoutResponse.cartId.isNullOrBlank()) {
-//                val processResponse = api.processCompleteCartOrder(
-//                    email = ShopSDK.getEmail(),
-//                    cartId = checkoutResponse.cartId,
-//                    deviceInfoRequest = DeviceInfoRequest()
-//                )
-//                checkoutResponse.toDomain()
-//            } else {
-            checkoutResponse?.toDomain()
-//            }
+            if (checkoutResponse?.success == true &&
+                !checkoutResponse.cartId.isNullOrBlank() &&
+                cardMethod == CardMethod.Cash
+            ) {
+                val processResponse = api.processCompleteCart(cartId = checkoutResponse.cartId)
+                CheckoutResult(
+                    isSuccess = processResponse.isSuccess,
+                )
+            } else {
+                checkoutResponse?.toDomain()
+            }
         }
 }

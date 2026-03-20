@@ -39,7 +39,6 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         toggleCardMethod(usedCardMethod, true)
-        reloadFees()
     }
 
     override fun doOnWindow(window: Window) {
@@ -60,11 +59,9 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         with(binding) {
             btnCash.setOnClickListener {
                 toggleCardMethod(CardMethod.Cash)
-                reloadFees()
             }
             btnCredit.setOnClickListener {
                 toggleCardMethod(CardMethod.Credit)
-                reloadFees()
             }
             btnAddCustomerInfo.setOnClickListener { }
             btnTickets.setOnClickListener { toggleTicketView() }
@@ -82,6 +79,7 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
             btnCash.alpha = if (usedCardMethod == CardMethod.Cash) 1f else 0.5f
             btnCredit.alpha = if (usedCardMethod == CardMethod.Credit) 1f else 0.5f
         }
+        reloadFees()
     }
 
     private fun toggleTicketView() {
