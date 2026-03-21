@@ -1,5 +1,5 @@
 package ji.shop.base.adapter
 
-interface OnLoadMoreListener {
+fun interface OnLoadMoreListener {
     fun onLoadMore()
 }

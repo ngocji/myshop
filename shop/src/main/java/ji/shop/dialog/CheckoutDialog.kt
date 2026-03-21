@@ -22,7 +22,6 @@ import ji.shop.exts.isTablet
 import ji.shop.exts.width
 import ji.shop.items.CheckoutTicketUi
 import ji.shop.utils.NumberFormater
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -94,7 +93,7 @@ class CheckoutDialog : BaseDialog(R.layout.dialog_view_checkout) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getShoppingFees(items, usedCardMethod)
                 .collect { resultWrapper ->
-                    binding.stateView.updateState(resultWrapper)
+                    binding.stateView.updateStateWithResult(resultWrapper)
                     if (resultWrapper is ResultWrapper.Success) {
                         val fees = resultWrapper.safeValue() ?: return@collect
                         val totalPrice = NumberFormater.formatNumberLocale(fees.totalMoney)

@@ -48,7 +48,6 @@ data class ShopCategoryDto(
 )
 
 fun ShopCategoryDto.toDomain() = ShopCategory(
-    posItemId = posShopId ?: "",
     posShopId = posShopId ?: "",
     name = name ?: ""
 )

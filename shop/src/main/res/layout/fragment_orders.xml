@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/_16dp">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/_16dp"
         android:layout_marginBottom="@dimen/_16dp"
         android:background="@null"
         android:orientation="vertical"
@@ -49,9 +49,21 @@
         android:id="@+id/btn_checkout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16dp"
         android:layout_marginBottom="@dimen/_16dp"
         android:text="@string/text_checkout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ji.shop.widget.StateWrapperView
+        android:id="@+id/state_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:st_empty_text="@string/text_empty_order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:st_progress_background="@color/colorBackground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

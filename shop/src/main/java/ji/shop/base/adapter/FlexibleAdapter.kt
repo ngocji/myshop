@@ -78,8 +78,6 @@ open class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
         return selectedItems.contains(items.getOrNull(position))
     }
 
-    fun getSelectedItems() = selectedItems
-
     fun getSelectedPositions() = selectedItems.mapNotNull { item ->
         items.indexOf(item).takeIf { it != -1 }
     }

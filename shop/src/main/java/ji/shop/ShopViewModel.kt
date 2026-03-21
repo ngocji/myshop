@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import ji.shop.base.LIMIT_PAGE
+import ji.shop.base.START_PAGE
 import ji.shop.data.Repo
 import ji.shop.data.domain.CardMethod
 import ji.shop.data.domain.Cart
@@ -16,6 +18,7 @@ import ji.shop.data.domain.Product
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.TabType
+import ji.shop.data.domain.WrapPager
 import ji.shop.data.domain.WrapUpdateData
 import ji.shop.exts.applyWhenSuccess
 import ji.shop.exts.mapWhenSuccess
@@ -29,6 +32,7 @@ import ji.shop.items.CollectionLinearItemUi
 import ji.shop.items.FavoriteProductItemUi
 import ji.shop.items.GroupItemUi
 import ji.shop.items.InventoryUi
+import ji.shop.items.OrdersItemUi
 import ji.shop.items.ProductItemUi
 import ji.shop.utils.NumberFormater
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -74,6 +78,8 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     val collectionState = MutableStateFlow<Collection?>(null)
     val shopCategoryState = MutableStateFlow<ShopCategory?>(null)
     val groupState = MutableStateFlow<Group?>(null)
+    val pageOrder = MutableStateFlow(START_PAGE)
+    private val _cacheOrderItems = mutableListOf<OrdersItemUi>()
 
     val shopCategoriesFlow = safeFlow {
         val categories = Repo.getShopCategories()
@@ -268,23 +274,47 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
     }
 
-    val inventoriesFlow =  combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
-        .filterNotNull()
-        .flatMapLatest { shop ->
-            safeResultFlow {
-                Repo.getInventories(shop.posShopId)
-            }
-                .mapWhenSuccess { items ->
-                    items.map {
-                        InventoryUi(it)
-                    }
-                }
-        }.shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
-
-    val orderFlow =
+    val inventoriesFlow =
         combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
             .filterNotNull()
-            .flatMapLatest { shop -> safeResultFlow { Repo.getOrder(shop.posItemId) } }
+            .flatMapLatest { shop ->
+                safeResultFlow {
+                    Repo.getInventories(shop.posShopId)
+                }
+                    .mapWhenSuccess { items ->
+                        items.map {
+                            InventoryUi(it)
+                        }
+                    }
+            }.shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
+
+    val orderFlow =
+        combine(
+            triggerRefreshCollectionsFlow,
+            shopCategoryState,
+            pageOrder
+        ) { _, shop, page -> shop?.let { it to page } }
+            .filterNotNull()
+            .flatMapLatest { (shop, page) ->
+                safeResultFlow {
+                    val pager = Repo.getOrder(
+                        shop.posShopId,
+                        page,
+                        LIMIT_PAGE
+                    )
+                    val mappedItems = pager.items.map { OrdersItemUi(it) }
+                    if (page == 0) {
+                        _cacheOrderItems.clear()
+                        _cacheOrderItems.addAll(mappedItems)
+                    }
+                    WrapPager(
+                        items = mappedItems,
+                        page = pager.page,
+                        isEnded = pager.isEnded,
+                        allItems = _cacheOrderItems
+                    )
+                }
+            }
             .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
     fun viewCart() {
@@ -341,6 +371,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun setViewShopCategory(item: ShopCategory) {
         shopCategoryState.tryEmit(item)
+        pageOrder.tryEmit(START_PAGE)
         collectionState.tryEmit(null)
         groupState.tryEmit(null)
     }
@@ -395,5 +426,13 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         } else {
             null
         }
+    }
+
+    fun loadNextPageOrder() {
+        pageOrder.update { it + 1 }
+    }
+
+    fun isFirstOrderPage(): Boolean {
+        return pageOrder.value == START_PAGE
     }
 }

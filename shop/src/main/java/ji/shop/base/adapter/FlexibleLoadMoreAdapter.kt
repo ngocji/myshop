@@ -26,12 +26,12 @@ class FlexibleLoadMoreAdapter<T : ItemUI<*>>(items: MutableList<T>) : FlexibleAd
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         attachedRecyclerView = recyclerView
-        enableLoadMore(enableLoadMore)
+        setEnableLoadMore(enableLoadMore)
     }
 
     override fun updateDataset(newItems: List<T>, useDiff: Boolean) {
         super.updateDataset(newItems, useDiff)
-        enableLoadMore(true)
+        setEnableLoadMore(true)
     }
 
     fun onLoadMoreComplete(items: List<T>) {
@@ -43,15 +43,16 @@ class FlexibleLoadMoreAdapter<T : ItemUI<*>>(items: MutableList<T>) : FlexibleAd
         addItems(items)
     }
 
-    fun setLoadMoreListener(listener: OnLoadMoreListener) {
+    fun setLoadMoreListener(listener: OnLoadMoreListener): FlexibleLoadMoreAdapter<T> {
         onLoadMoreListener = listener
+        return this
     }
 
     fun setProgressItem(item: ItemUI<*>) {
         progressItem = item
     }
 
-    fun enableLoadMore(enable: Boolean) {
+    fun setEnableLoadMore(enable: Boolean) {
         this.enableLoadMore = enable
         if (attachedRecyclerView != null) {
             attachedRecyclerView?.removeOnScrollListener(endlessScrollListener)

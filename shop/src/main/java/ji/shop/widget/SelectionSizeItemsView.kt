@@ -42,6 +42,6 @@ class SelectionSizeItemsView @JvmOverloads constructor(
     }
 
     fun getSelected(): ProductVariation? {
-        return flexibleAdapter.getSelectedItems().firstOrNull()?.data
+        return flexibleAdapter.selectedItems.firstOrNull()?.data
     }
 }

@@ -18,10 +18,12 @@ interface Api {
         @Query("venue_id") venueId: String
     ): WrapResponse<SellDataDto>
 
-    @GET("pos/get_pos_orders_by_item?page=1&limit=100")
+    @GET("pos/get_pos_orders_by_shop")
     suspend fun getOrders(
-        @Query("pos_item_id") posItemId: String?,
-        @Query("venue_id") venueId: String
+        @Query("post_shop_id") posShopId: String?,
+        @Query("venue_id") venueId: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
     ): WrapResponse<List<OrderDto>>
 
     @GET("pos/get_list_item_by_shop")

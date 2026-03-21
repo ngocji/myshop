@@ -21,11 +21,11 @@
     </declare-styleable>
 
     <declare-styleable name="ProgressItemView">
-        <attr name="progressValue" format="integer"/>
-        <attr name="indicatorColor" format="color"/>
-        <attr name="trackColor" format="color"/>
+        <attr name="progressValue" format="integer" />
+        <attr name="indicatorColor" format="color" />
+        <attr name="trackColor" format="color" />
     </declare-styleable>
-    
+
     <declare-styleable name="CustomEdittext">
         <attr name="cs_title" format="string" />
         <attr name="cs_hint" format="string" />
@@ -35,6 +35,7 @@
 
     <declare-styleable name="StateWrapperView">
         <attr name="st_progress_background" format="color" />
+        <attr name="st_empty_text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="TitleView">

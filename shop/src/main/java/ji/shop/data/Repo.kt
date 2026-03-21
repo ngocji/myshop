@@ -8,6 +8,7 @@ import ji.shop.data.domain.CheckoutResult
 import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.Ticket
+import ji.shop.data.domain.WrapPager
 import ji.shop.data.dto.Api
 import ji.shop.data.dto.RequestRefund
 import ji.shop.data.dto.createShoppingCartRequest
@@ -32,11 +33,19 @@ object Repo {
     }
 
     suspend fun getInventories(posShopId: String) = withContext(Dispatchers.IO) {
-        api.getInventories(ShopSDK.getVenueId(), posShopId).data?.map { it.toDomain() } ?: emptyList()
+        api.getInventories(ShopSDK.getVenueId(), posShopId).data?.map { it.toDomain() }
+            ?: emptyList()
     }
 
-    suspend fun getOrder(posItemId: String?) = withContext(Dispatchers.IO) {
-        api.getOrders(posItemId, ShopSDK.getVenueId()).data?.map { it.toDomain() }
+    suspend fun getOrder(posShopId: String, page: Int, limit: Int) = withContext(Dispatchers.IO) {
+        val items =
+            api.getOrders(posShopId, ShopSDK.getVenueId(), page, limit).data?.map { it.toDomain() }
+                ?: emptyList()
+        WrapPager(
+            items = items,
+            page = page,
+            isEnded = items.size < limit
+        )
     }
 
     suspend fun getRefund(posOrderId: String?) = withContext(Dispatchers.IO) {

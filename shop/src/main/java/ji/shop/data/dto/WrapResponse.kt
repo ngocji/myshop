@@ -6,5 +6,7 @@ data class WrapResponse<T>(
     @SerializedName("success")
     val isSuccess: Boolean,
     @SerializedName("data", alternate = ["temporary_fees"])
-    val data: T?
+    val data: T?,
+    @SerializedName("message")
+    val message: String? = null
 )

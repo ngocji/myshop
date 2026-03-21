@@ -41,23 +41,23 @@ abstract class BaseFragment(layoutRes: Int) : Fragment(layoutRes),
         collect(flow = flow) { result ->
             when (result) {
                 is ResultWrapper.Success -> {
-                    stateWrapperView?.updateState(result) ?: showProgress(false)
+                    stateWrapperView?.updateStateWithResult(result) ?: showProgress(false)
                     action(result.data)
                 }
 
                 is ResultWrapper.Loading -> {
-                    stateWrapperView?.updateState(result) ?: showProgress(true)
+                    stateWrapperView?.updateStateWithResult(result) ?: showProgress(true)
                 }
 
                 is ResultWrapper.Failure -> {
-                    stateWrapperView?.updateState(result) ?: run {
+                    stateWrapperView?.updateStateWithResult(result) ?: run {
                         showProgress(false)
                         showError(result.error)
                     }
                 }
 
                 is ResultWrapper.Empty -> {
-                    stateWrapperView?.updateState(result) ?: showProgress(false)
+                    stateWrapperView?.updateStateWithResult(result) ?: showProgress(false)
                 }
 
                 is ResultWrapper.None -> {

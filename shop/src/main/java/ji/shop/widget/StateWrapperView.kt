@@ -19,21 +19,32 @@ class StateWrapperView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs) {
     private var listener: StateWrapperViewListener? = null
 
+    enum class State {
+        NONE, LOADING, EMPTY, ERROR, SUCCESS
+    }
+
     init {
         addView(LayoutStateLoadingBinding.inflate(LayoutInflater.from(context)).root)
         addView(LayoutStateEmptyBinding.inflate(LayoutInflater.from(context)).root)
         addView(LayoutStateErrorBinding.inflate(LayoutInflater.from(context)).root)
 
         findViewById<View>(R.id.btn_retry)?.setOnClickListener {
-            updateState(ResultWrapper.Loading)
+            updateStateWithResult(ResultWrapper.Loading)
             listener?.onRetry()
         }
 
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.StateWrapperView)
-            val progressBackground = typedArray.getColor(R.styleable.StateWrapperView_st_progress_background,
-                ContextCompat.getColor(context, R.color.colorBackground))
+            val progressBackground = typedArray.getColor(
+                R.styleable.StateWrapperView_st_progress_background,
+                ContextCompat.getColor(context, R.color.colorBackground)
+            )
             findViewById<View>(R.id.progress_view)?.setBackgroundColor(progressBackground)
+
+            typedArray.getString(R.styleable.StateWrapperView_st_empty_text)
+                .takeIf { emptyText -> !emptyText.isNullOrBlank() }
+                .let { emptyText -> findViewById<TextView>(R.id.tv_empty)?.text = emptyText }
+
             typedArray.recycle()
         }
     }
@@ -42,7 +53,7 @@ class StateWrapperView @JvmOverloads constructor(
         this.listener = listener
     }
 
-    fun updateState(state: ResultWrapper<*>) {
+    fun updateStateWithResult(state: ResultWrapper<*>) {
         when (state) {
             is ResultWrapper.Loading -> {
                 showView(R.id.progress_view)
@@ -55,6 +66,26 @@ class StateWrapperView @JvmOverloads constructor(
             is ResultWrapper.Failure -> {
                 showView(R.id.error_view)
                 findViewById<TextView>(R.id.tv_error)?.text = state.error.message
+            }
+
+            else -> {
+                showView()
+            }
+        }
+    }
+
+    fun updateState(state: State) {
+        when (state) {
+            State.LOADING -> {
+                showView(R.id.progress_view)
+            }
+
+            State.EMPTY -> {
+                showView(R.id.empty_view)
+            }
+
+            State.ERROR -> {
+                showView(R.id.error_view)
             }
 
             else -> {
