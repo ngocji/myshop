@@ -10,9 +10,9 @@
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/_16dp"
         android:background="@null"
         android:orientation="vertical"
-        android:layout_marginBottom="@dimen/_16dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_checkout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +45,15 @@
                 tools:listitem="@layout/item_inventory" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ji.shop.widget.StateWrapperView
+        android:id="@+id/state_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_checkout"

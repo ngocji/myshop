@@ -31,8 +31,8 @@ object Repo {
         ).data?.toDomain()
     }
 
-    suspend fun getInventories() = withContext(Dispatchers.IO) {
-        api.getInventories(ShopSDK.getVenueId()).data?.map { it.toDomain() } ?: emptyList()
+    suspend fun getInventories(posShopId: String) = withContext(Dispatchers.IO) {
+        api.getInventories(ShopSDK.getVenueId(), posShopId).data?.map { it.toDomain() } ?: emptyList()
     }
 
     suspend fun getOrder(posItemId: String?) = withContext(Dispatchers.IO) {

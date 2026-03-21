@@ -268,17 +268,24 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
     }
 
-    val inventoriesFlow = safeResultFlow {
-        Repo.getInventories().map {
-            InventoryUi(it)
-        }
-    }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+    val inventoriesFlow =  combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
+        .filterNotNull()
+        .flatMapLatest { shop ->
+            safeResultFlow {
+                Repo.getInventories(shop.posShopId)
+            }
+                .mapWhenSuccess { items ->
+                    items.map {
+                        InventoryUi(it)
+                    }
+                }
+        }.shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
     val orderFlow =
         combine(triggerRefreshCollectionsFlow, shopCategoryState) { _, shop -> shop }
             .filterNotNull()
             .flatMapLatest { shop -> safeResultFlow { Repo.getOrder(shop.posItemId) } }
-            .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
+            .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 
     fun viewCart() {
         viewCartEvent.trySend(Unit)

@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:indicatorColor="@color/colorPrimary"
-        app:progressValue="50"
+        app:progressValue="0"
         app:trackColor="@color/colorThirdBackground" />
 
     <TextView

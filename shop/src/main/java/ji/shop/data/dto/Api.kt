@@ -24,16 +24,16 @@ interface Api {
         @Query("venue_id") venueId: String
     ): WrapResponse<List<OrderDto>>
 
-    @GET("pos/get_pos_list_by_venue?page=1&limit=100")
+    @GET("pos/get_list_item_by_shop")
     suspend fun getInventories(
-        @Query("venue_id") venueId: String
+        @Query("venue_id") venueId: String,
+        @Query("pos_shop_id") posShopId: String
     ): WrapResponse<List<InventoryDto>>
 
     @GET("pos/get_pos_order_detail")
     suspend fun getOrderDetail(
         @Query("pos_item_id") posItemId: String,
-        @Query("venue_id") venueId: String,
-        @Query("auth_token") authToken: String
+        @Query("venue_id") venueId: String
     ): WrapResponse<OrderDto>
 
     @GET("pos/get_pos_order_view")
