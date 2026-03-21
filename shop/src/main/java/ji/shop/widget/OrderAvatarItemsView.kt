@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ji.shop.base.adapter.FlexibleAdapter
+import ji.shop.exts.isTablet
 import ji.shop.items.OrderAvatarItemUi
 
 class OrderAvatarItemsView @JvmOverloads constructor(
@@ -19,7 +20,9 @@ class OrderAvatarItemsView @JvmOverloads constructor(
     }
 
     fun setData(items: List<Any?>) {
-        flexibleAdapter.updateDataset(items.take(4).map {
+        flexibleAdapter.updateDataset(items.take(
+            if (context.isTablet()) 4 else 1
+        ).map {
             OrderAvatarItemUi(it)
         })
     }
