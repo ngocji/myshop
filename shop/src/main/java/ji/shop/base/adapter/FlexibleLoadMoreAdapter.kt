@@ -9,13 +9,13 @@ class FlexibleLoadMoreAdapter<T : ItemUI<*>>(items: MutableList<T>) : FlexibleAd
     private var progressItem: ItemUI<*> = ProgressItemUi
     private var enableLoadMore = true
     private var isLoading = false
-    private var isLastPage = false
     private var onLoadMoreListener: OnLoadMoreListener? = null
 
     private val endlessScrollListener by lazy {
         object : EndlessScrollListener(attachedRecyclerView?.layoutManager as LinearLayoutManager) {
             override fun loadMore() {
-                if (enableLoadMore && !isLoading && !isLastPage) {
+                if (enableLoadMore && !isLoading) {
+                    isLoading = true
                     addItem(progressItem as T)
                     onLoadMoreListener?.onLoadMore()
                 }
@@ -36,6 +36,7 @@ class FlexibleLoadMoreAdapter<T : ItemUI<*>>(items: MutableList<T>) : FlexibleAd
 
     fun onLoadMoreComplete(items: List<T>) {
         // remove progress item
+        isLoading = false
         if (getItem(itemCount - 1) == progressItem) {
             removeItem(itemCount - 1)
         }
