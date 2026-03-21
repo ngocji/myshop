@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_10dp"
     android:background="@drawable/bg_secondary"
+    android:clipToPadding="false"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/small_padding"
-    android:clipToPadding="false">
+    android:padding="@dimen/small_padding">
 
     <ji.shop.widget.OrderAvatarItemsView
         android:id="@+id/rcv_avatar"
@@ -65,10 +66,13 @@
             android:paddingHorizontal="@dimen/small_padding" />
     </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/img_action"
+        style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_dots" />
+        app:icon="@drawable/ic_dots"
+        app:iconSize="20dp"
+        app:iconTint="@color/colorIcon" />
 
 </LinearLayout>

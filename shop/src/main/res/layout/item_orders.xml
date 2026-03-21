@@ -37,12 +37,14 @@
         app:layout_constraintEnd_toStartOf="@+id/img_action"
         app:layout_constraintTop_toTopOf="@id/rcv_avatar" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/img_action"
+        style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_8dp"
-        android:src="@drawable/ic_dots"
+        app:icon="@drawable/ic_dots"
+        app:iconTint="@color/colorIcon"
+        app:iconSize="20dp"
         app:layout_constraintBottom_toBottomOf="@id/rcv_avatar"
         app:layout_constraintEnd_toStartOf="@+id/img_arrow_down"
         app:layout_constraintTop_toTopOf="@id/rcv_avatar" />
