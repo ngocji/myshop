@@ -4,13 +4,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
+open class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
     RecyclerView.Adapter<ItemViewHolder>() {
-    private val mTypeInstances = mutableMapOf<Int, T>()
-    private val selectedItems = mutableSetOf<T>()
-    private var mode = MULTI
-    private val listeners = mutableSetOf<OnItemClickListener>()
-    private var diffUtilCallback: FlexibleDiffCallback<T>? = null
+    open val mTypeInstances = mutableMapOf<Int, T>()
+    open val selectedItems = mutableSetOf<T>()
+    open var mode = MULTI
+    open val listeners = mutableSetOf<OnItemClickListener>()
+    open var diffUtilCallback: FlexibleDiffCallback<T>? = null
 
 
     fun addAdjustSelected(position: Int) {
@@ -105,7 +105,7 @@ class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
         return isSelected(position)
     }
 
-    fun updateDataset(newItems: List<T>, useDiff: Boolean = true) {
+    open fun updateDataset(newItems: List<T>, useDiff: Boolean = true) {
         if (useDiff) {
             if (diffUtilCallback == null) {
                 diffUtilCallback = FlexibleDiffCallback(items, newItems)
@@ -152,6 +152,12 @@ class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
     fun addItem(item: T) {
         items.add(item)
         notifyItemInserted(itemCount)
+    }
+
+    fun addItems(items: List<T>) {
+        val start = itemCount
+        this.items.addAll(items)
+        notifyItemRangeInserted(start, items.size)
     }
 
     fun notifyListeners(action: OnItemClickListener.() -> Unit) {
