@@ -112,7 +112,6 @@
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/normal_padding"
             android:text="@string/text_price"
             app:layout_constraintEnd_toEndOf="@id/orders"
             app:layout_constraintStart_toStartOf="@id/orders"
@@ -135,6 +134,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/text_sold"
+            android:paddingVertical="@dimen/normal_padding"
             app:layout_constraintEnd_toEndOf="@id/orders"
             app:layout_constraintStart_toStartOf="@id/price"
             app:layout_constraintTop_toBottomOf="@+id/price" />
@@ -155,7 +155,6 @@
             style="@style/fontMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/normal_padding"
             android:text="@string/text_remaining"
             app:layout_constraintEnd_toEndOf="@id/orders"
             app:layout_constraintStart_toStartOf="@id/orders"
@@ -179,6 +178,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/text_quantity"
+            android:paddingVertical="@dimen/normal_padding"
             app:layout_constraintEnd_toEndOf="@id/orders"
             app:layout_constraintStart_toStartOf="@id/price"
             app:layout_constraintTop_toBottomOf="@+id/remaining" />
