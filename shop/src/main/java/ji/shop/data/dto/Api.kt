@@ -69,6 +69,12 @@ interface Api {
         @Query("cart_id") cartId: String
     ): WrapResponse<Any>
 
+    @GET("pos/get_pos_order_detail")
+    suspend fun getDetailOrder(
+        @Query("pos_order_id") posOrderId: String,
+        @Query("venue_id") venueId: String
+    ): WrapResponse<OrderDetailDto>
+
     companion object {
         lateinit var api: Api
         fun create(): Api {

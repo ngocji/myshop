@@ -86,4 +86,5 @@
     <string name="text_discount_amount">Discount Amount</string>
     <string name="text_empty_order">No Orders found!</string>
     <string name="text_state_cancelled">Cancelled</string>
+    <string name="text_order_detail">Order Details</string>
 </resources>

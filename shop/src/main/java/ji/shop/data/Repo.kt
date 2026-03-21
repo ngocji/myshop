@@ -56,6 +56,10 @@ object Repo {
         api.getViewOrder(posOrderId.orEmpty(), ShopSDK.getVenueId()).data?.toDomain()
     }
 
+    suspend fun getOrderDetailItems(posOrderId: String?) = withContext(Dispatchers.IO) {
+        api.getDetailOrder(posOrderId.orEmpty(), ShopSDK.getVenueId()).data?.items?.map { it.toDomain() }
+    }
+
     suspend fun getCouponsReport(posOrderId: String?) = withContext(Dispatchers.IO) {
         api.getCouponsReport(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
     }

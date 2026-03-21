@@ -12,6 +12,7 @@ import ji.shop.data.domain.Order
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.WrapPager
 import ji.shop.databinding.FragmentOrdersBinding
+import ji.shop.dialog.OrderDetailItemsDialog
 import ji.shop.dialog.ViewCouponReportDialog
 import ji.shop.dialog.ViewOrderDialog
 import ji.shop.dialog.ViewRefundDialog
@@ -101,12 +102,13 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                 override fun onActionClick(action: PopupAction) {
                     when (action) {
                         PopupAction.VIEW_ORDER -> {
-                            viewDetailOrder(order)
+                            ViewOrderDialog.newInstance(order)
+                                .show(childFragmentManager)
                         }
 
                         PopupAction.REFUND -> {
                             ViewRefundDialog.newInstance(order.posOrderId)
-                                .show(this@OrdersFragment.childFragmentManager)
+                                .show(childFragmentManager)
                         }
 
                         PopupAction.COUPONS_REPORT -> {
@@ -121,7 +123,7 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
 
     private fun viewDetailOrder(order: Order?) {
         order ?: return
-        ViewOrderDialog.newInstance(order)
+        OrderDetailItemsDialog.newInstance(order)
             .show(childFragmentManager)
     }
 }
