@@ -121,6 +121,8 @@
 
 
     <LinearLayout
+        android:id="@+id/content"
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_8dp"
@@ -157,6 +159,8 @@
         android:layout_marginBottom="@dimen/large_2_padding"
         android:backgroundTint="@color/colorStateRefund"
         android:text="@string/text_refund_action"
+        android:enabled="false"
+        android:alpha="0.5"
         android:textAllCaps="false"
         android:textColor="@color/colorText"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -167,6 +171,7 @@
         android:id="@+id/state_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:st_empty_text="@string/text_empty_items"
         app:layout_constraintBottom_toTopOf="@id/btn_refund"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

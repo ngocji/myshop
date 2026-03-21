@@ -113,6 +113,7 @@
 
 
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/large_2_padding"
@@ -120,6 +121,7 @@
         android:background="@drawable/bg_secondary"
         android:orientation="vertical"
         android:padding="@dimen/_8dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/btn_refund"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
@@ -145,7 +147,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/large_2_padding"
+        android:alpha="0.5"
         android:backgroundTint="@color/colorStateRefund"
+        android:enabled="false"
         android:minWidth="150dp"
         android:text="@string/text_refund_action"
         app:layout_constraintBottom_toBottomOf="parent"

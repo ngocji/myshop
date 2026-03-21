@@ -19,6 +19,7 @@ import ji.shop.exts.isTablet
 import ji.shop.exts.safeResultFlow
 import ji.shop.exts.width
 import ji.shop.items.ViewOrderItemUi
+import ji.shop.widget.StateWrapperView
 import kotlin.math.roundToInt
 
 class OrderDetailItemsDialog : BaseDialog(R.layout.dialog_order_detail_items) {
@@ -63,6 +64,9 @@ class OrderDetailItemsDialog : BaseDialog(R.layout.dialog_order_detail_items) {
     }
 
     private fun updateOrderItems(items: List<ItemUI<*>>) {
+        if (items.isEmpty()) {
+            binding.stateView.updateState(StateWrapperView.State.EMPTY)
+        }
         flexibleAdapter = FlexibleAdapter(items.toMutableList())
         binding.recyclerView.adapter = flexibleAdapter
     }

@@ -40,10 +40,14 @@ class StateWrapperView @JvmOverloads constructor(
                 ContextCompat.getColor(context, R.color.colorBackground)
             )
             findViewById<View>(R.id.progress_view)?.setBackgroundColor(progressBackground)
+            findViewById<View>(R.id.empty_view)?.setBackgroundColor(progressBackground)
+            findViewById<View>(R.id.error_view)?.setBackgroundColor(progressBackground)
 
             typedArray.getString(R.styleable.StateWrapperView_st_empty_text)
                 .takeIf { emptyText -> !emptyText.isNullOrBlank() }
-                .let { emptyText -> findViewById<TextView>(R.id.tv_empty)?.text = emptyText }
+                ?.let { emptyText ->
+                    findViewById<TextView>(R.id.tv_empty)?.text = emptyText
+                }
 
             typedArray.recycle()
         }

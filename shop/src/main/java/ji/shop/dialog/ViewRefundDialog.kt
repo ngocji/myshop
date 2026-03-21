@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
+import androidx.core.view.isVisible
 import ji.shop.R
 import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
@@ -15,6 +16,7 @@ import ji.shop.data.domain.Refund
 import ji.shop.data.domain.RefundItem
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.databinding.DialogViewRefundBinding
+import ji.shop.exts.changeEnabled
 import ji.shop.exts.collect
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
@@ -24,6 +26,7 @@ import ji.shop.items.RefundItemUi
 import ji.shop.items.RefundItemUi.Companion.PAYLOAD_CHANGE_COUNT
 import ji.shop.items.TotalRefundItemUi
 import ji.shop.items.TotalRefundItemUi.Companion.PAYLOAD_CHANGE_TOTAL
+import ji.shop.widget.StateWrapperView
 import kotlin.math.roundToInt
 
 class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
@@ -93,6 +96,13 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
     }
 
     private fun updateItems(items: List<ItemUI<*>>) {
+        if (items.isEmpty()) {
+            binding.stateView.updateState(StateWrapperView.State.EMPTY)
+            binding.btnRefund.changeEnabled(false)
+            return
+        }
+        binding.content.isVisible = true
+        binding.btnRefund.changeEnabled(true)
         flexibleAdapter?.updateDataset(items) ?: run {
             flexibleAdapter = FlexibleAdapter(items.toMutableList())
                 .addListener { adapter, view, position ->
