@@ -14,7 +14,10 @@ import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.Group
 import ji.shop.data.domain.Group.Companion.GROUP_ONLY_ITEM_ID
+import ji.shop.data.domain.Order
 import ji.shop.data.domain.Product
+import ji.shop.data.domain.Refund
+import ji.shop.data.domain.RefundItem
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.ShopCategory
 import ji.shop.data.domain.TabType
@@ -35,6 +38,7 @@ import ji.shop.items.InventoryUi
 import ji.shop.items.OrdersItemUi
 import ji.shop.items.ProductItemUi
 import ji.shop.utils.NumberFormater
+import ji.shop.widget.StateWrapperView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -53,6 +57,8 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     val gotoFragmentEvent = Channel<() -> Fragment>(capacity = BUFFERED)
     val backEvent = Channel<Unit>()
     val viewCartEvent = Channel<Unit>(capacity = BUFFERED)
+
+    val loadingGlobalEvent = Channel<Boolean>()
 
     // state for user
     val myBalanceState = MutableStateFlow(0.0)
@@ -434,5 +440,9 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
 
     fun isFirstOrderPage(): Boolean {
         return pageOrder.value == START_PAGE
+    }
+
+    fun refund(refund: Refund, items: List<RefundItem>) = safeResultFlow {
+        Repo.refundPosOrder(refund, items)
     }
 }

@@ -1,8 +1,12 @@
 package ji.shop.data.dto
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import ji.shop.data.domain.Item
+import ji.shop.ShopSDK
+import ji.shop.data.domain.Order
 import ji.shop.data.domain.Refund
+import ji.shop.data.domain.RefundItem
+import ji.shop.utils.Log
 
 data class RequestRefund(
     @SerializedName("custom_refund_amount")
@@ -26,17 +30,20 @@ data class RefundData(
     val ticketOrderItemId: Int?
 )
 
-fun Refund.toRequest(ticketOrderId: String?, venueId: String?): RequestRefund {
+fun createRefundRequest(refund: Refund, selectedItems: List<RefundItem>): RequestRefund {
+    val total = selectedItems.sumOf { it.quantity * it.unitPrice }
     return RequestRefund(
-        customRefundAmount = summary?.refundableAmount,
+        customRefundAmount = total,
         message = "",
-        refundData = items.map { it.toRequest() },
-        ticketOrderId = ticketOrderId,
-        venueId = venueId
-    )
+        refundData = selectedItems.map { it.toRequest() },
+        ticketOrderId = refund.order?.posOrderId,
+        venueId = ShopSDK.getVenueId()
+    ).also {
+        Log.d("${Gson().toJson(it)}")
+    }
 }
 
-fun Item.toRequest(): RefundData {
+fun RefundItem.toRequest(): RefundData {
     return RefundData(
         isAllRefund = isTicket,
         refundQuantity = quantity,

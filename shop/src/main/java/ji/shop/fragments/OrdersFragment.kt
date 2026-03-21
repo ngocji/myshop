@@ -2,6 +2,7 @@ package ji.shop.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import ji.shop.R
 import ji.shop.base.BaseFragment
 import ji.shop.base.START_PAGE
@@ -9,6 +10,8 @@ import ji.shop.base.adapter.FlexibleLoadMoreAdapter
 import ji.shop.base.adapter.ItemUI
 import ji.shop.base.viewBinding
 import ji.shop.data.domain.Order
+import ji.shop.data.domain.Refund
+import ji.shop.data.domain.RefundItem
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.WrapPager
 import ji.shop.databinding.FragmentOrdersBinding
@@ -17,6 +20,7 @@ import ji.shop.dialog.ViewCouponReportDialog
 import ji.shop.dialog.ViewOrderDialog
 import ji.shop.dialog.ViewRefundDialog
 import ji.shop.exts.collect
+import ji.shop.exts.collectOne
 import ji.shop.items.OrdersItemUi
 import ji.shop.widget.PopupAction
 import ji.shop.widget.PopupWindow
@@ -107,7 +111,9 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                         }
 
                         PopupAction.REFUND -> {
-                            ViewRefundDialog.newInstance(order.posOrderId)
+                            ViewRefundDialog.newInstance(order.posOrderId) { refund, items ->
+                                doRefund(refund, items)
+                            }
                                 .show(childFragmentManager)
                         }
 
@@ -125,5 +131,40 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
         order ?: return
         OrderDetailItemsDialog.newInstance(order)
             .show(childFragmentManager)
+    }
+
+    private fun doRefund(refund: Refund, items: List<RefundItem>) {
+        collectOne(shopViewModel.refund(refund, items)) { result ->
+            when (result) {
+                is ResultWrapper.Success -> {
+                    shopViewModel.loadingGlobalEvent.trySend(false)
+                    if (result.data.isSuccess) {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.text_success),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            result.data.message.orEmpty(),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+
+                is ResultWrapper.Loading -> {
+                    shopViewModel.loadingGlobalEvent.trySend(true)
+                }
+
+                is ResultWrapper.Failure -> {
+                    shopViewModel.loadingGlobalEvent.trySend(false)
+                }
+
+                else -> {}
+            }
+        }
     }
 }

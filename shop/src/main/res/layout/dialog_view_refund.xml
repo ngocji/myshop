@@ -64,6 +64,7 @@
         android:padding="@dimen/_16dp"
         android:text="@string/text_refund_cash_amount"
         android:textSize="16sp"
+        android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_featured"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
@@ -140,7 +141,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/large_padding"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_refund" />
 
@@ -159,4 +162,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@+id/guide_start" />
+
+    <ji.shop.widget.StateWrapperView
+        android:id="@+id/state_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_refund"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv"
+        app:st_progress_background="@android:color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

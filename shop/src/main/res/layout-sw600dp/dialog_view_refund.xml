@@ -22,14 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/large_padding" />
+        app:layout_constraintGuide_begin="@dimen/large_2_padding" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/large_padding" />
+        app:layout_constraintGuide_end="@dimen/large_2_padding" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_close"
@@ -55,16 +55,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tvRefund"
+        style="@style/fontDemiBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_refund"
+        android:drawablePadding="@dimen/_8dp"
+        android:padding="@dimen/_16dp"
+        android:text="@string/text_refund_cash_amount"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/ic_featured"
+        app:layout_constraintEnd_toEndOf="@id/guide_end"
+        app:layout_constraintStart_toStartOf="@id/guide_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv"
+        tools:text="@string/text_refund_cash_amount" />
+
+    <TextView
         android:id="@+id/tvName"
         style="@style/fontDemiBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8dp"
-        tools:text="Bill Evans"
         android:textSize="32sp"
         app:layout_constraintEnd_toStartOf="@id/btn_close"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@+id/tv" />
+        app:layout_constraintTop_toBottomOf="@+id/tvRefund"
+        tools:text="Bill Evans" />
 
     <TextView
         android:id="@+id/tv_mail"
@@ -98,9 +115,10 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/large_2_padding"
+        android:layout_marginBottom="@dimen/_32dp"
         android:background="@drawable/bg_secondary"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/large_2_padding"
         android:padding="@dimen/_8dp"
         app:layout_constraintBottom_toTopOf="@id/btn_refund"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
@@ -122,23 +140,24 @@
 
     </LinearLayout>
 
-    <ji.shop.widget.TitleValuesView
-        android:id="@+id/title_values_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/large_padding"
-        app:layout_constraintBottom_toTopOf="@id/btn_refund"
-        app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintStart_toStartOf="@id/guide_start"
-        tools:itemCount="2" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_refund"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/large_2_padding"
         android:backgroundTint="@color/colorStateRefund"
-        android:text="@string/text_refund"
+        android:minWidth="150dp"
+        android:text="@string/text_refund_action"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guide_end" />
+
+    <ji.shop.widget.StateWrapperView
+        android:id="@+id/state_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_refund"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv"
+        app:st_progress_background="@android:color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

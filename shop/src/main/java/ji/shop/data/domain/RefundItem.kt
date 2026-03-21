@@ -1,6 +1,6 @@
 package ji.shop.data.domain
 
-data class Item(
+data class RefundItem(
     val posOrderItemId: Int,
     val name: String,
     val variationName: String = "",

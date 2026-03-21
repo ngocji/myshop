@@ -20,6 +20,17 @@ fun <T> AppCompatActivity.collectOne(
     }
 }
 
+fun <T> Fragment.collectOne(
+    flow: Flow<T>,
+    action: (t: T) -> Unit
+) {
+    viewLifecycleOwner.lifecycleScope.launch {
+        flow.collect {
+            action(it)
+        }
+    }
+}
+
 fun <T> AppCompatActivity.collect(
     state: Lifecycle.State = Lifecycle.State.STARTED,
     channel: Channel<T>,

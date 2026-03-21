@@ -1,9 +1,8 @@
 package ji.shop.data.dto
 
 import com.google.gson.annotations.SerializedName
-import ji.shop.data.domain.CustomerInfo
-import ji.shop.data.domain.Item
 import ji.shop.data.domain.Refund
+import ji.shop.data.domain.RefundItem
 import ji.shop.data.domain.Summary
 
 data class RefundDto(
@@ -11,13 +10,13 @@ data class RefundDto(
     val order: OrderInfoDto?,
 
     @SerializedName("items")
-    val items: List<ItemDto>?,
+    val items: List<RefundItemDto>?,
 
     @SerializedName("summary")
     val summary: SummaryRefundDto?,
 )
 
-data class ItemDto(
+data class RefundItemDto(
     @SerializedName("currency_symbol")
     val currencySymbol: String?,
     @SerializedName("is_ticket")
@@ -49,22 +48,14 @@ data class SummaryRefundDto(
 
 fun RefundDto.toDomain(): Refund {
     return Refund(
-        customerInfo = order?.toDomain(),
+        order = order?.toDomains(),
         items = items?.map { it.toDomain() } ?: emptyList(),
         summary = summary?.toDomain()
     )
 }
 
-fun OrderInfoDto.toDomain(): CustomerInfo {
-    return CustomerInfo(
-        name = buyerName.orEmpty(),
-        email = buyerEmail.orEmpty(),
-        phoneNumber = buyerPhone.orEmpty()
-    )
-}
-
-fun ItemDto.toDomain(): Item {
-    return Item(
+fun RefundItemDto.toDomain(): RefundItem {
+    return RefundItem(
         posOrderItemId = posOrderItemId ?: -1,
         name = name.orEmpty(),
         quantity = quantity ?: 0,

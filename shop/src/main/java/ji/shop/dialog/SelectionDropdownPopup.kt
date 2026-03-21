@@ -3,9 +3,9 @@ package ji.shop.dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import ji.shop.base.adapter.FlexibleAdapter
@@ -28,11 +28,17 @@ class SelectionDropdownPopup<T : Any>(
         initAdapter()
     }
 
-    fun show(targetView: View) {
-        val targetWidth = targetView.measuredWidth
+    fun show(
+        targetView: View,
+        targetWidth: Int = targetView.measuredWidth,
+        targetHeight: Int = targetView.context.height() / 2,
+        xOff: Int = 0,
+        yOff: Int = 10,
+        gravity: Int = Gravity.TOP or Gravity.START
+    ) {
         binding.constraint.layoutParams =
-            FrameLayout.LayoutParams(targetWidth, targetView.context.height() / 2)
-        showAsDropDown(targetView, 0, 10)
+            FrameLayout.LayoutParams(targetWidth, targetHeight)
+        showAsDropDown(targetView, xOff, yOff, gravity)
     }
 
     private fun initAdapter() {

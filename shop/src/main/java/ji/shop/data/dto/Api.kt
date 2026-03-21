@@ -52,8 +52,8 @@ interface Api {
 
     @POST("pos/refund_pos_order")
     suspend fun refundPosOrder(
-        @Body refund: RequestRefund?
-    ): WrapResponse<RefundDto>
+        @Body refund: RequestRefund
+    ): WrapResponse<Any>
 
     @POST("/user/refresh_token")
     suspend fun refreshToken(@Body request: RequestGetRefreshToken): TokenDto?

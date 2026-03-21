@@ -1,8 +1,8 @@
 package ji.shop.data.domain
 
 data class Refund(
-    val customerInfo: CustomerInfo?,
-    val items: List<Item>,
+    val order: OrderInfo?,
+    val items: List<RefundItem>,
     val summary: Summary?
 )
 

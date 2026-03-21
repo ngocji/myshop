@@ -8,6 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
+        android:minWidth="@dimen/_90dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxHeight="500dp">

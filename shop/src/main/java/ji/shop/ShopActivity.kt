@@ -91,6 +91,9 @@ class ShopActivity : AppCompatActivity() {
         collect(channel = viewModel.viewCartEvent) {
             doViewCart()
         }
+        collect(channel = viewModel.loadingGlobalEvent) {
+            showProgress(it)
+        }
     }
 
     private fun doOnGoto(action: () -> Fragment) {

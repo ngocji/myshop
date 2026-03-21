@@ -7,10 +7,12 @@ import ji.shop.data.domain.Cart
 import ji.shop.data.domain.CheckoutResult
 import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
+import ji.shop.data.domain.Refund
+import ji.shop.data.domain.RefundItem
 import ji.shop.data.domain.Ticket
 import ji.shop.data.domain.WrapPager
 import ji.shop.data.dto.Api
-import ji.shop.data.dto.RequestRefund
+import ji.shop.data.dto.createRefundRequest
 import ji.shop.data.dto.createShoppingCartRequest
 import ji.shop.data.dto.toDomain
 import kotlinx.coroutines.Dispatchers
@@ -57,16 +59,20 @@ object Repo {
     }
 
     suspend fun getOrderDetailItems(posOrderId: String?) = withContext(Dispatchers.IO) {
-        api.getDetailOrder(posOrderId.orEmpty(), ShopSDK.getVenueId()).data?.items?.map { it.toDomain() }
+        api.getDetailOrder(
+            posOrderId.orEmpty(),
+            ShopSDK.getVenueId()
+        ).data?.items?.map { it.toDomain() }
     }
 
     suspend fun getCouponsReport(posOrderId: String?) = withContext(Dispatchers.IO) {
         api.getCouponsReport(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
     }
 
-    suspend fun refundPosOrder(refund: RequestRefund?) = withContext(Dispatchers.IO) {
-        api.refundPosOrder(refund)
-    }
+    suspend fun refundPosOrder(refund: Refund, items: List<RefundItem>) =
+        withContext(Dispatchers.IO) {
+            api.refundPosOrder(createRefundRequest(refund, items))
+        }
 
     suspend fun getTicket() = withContext(Dispatchers.IO) {
         Ticket(
