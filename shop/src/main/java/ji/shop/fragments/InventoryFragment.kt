@@ -39,9 +39,9 @@ class InventoryFragment : BaseFragment(R.layout.fragment_inventory) {
             flexibleInventoryAdapter = FlexibleAdapter(items.toMutableList())
                 .setMode(SINGLE)
                 .addListener { adapter, view, position ->
-                    if (view.id == R.id.img_Visibility) {
+                    /*if (view.id == R.id.img_Visibility) {
                         adapter.toggleSelection(position)
-                    }
+                    }*/
                 }
             binding.rcvInventory.adapter = flexibleInventoryAdapter
         }

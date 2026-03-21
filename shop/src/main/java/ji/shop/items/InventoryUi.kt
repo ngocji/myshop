@@ -38,9 +38,9 @@ class InventoryUi(val inventory: Inventory) : ItemUI<ItemInventoryBinding>() {
                     info?.isVisible = expanded
                 }
 
-                imgVisibility.setOnClickListener {
+                /*imgVisibility.setOnClickListener {
                     adapter.notifyListeners { onClick(adapter, imgVisibility, absoluteAdapterPosition) }
-                }
+                }*/
             }
         }
     }
