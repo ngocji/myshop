@@ -50,10 +50,6 @@ class ViewOrderDialog : BaseDialog(R.layout.dialog_view_order) {
         window.setGravity(if (isTablet) Gravity.CENTER else Gravity.BOTTOM)
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-    }
-
     private fun initViews() {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }

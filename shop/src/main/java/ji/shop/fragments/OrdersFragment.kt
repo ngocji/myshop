@@ -12,6 +12,7 @@ import ji.shop.data.domain.Order
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.WrapPager
 import ji.shop.databinding.FragmentOrdersBinding
+import ji.shop.dialog.ViewCouponReportDialog
 import ji.shop.dialog.ViewOrderDialog
 import ji.shop.dialog.ViewRefundDialog
 import ji.shop.exts.collect
@@ -72,7 +73,8 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                     .apply {
                         addListener { _, view, position ->
                             val order =
-                                (flexibleOrdersAdapter?.getItem(position) as? OrdersItemUi)?.order ?: return@addListener
+                                (flexibleOrdersAdapter?.getItem(position) as? OrdersItemUi)?.order
+                                    ?: return@addListener
                             if (view.id == R.id.img_action) {
                                 showActionOrder(order, view)
                             } else {
@@ -108,7 +110,8 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                         }
 
                         PopupAction.COUPONS_REPORT -> {
-
+                            ViewCouponReportDialog.newInstance(order)
+                                .show(childFragmentManager)
                         }
                     }
                 }

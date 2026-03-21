@@ -75,7 +75,7 @@ data class SummaryDto(
     val discountAmount: Int?,
 
     @SerializedName("discount_amount_raw")
-    val discountAmountRaw: Double?
+    val discountAmountRaw: Double?,
 )
 
 fun ViewOrderDto.toDomain(): ViewOrder {

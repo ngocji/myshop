@@ -22,14 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/large_padding" />
+        app:layout_constraintGuide_begin="@dimen/large_2_padding" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/large_padding" />
+        app:layout_constraintGuide_end="@dimen/large_2_padding" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_close"
@@ -192,7 +192,7 @@
             tools:listitem="@layout/item_view_order" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/end"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -203,119 +203,133 @@
         app:layout_constraintStart_toEndOf="@id/start"
         app:layout_constraintTop_toTopOf="@id/start">
 
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/fontDemiBold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/text_order_summary"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16dp"
-            android:background="@drawable/bg_collection_container"
-            android:padding="@dimen/_8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card2">
+            android:paddingBottom="@dimen/large_2_padding">
 
 
-            <ji.shop.widget.TitleView
-                android:id="@+id/tvSubTotal"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/title"
+                style="@style/fontDemiBold"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:text="@string/text_order_summary"
+                android:textSize="32sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tv_title="@string/text_subtotal" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ji.shop.widget.TitleView
-                android:id="@+id/tvTax"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16dp"
+                android:background="@drawable/bg_collection_container"
+                android:paddingHorizontal="@dimen/large_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvSubTotal"
-                app:tv_title="@string/text_tax" />
+                app:layout_constraintTop_toBottomOf="@+id/card2">
 
-            <ji.shop.widget.TitleView
-                android:id="@+id/tvTotal"
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/tvSubTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tv_title="@string/text_subtotal" />
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/tvTax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSubTotal"
+                    app:tv_title="@string/text_tax" />
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTax"
+                    app:line_isVisible="false"
+                    app:tv_title="@string/text_total" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16dp"
+                android:background="@drawable/bg_collection_container"
+                android:paddingHorizontal="@dimen/large_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTax"
-                app:line_isVisible="false"
-                app:tv_title="@string/text_total" />
+                app:layout_constraintTop_toBottomOf="@+id/title">
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/applied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tv_title="@string/text_coupon_applied" />
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/tvCouponCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/applied"
+                    app:tv_title="@string/text_coupon_code" />
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/tvDiscountType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCouponCode"
+                    app:tv_title="@string/text_discount_type" />
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/tvDiscountValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDiscountType"
+                    app:tv_title="@string/text_discount_value" />
+
+                <ji.shop.widget.TitleView
+                    android:id="@+id/tvDiscountAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDiscountValue"
+                    app:line_isVisible="false"
+                    app:tv_title="@string/text_discount_amount" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16dp"
-            android:background="@drawable/bg_collection_container"
-            android:padding="@dimen/_8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title">
-
-            <ji.shop.widget.TitleView
-                android:id="@+id/applied"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tv_title="@string/text_coupon_applied" />
-
-            <ji.shop.widget.TitleView
-                android:id="@+id/tvCouponCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/applied"
-                app:tv_title="@string/text_coupon_code" />
-
-            <ji.shop.widget.TitleView
-                android:id="@+id/tvDiscountType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCouponCode"
-                app:tv_title="@string/text_discount_type" />
-
-            <ji.shop.widget.TitleView
-                android:id="@+id/tvDiscountValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDiscountType"
-                app:tv_title="@string/text_discount_value" />
-
-            <ji.shop.widget.TitleView
-                android:id="@+id/tvDiscountAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDiscountValue"
-                app:line_isVisible="false"
-                app:tv_title="@string/text_discount_amount" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <ji.shop.widget.StateWrapperView
+        android:id="@+id/state_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:st_progress_background="@android:color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
