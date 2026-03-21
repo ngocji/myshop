@@ -12,6 +12,7 @@ import ji.shop.data.domain.Order
 import ji.shop.data.domain.ResultWrapper
 import ji.shop.data.domain.WrapPager
 import ji.shop.databinding.FragmentOrdersBinding
+import ji.shop.dialog.ViewOrderDialog
 import ji.shop.dialog.ViewRefundDialog
 import ji.shop.exts.collect
 import ji.shop.items.OrdersItemUi
@@ -40,7 +41,7 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
     private fun initObserves() {
         collect(flow = shopViewModel.orderFlow) { result ->
             if (shopViewModel.isFirstOrderPage()) {
-                binding.stateView?.updateStateWithResult(result)
+                binding.stateView.updateStateWithResult(result)
             }
 
             when (result) {
@@ -61,7 +62,7 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
             } else {
                 updateDataset(orders.items)
                 if (orders.items.isEmpty()) {
-                    binding.stateView?.updateState(StateWrapperView.State.EMPTY)
+                    binding.stateView.updateState(StateWrapperView.State.EMPTY)
                 }
             }
         } ?: run {
@@ -70,15 +71,17 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                     .setLoadMoreListener { shopViewModel.loadNextPageOrder() }
                     .apply {
                         addListener { _, view, position ->
+                            val order =
+                                (flexibleOrdersAdapter?.getItem(position) as? OrdersItemUi)?.order ?: return@addListener
                             if (view.id == R.id.img_action) {
-                                val order =
-                                    (flexibleOrdersAdapter?.getItem(position) as? OrdersItemUi)?.order
                                 showActionOrder(order, view)
+                            } else {
+                                viewDetailOrder(order)
                             }
                         }
                     }
             if (orders.allItems.isEmpty()) {
-                binding.stateView?.updateState(StateWrapperView.State.EMPTY)
+                binding.stateView.updateState(StateWrapperView.State.EMPTY)
             }
         }
 
@@ -96,7 +99,7 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                 override fun onActionClick(action: PopupAction) {
                     when (action) {
                         PopupAction.VIEW_ORDER -> {
-
+                            viewDetailOrder(order)
                         }
 
                         PopupAction.REFUND -> {
@@ -111,5 +114,11 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
                 }
             })
         popupWindow.show()
+    }
+
+    private fun viewDetailOrder(order: Order?) {
+        order ?: return
+        ViewOrderDialog.newInstance(order)
+            .show(childFragmentManager)
     }
 }

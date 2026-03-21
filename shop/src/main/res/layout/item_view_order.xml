@@ -10,8 +10,10 @@
         android:id="@+id/img_picture"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CornerSize5"
         app:srcCompat="@drawable/ic_card" />
 
 

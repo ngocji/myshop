@@ -19,7 +19,7 @@ fun ViewModel.runCoroutine(context: CoroutineContext = Dispatchers.IO, block: su
     }
 }
 
-fun <T> ViewModel.safeResultFlow(block: suspend () -> T): Flow<ResultWrapper<T>> =
+fun <T> safeResultFlow(block: suspend () -> T): Flow<ResultWrapper<T>> =
     flow {
         emit(ResultWrapper.Loading)
         val data = block()
@@ -29,7 +29,7 @@ fun <T> ViewModel.safeResultFlow(block: suspend () -> T): Flow<ResultWrapper<T>>
             emit(ResultWrapper.Failure(it))
         }
 
-fun <T> ViewModel.safeFlow(block: suspend () -> T?): Flow<T?> = flow {
+fun <T> safeFlow(block: suspend () -> T?): Flow<T?> = flow {
     emit(block())
 }
     .catch {

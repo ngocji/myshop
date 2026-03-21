@@ -32,16 +32,10 @@ interface Api {
         @Query("pos_shop_id") posShopId: String
     ): WrapResponse<List<InventoryDto>>
 
-    @GET("pos/get_pos_order_detail")
-    suspend fun getOrderDetail(
-        @Query("pos_item_id") posItemId: String,
-        @Query("venue_id") venueId: String
-    ): WrapResponse<OrderDto>
-
     @GET("pos/get_pos_order_view")
     suspend fun getViewOrder(
-        @Query("pos_order_id") posOrderId: String?,
-        @Query("venue_id") venueId: String,
+        @Query("pos_order_id") posItemId: String,
+        @Query("venue_id") venueId: String
     ): WrapResponse<ViewOrderDto>
 
     @GET("pos/get_pos_coupons_report")

@@ -53,7 +53,7 @@ object Repo {
     }
 
     suspend fun getViewOrder(posOrderId: String?) = withContext(Dispatchers.IO) {
-        api.getViewOrder(posOrderId, ShopSDK.getVenueId()).data?.toDomain()
+        api.getViewOrder(posOrderId.orEmpty(), ShopSDK.getVenueId()).data?.toDomain()
     }
 
     suspend fun getCouponsReport(posOrderId: String?) = withContext(Dispatchers.IO) {

@@ -14,7 +14,7 @@ data class ViewOrderDto(
     val summary: SummaryDto,
 
     @SerializedName("items")
-    val items: List<ItemDto>?
+    val items: List<OrderItemDetailDto>?
 )
 
 data class OrderInfoDto(
@@ -78,7 +78,7 @@ data class SummaryDto(
     val discountAmountRaw: Double?
 )
 
-fun ViewOrderDto.toDomain() : ViewOrder {
+fun ViewOrderDto.toDomain(): ViewOrder {
     return ViewOrder(
         orderInfo = order?.toDomains(),
         items = items?.map { it.toDomain() } ?: emptyList(),
@@ -86,7 +86,7 @@ fun ViewOrderDto.toDomain() : ViewOrder {
     )
 }
 
-fun SummaryDto.toDomain() : SummaryViewOrder {
+fun SummaryDto.toDomain(): SummaryViewOrder {
     return SummaryViewOrder(
         currencySymbol = currencySymbol.orEmpty(),
         itemsCount = itemsCount ?: 0,
@@ -102,7 +102,7 @@ fun SummaryDto.toDomain() : SummaryViewOrder {
     )
 }
 
-fun OrderInfoDto.toDomains() : OrderInfo {
+fun OrderInfoDto.toDomains(): OrderInfo {
     return OrderInfo(
         buyerEmail = buyerEmail.orEmpty(),
         buyerName = buyerName.orEmpty(),

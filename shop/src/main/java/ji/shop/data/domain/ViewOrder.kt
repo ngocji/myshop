@@ -2,7 +2,7 @@ package ji.shop.data.domain
 
 data class ViewOrder(
     val orderInfo: OrderInfo?,
-    val items: List<Item>,
+    val items: List<OrderItemDetail>,
     val summary: SummaryViewOrder?
 )
 

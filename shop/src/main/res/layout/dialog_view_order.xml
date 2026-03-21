@@ -22,14 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/large_padding" />
+        app:layout_constraintGuide_begin="@dimen/large_2_padding" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/large_padding" />
+        app:layout_constraintGuide_end="@dimen/large_2_padding" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_close"
@@ -49,11 +49,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/large_2_padding"
-        android:text="@string/text_order"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@id/btn_close"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/text_order" />
 
     <TextView
         android:id="@+id/tvTime"
@@ -221,7 +221,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16dp"
             android:background="@drawable/bg_collection_container"
-            android:padding="@dimen/_8dp"
+            android:paddingHorizontal="@dimen/large_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title">
@@ -270,7 +270,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16dp"
             android:background="@drawable/bg_collection_container"
-            android:padding="@dimen/_8dp"
+            android:paddingHorizontal="@dimen/large_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card1">
@@ -298,4 +298,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ji.shop.widget.StateWrapperView
+        android:id="@+id/state_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:st_progress_background="@android:color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
