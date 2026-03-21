@@ -40,11 +40,7 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
     }
 
     override fun onRetry() {
-        if (context.isTablet()) {
-            // need to  refresh all
-        } else {
-            shopViewModel.refreshCollectionsFlow()
-        }
+        shopViewModel.refreshCollectionsFlow()
     }
 
     private fun initViews() {

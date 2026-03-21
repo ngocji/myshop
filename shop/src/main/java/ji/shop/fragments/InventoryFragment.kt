@@ -20,6 +20,10 @@ class InventoryFragment : BaseFragment(R.layout.fragment_inventory) {
         initObserves()
     }
 
+    override fun onRetry() {
+        shopViewModel.refreshCollectionsFlow()
+    }
+
     private fun initViews() {
         binding.btnCheckout?.setOnClickListener { shopViewModel.viewCart() }
     }

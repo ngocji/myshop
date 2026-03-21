@@ -49,7 +49,7 @@ data class OrdersItemUi(
         payloads: List<Any?>
     ) {
         withBinding(holder) {
-            //rcvAvatar?.setData(cart.product.images)
+            rcvAvatar.setData(order.images)
             tvProductName.text = order.name
             tvQty.text = order.quantity.toString()
             tvTime.text = order.time

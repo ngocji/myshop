@@ -33,9 +33,12 @@ data class OrderDto(
     @SerializedName("status")
     val status: String?,
 
-    )
+    @SerializedName("items")
+    val items: List<OrderItemDto>?
+)
 
-fun OrderDto.toDomain() : Order {
+fun OrderDto.toDomain(): Order {
+    val items = items?.map { it.toDomain() }
     return Order(
         posItemId = posItemId.orEmpty(),
         posOrderId = posOrderId.orEmpty(),
@@ -45,11 +48,9 @@ fun OrderDto.toDomain() : Order {
         currencySymbol = currencySymbol.orEmpty(),
         time = time.orEmpty(),
         paymentMethod = paymentMethod.orEmpty(),
-        status = status?.toStatus() ?: Status.IN_PROGRESS
+        status = Status.safe(status),
+        items = items ?: emptyList(),
+        images = items?.map { it.imageUrl } ?: emptyList()
     )
-}
-
-fun String.toStatus() : Status {
-    return Status.valueOf(this)
 }
 

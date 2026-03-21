@@ -29,6 +29,10 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
         initObserves()
     }
 
+    override fun onRetry() {
+        shopViewModel.refreshCollectionsFlow()
+    }
+
     private fun initViews() {
         binding.btnCheckout?.setOnClickListener { }
     }

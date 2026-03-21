@@ -303,10 +303,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                         LIMIT_PAGE
                     )
                     val mappedItems = pager.items.map { OrdersItemUi(it) }
-                    if (page == 0) {
+                    if (page == START_PAGE) {
                         _cacheOrderItems.clear()
-                        _cacheOrderItems.addAll(mappedItems)
                     }
+                    _cacheOrderItems.addAll(mappedItems)
                     WrapPager(
                         items = mappedItems,
                         page = pager.page,

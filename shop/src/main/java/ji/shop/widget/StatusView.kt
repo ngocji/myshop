@@ -43,6 +43,12 @@ class StatusView @JvmOverloads constructor(
                 bgRes = R.drawable.bg_state_refund
             }
 
+            Status.CANCELLED -> {
+                colorRes = R.color.colorStateCancelled
+                textRes = R.string.text_state_cancelled
+                bgRes = R.drawable.bg_state_cancelled
+            }
+
             else -> {
                 colorRes = R.color.colorStateInProgress
                 textRes = R.string.text_state_inpgoress

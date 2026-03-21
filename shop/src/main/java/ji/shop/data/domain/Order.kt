@@ -1,6 +1,6 @@
 package ji.shop.data.domain
 
-data class Order (
+data class Order(
     val posItemId: String,
     val posOrderId: String,
     val name: String,
@@ -9,5 +9,7 @@ data class Order (
     val currencySymbol: String,
     val time: String,
     val paymentMethod: String,
-    val status: Status
+    val status: Status,
+    val items: List<OrderItem> = emptyList(),
+    val images: List<String> = emptyList(),
 )

@@ -20,7 +20,7 @@ interface Api {
 
     @GET("pos/get_pos_orders_by_shop")
     suspend fun getOrders(
-        @Query("post_shop_id") posShopId: String?,
+        @Query("pos_shop_id") posShopId: String?,
         @Query("venue_id") venueId: String,
         @Query("page") page: Int,
         @Query("limit") limit: Int
