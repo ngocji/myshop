@@ -60,8 +60,10 @@ class ToggleCountView @JvmOverloads constructor(
 
     private fun updateCount() {
         binding.tvCount.text = currentCount.toString()
-        val hasCount = currentCount > 0 || useExpandView || (binding.btnMinus.isVisible && !hideWhenCountingZero)
+        val isZero = currentCount <= 0
+        val hasCount = !isZero || useExpandView
         isVisible = hasCount || !hideWhenCountingZero
+
         with(binding) {
             btnMinus.isVisible = hasCount
             tvCount.isVisible = hasCount

@@ -14,7 +14,6 @@ import ji.shop.data.domain.CreditInfo
 import ji.shop.data.domain.CustomerInfo
 import ji.shop.data.domain.Group
 import ji.shop.data.domain.Group.Companion.GROUP_ONLY_ITEM_ID
-import ji.shop.data.domain.Order
 import ji.shop.data.domain.Product
 import ji.shop.data.domain.Refund
 import ji.shop.data.domain.RefundItem
@@ -38,7 +37,6 @@ import ji.shop.items.InventoryUi
 import ji.shop.items.OrdersItemUi
 import ji.shop.items.ProductItemUi
 import ji.shop.utils.NumberFormater
-import ji.shop.widget.StateWrapperView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -359,19 +357,25 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
     fun getProductsCountNotifyFlow(groupId: String, productsAction: () -> List<ProductItemUi>) =
         cartsState
             .mapLatest { carts ->
-                val index = carts.data.mapNotNull { cart ->
-                    val products = productsAction()
-                    val index =
-                        products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
-                    val item = products.getOrNull(index)
-                    if (item != null) {
-                        item.count = cart.count
-                        index
-                    } else {
-                        null
+                val products = productsAction()
+                if (carts.data.isEmpty()) {
+                    // need to clear
+                    products.forEach { it.count = 0 }
+                    0 to products.size
+                } else {
+                    val index = carts.data.mapNotNull { cart ->
+                        val index =
+                            products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
+                        val item = products.getOrNull(index)
+                        if (item != null) {
+                            item.count = cart.count
+                            index
+                        } else {
+                            null
+                        }
                     }
+                    index.minOrNull() to index.maxOrNull()
                 }
-                index.minOrNull() to index.maxOrNull()
             }
             .filterNotNull()
 

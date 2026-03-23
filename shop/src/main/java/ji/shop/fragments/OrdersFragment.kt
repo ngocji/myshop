@@ -19,6 +19,7 @@ import ji.shop.dialog.OrderDetailItemsDialog
 import ji.shop.dialog.ViewCouponReportDialog
 import ji.shop.dialog.ViewOrderDialog
 import ji.shop.dialog.ViewRefundDialog
+import ji.shop.exts.changeEnabled
 import ji.shop.exts.collect
 import ji.shop.exts.collectOne
 import ji.shop.items.OrdersItemUi
@@ -47,6 +48,10 @@ class OrdersFragment : BaseFragment(R.layout.fragment_orders) {
     }
 
     private fun initObserves() {
+        collect(flow = shopViewModel.cartsState) {
+            binding.btnCheckout?.changeEnabled(it.data.isNotEmpty())
+        }
+
         collect(flow = shopViewModel.orderFlow) { result ->
             if (shopViewModel.isFirstOrderPage()) {
                 binding.stateView.updateStateWithResult(result)

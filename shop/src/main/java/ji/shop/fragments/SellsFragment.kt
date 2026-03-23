@@ -12,6 +12,7 @@ import ji.shop.base.viewBinding
 import ji.shop.data.domain.Group.Companion.isOnlyItem
 import ji.shop.databinding.FragmentSellsBinding
 import ji.shop.dialog.FavoritesDialog
+import ji.shop.exts.changeEnabled
 import ji.shop.exts.collect
 import ji.shop.exts.isTablet
 import ji.shop.fragments.items.SellsPagerAdapter
@@ -57,6 +58,10 @@ class SellsFragment : BaseFragment(R.layout.fragment_sells) {
     private fun initObserves() {
         collectWithProgress(flow = shopViewModel.sellDataState) {
             // update ui mode
+        }
+
+        collect(flow = shopViewModel.cartsState) {
+            binding.btnViewCart?.changeEnabled(it.data.isNotEmpty())
         }
 
         collect(flow = shopViewModel.cartPriceState) { price ->

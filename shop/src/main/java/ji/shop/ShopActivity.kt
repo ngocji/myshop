@@ -18,6 +18,7 @@ import ji.shop.dialog.CheckoutDialog
 import ji.shop.dialog.EditManualCardDialog
 import ji.shop.dialog.TurnOnNfcDialog
 import ji.shop.dialog.ViewCartDialog
+import ji.shop.exts.changeEnabled
 import ji.shop.exts.collect
 import ji.shop.exts.collectOne
 import ji.shop.utils.FragmentUtils
@@ -93,6 +94,9 @@ class ShopActivity : AppCompatActivity() {
         }
         collect(channel = viewModel.loadingGlobalEvent) {
             showProgress(it)
+        }
+        collect(flow = viewModel.cartsState) {
+            binding.btnViewCart?.changeEnabled(it.data.isNotEmpty())
         }
     }
 
