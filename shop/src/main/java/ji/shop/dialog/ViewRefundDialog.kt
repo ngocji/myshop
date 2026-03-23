@@ -115,8 +115,8 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
     private fun changeCount(view: View, position: Int) {
         val item = flexibleAdapter?.getItem(position) as? RefundItemUi ?: return
         val counts = buildList {
-            repeat(item.data.quantityRefundable) {
-                add(it + 1)
+            repeat(item.data.quantityRefundable + 1) {
+                add(it)
             }
         }
         SelectionDropdownPopup(
