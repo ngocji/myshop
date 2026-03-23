@@ -69,8 +69,9 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
             flexibleAdapter =
                 FlexibleAdapter(items.toMutableList())
                     .addListener(object : CountChangOnItemListener {
-                        override fun onCountChanged(position: Int, count: Int) {
+                        override fun onCountChanged(position: Int, count: Int): Boolean {
                             doUpdatePrice()
+                            return true
                         }
 
                         override fun onClick(
@@ -123,14 +124,22 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
 
     private fun doModifyItem(item: Cart?, position: Int) {
         item ?: return
+        var updatedItem = item
+        flexibleAdapter?.run {
+            val itemUI = getItem(position)
+            updatedItem  = item.copy(count = itemUI?.count ?: 0)
+        }
+
         AddProductDialog.newInstance(
-            currentCart = item,
+            currentCart = updatedItem,
             product = item.product,
             onAdd = { cart, cartId ->
                 flexibleAdapter?.run {
                     cart.compute(shopViewModel.shopCategoryState.value)
                     if (cart.generatedId == cartId) {
-                        // nothing changed
+                        // change count
+                        setItem(position, CartItemUi(data = cart))
+                        doUpdatePrice()
                         return@run
                     }
                     val prevIndex = items.indexOfFirst { it.data.generatedId == cartId }
