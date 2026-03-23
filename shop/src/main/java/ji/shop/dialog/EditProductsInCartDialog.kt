@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.Window
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import ji.shop.R
 import ji.shop.ShopViewModel
@@ -12,22 +11,22 @@ import ji.shop.base.BaseDialog
 import ji.shop.base.adapter.FlexibleAdapter
 import ji.shop.base.viewBinding
 import ji.shop.data.domain.Cart
-import ji.shop.databinding.DialogViewCartBinding
-import ji.shop.exts.changeEnabled
+import ji.shop.databinding.DialogEditProductsInCartBinding
 import ji.shop.exts.height
 import ji.shop.exts.isTablet
 import ji.shop.exts.width
 import ji.shop.items.CartItemUi
 import ji.shop.items.CountChangOnItemListener
-import ji.shop.utils.NumberFormater
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.math.roundToInt
 
-class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
-    private val binding by viewBinding(DialogViewCartBinding::bind)
-    private val shopViewModel by activityViewModels<ShopViewModel>()
+class EditProductsInCartDialog : BaseDialog(R.layout.dialog_edit_products_in_cart) {
+    private val binding by viewBinding(DialogEditProductsInCartBinding::bind)
+    private val viewModel by activityViewModels<ShopViewModel>()
     private var flexibleAdapter: FlexibleAdapter<CartItemUi>? = null
-    private var actionCheckout: ((cart: List<Cart>) -> Unit)? = null
+    private var productId = ""
+    private var actionAddNew: (() -> Unit)? = null
+    private var actionUpdateCarts: ((updated: List<Cart>, removed: List<Cart>) -> Unit)? = null
+    private var removedItems = mutableListOf<Cart>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,16 +51,15 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
     private fun initViews() {
         with(binding) {
             btnClose.setOnClickListener { dismissAllowingStateLoss() }
-            btnCheckout.setOnClickListener {
-                actionCheckout?.invoke(obtainItems())
+            btnAdd.setOnClickListener {
                 dismissAllowingStateLoss()
+                actionAddNew?.invoke()
             }
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private fun initData() {
-        val items = shopViewModel.getCartItems()
+        val items = viewModel.getCartItemsByProduct(productId)
             .map { data ->
                 CartItemUi(data)
             }
@@ -70,7 +68,7 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
                 FlexibleAdapter(items.toMutableList())
                     .addListener(object : CountChangOnItemListener {
                         override fun onCountChanged(position: Int, count: Int): Boolean {
-                            doUpdatePrice()
+                            updateCarts()
                             return true
                         }
 
@@ -84,42 +82,12 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
                     })
         }
         binding.recyclerView.adapter = flexibleAdapter
-        doUpdatePrice()
     }
 
-    private fun obtainItems(): List<Cart> {
-        return flexibleAdapter?.items?.mapNotNull { item ->
-            if (item.count > 0) {
-                item.data.copy(count = item.count)
-            } else {
-                null
-            }
-        } ?: emptyList()
-    }
 
-    private fun doUpdatePrice() {
-        val items = obtainItems()
-        shopViewModel.replaceCarts(items)
-
-        if (items.isEmpty()) {
-            binding.titleValuesView.isVisible = false
-            binding.btnCheckout.changeEnabled(false)
-            return
-        }
-        binding.titleValuesView.isVisible = true
-        binding.btnCheckout.changeEnabled(true)
-        val total = items.sumOf { it.getTotalPrice() }
-        val tax = total * 0.038f
-        binding.titleValuesView.setData(
-            Pair(
-                R.string.text_subtotal,
-                NumberFormater.formatNumberLocale(total)
-            ),
-            Pair(
-                R.string.text_tax,
-                NumberFormater.formatNumberLocale(tax)
-            )
-        )
+    private fun updateCarts() {
+        val newItems = obtainItems()
+        actionUpdateCarts?.invoke(newItems, removedItems)
     }
 
     private fun doModifyItem(item: Cart?, position: Int) {
@@ -127,7 +95,7 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
         var updatedItem = item
         flexibleAdapter?.run {
             val itemUI = getItem(position)
-            updatedItem  = item.copy(count = itemUI?.count ?: 0)
+            updatedItem = item.copy(count = itemUI?.count ?: 0)
         }
 
         AddProductDialog.newInstance(
@@ -135,11 +103,11 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
             product = item.product,
             onAdd = { cart, cartId ->
                 flexibleAdapter?.run {
-                    cart.compute(shopViewModel.shopCategoryState.value)
+                    cart.compute(viewModel.shopCategoryState.value)
                     if (cart.generatedId == cartId) {
                         // change count
                         setItem(position, CartItemUi(data = cart))
-                        doUpdatePrice()
+                        updateCarts()
                         return@run
                     }
                     val prevIndex = items.indexOfFirst { it.data.generatedId == cartId }
@@ -154,7 +122,9 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
                             }
                             setItem(existsIndex, CartItemUi(data = newItem))
                             if (prevIndex != -1) {
-                                removeItem(prevIndex)
+                                removeItem(prevIndex)?.data?.also {
+                                    removedItems.add(it)
+                                }
                             }
                         }
 
@@ -169,17 +139,33 @@ class ViewCartDialog : BaseDialog(R.layout.dialog_view_cart) {
                         }
                     }
 
-                    doUpdatePrice()
+                    updateCarts()
                 }
             }
         )
             .show(childFragmentManager)
     }
 
+    private fun obtainItems(): List<Cart> {
+        return flexibleAdapter?.items?.mapNotNull { item ->
+            if (item.count > 0) {
+                item.data.copy(count = item.count)
+            } else {
+                null
+            }
+        } ?: emptyList()
+    }
+
     companion object {
-        fun newInstance(actionCheckout: (cart: List<Cart>) -> Unit): ViewCartDialog {
-            return ViewCartDialog().apply {
-                this.actionCheckout = actionCheckout
+        fun newInstance(
+            productId: String,
+            actionUpdateCarts: (updated: List<Cart>, removed: List<Cart>) -> Unit,
+            actionAddNew: () -> Unit
+        ): EditProductsInCartDialog {
+            return EditProductsInCartDialog().apply {
+                this.productId = productId
+                this.actionUpdateCarts = actionUpdateCarts
+                this.actionAddNew = actionAddNew
             }
         }
     }

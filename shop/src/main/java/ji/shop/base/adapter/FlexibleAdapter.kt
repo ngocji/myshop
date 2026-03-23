@@ -142,9 +142,10 @@ open class FlexibleAdapter<T : ItemUI<*>>(var items: MutableList<T>) :
         notifyItemChanged(position)
     }
 
-    fun removeItem(position: Int) {
-        items.removeAt(position)
+    fun removeItem(position: Int): T? {
+        val deleted = items.removeAt(position)
         notifyItemRemoved(position)
+        return deleted
     }
 
     fun addItem(item: T) {

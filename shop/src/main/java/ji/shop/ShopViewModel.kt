@@ -243,7 +243,7 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         }
     }
 
-    fun addToCarts(carts: List<Cart>, merge: Boolean) {
+    fun addToCarts(carts: List<Cart>, merge: Boolean, removed: List<Cart> = emptyList()) {
         cartsState.update {
             val currentCarts = it.data
 
@@ -264,6 +264,10 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                 }
             }
 
+            removed.forEach { cart ->
+                currentCarts.removeIf { c -> c.generatedId == cart.generatedId }
+            }
+
             WrapUpdateData(data = currentCarts)
         }
     }
@@ -272,7 +276,12 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
         return cartsState.value.data.toList()
     }
 
-    fun updateCarts(carts: List<Cart>) {
+    fun getCartItemsByProduct(productId: String): List<Cart> {
+        return cartsState.value.data
+            .filter { it.product.id == productId }
+    }
+
+    fun replaceCarts(carts: List<Cart>) {
         cartsState.update {
             WrapUpdateData(data = carts.toMutableList())
         }

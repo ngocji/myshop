@@ -87,4 +87,6 @@
     <string name="text_empty_order">No Orders found!</string>
     <string name="text_state_cancelled">Cancelled</string>
     <string name="text_order_detail">Order Details</string>
+    <string name="text_edit_quantity">Edit Quantity</string>
+    <string name="text_add_new">Add New</string>
 </resources>

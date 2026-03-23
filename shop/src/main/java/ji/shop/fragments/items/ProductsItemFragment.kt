@@ -11,6 +11,7 @@ import ji.shop.base.viewBinding
 import ji.shop.data.domain.Product
 import ji.shop.databinding.FragmentSellsProductsItemBinding
 import ji.shop.dialog.AddProductDialog
+import ji.shop.dialog.EditProductsInCartDialog
 import ji.shop.exts.collect
 import ji.shop.items.CountChangOnItemListener
 import ji.shop.items.ProductItemUi
@@ -55,8 +56,13 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
                             shopViewModel.addToCart(item, count)
                             true
                         } else {
-                            doChangeCountForMultipleSelectionProduct(item, position)
-                            false
+                            if (shopViewModel.getCartItemsByProduct(item.id).size == 1) {
+                                shopViewModel.addToCart(item, count)
+                                true
+                            } else {
+                                doChangeCountForMultipleSelectionProduct(item, position)
+                                false
+                            }
                         }
                     }
 
@@ -110,7 +116,16 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
         item: Product,
         position: Int
     ) {
-
+        EditProductsInCartDialog.newInstance(
+            productId = item.id,
+            actionAddNew = {
+                doAddToCart(position, item)
+            },
+            actionUpdateCarts = { updated, removed->
+                shopViewModel.addToCarts(updated, false, removed)
+            }
+        )
+            .show(childFragmentManager)
     }
 
     companion object {
