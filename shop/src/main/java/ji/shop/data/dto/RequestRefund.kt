@@ -31,7 +31,7 @@ data class RefundData(
 )
 
 fun createRefundRequest(refund: Refund, selectedItems: List<RefundItem>): RequestRefund {
-    val total = selectedItems.sumOf { it.quantity * it.unitPrice }
+    val total = selectedItems.sumOf { it.refundQuantity * it.unitPrice }
     return RequestRefund(
         customRefundAmount = total,
         message = "",
@@ -45,8 +45,8 @@ fun createRefundRequest(refund: Refund, selectedItems: List<RefundItem>): Reques
 
 fun RefundItem.toRequest(): RefundData {
     return RefundData(
-        isAllRefund = isTicket,
-        refundQuantity = quantity,
+        isAllRefund = quantity == refundQuantity,
+        refundQuantity = refundQuantity,
         ticketOrderItemId = posOrderItemId
     )
 }

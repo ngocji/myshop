@@ -67,7 +67,7 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
                         ?.filter { it.count > 0 }
                         ?.map {
                             it.data.copy(
-                                quantity = it.count
+                                refundQuantity = it.count
                             )
                         } ?: emptyList())
                 dismissAllowingStateLoss()

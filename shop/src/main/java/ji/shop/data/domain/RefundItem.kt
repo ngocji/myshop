@@ -10,4 +10,5 @@ data class RefundItem(
     val unitPrice: Double,
     val currencySymbol: String,
     val isTicket: Boolean,
+    val refundQuantity: Int = 0
 )
