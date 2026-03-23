@@ -29,12 +29,14 @@ data class RefundItemDto(
     val quantity: Int?,
     @SerializedName("quantity_refundable")
     val quantityRefundable: Int?,
-    @SerializedName("unit_price")
-    val unitPrice: Double?,
+    @SerializedName("price")
+    val price: Double?,
     @SerializedName("image_url")
     val imageUrl: String?,
     @SerializedName("variation_name")
-    val variationName: String?
+    val variationName: String?,
+    @SerializedName("modifiers")
+    val modifiers: List<ModifierDto>?
 )
 
 data class SummaryRefundDto(
@@ -60,9 +62,10 @@ fun RefundItemDto.toDomain(): RefundItem {
         name = name.orEmpty(),
         quantity = quantity ?: 0,
         quantityRefundable = quantityRefundable ?: 0,
-        unitPrice = unitPrice ?: 0.0,
+        price = price ?: 0.0,
         currencySymbol = currencySymbol.orEmpty(),
-        isTicket = isTicket ?: false
+        isTicket = isTicket ?: false,
+        modifiers = modifiers?.map { it.toDomain() } ?: emptyList()
     )
 }
 

@@ -7,8 +7,13 @@ data class RefundItem(
     val imageUrl: String = "",
     val quantity: Int,
     val quantityRefundable: Int,
-    val unitPrice: Double,
+    val price: Double,
     val currencySymbol: String,
     val isTicket: Boolean,
+    val modifiers: List<ProductModifier>,
     val refundQuantity: Int = 0
-)
+) {
+    fun getTotalModifierPrice() : Double {
+        return price + modifiers.sumOf { price }
+    }
+}

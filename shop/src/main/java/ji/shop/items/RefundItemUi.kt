@@ -41,7 +41,7 @@ class RefundItemUi(
         withBinding(holder) {
             tvQty.text = data.quantity.toString()
             tvName.text = data.name
-            tvPrice.text = NumberFormater.formatNumberLocale(data.unitPrice)
+            tvPrice.text = NumberFormater.formatNumberLocale(data.price)
             tvValue.text = count.toString()
         }
     }

@@ -86,7 +86,7 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
                 val items = buildList {
                     addAll(refundItems)
                     if (isNotEmpty()) {
-                        add(TotalRefundItemUi(refundItems.sumOf { it.data.unitPrice * it.count }))
+                        add(TotalRefundItemUi(refundItems.sumOf { (it.data.price * it.count) + it.data.getTotalModifierPrice()}))
                     }
                 }
                 updateItems(items)
@@ -149,7 +149,7 @@ class ViewRefundDialog : BaseDialog(R.layout.dialog_view_refund) {
         flexibleAdapter?.run {
             val price = items.sumOf {
                 if (it is RefundItemUi) {
-                    it.data.unitPrice * it.count
+                    it.data.price * it.count
                 } else {
                     0.0
                 }

@@ -3,7 +3,6 @@ package ji.shop.data.dto
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import ji.shop.ShopSDK
-import ji.shop.data.domain.Order
 import ji.shop.data.domain.Refund
 import ji.shop.data.domain.RefundItem
 import ji.shop.utils.Log
@@ -31,7 +30,7 @@ data class RefundData(
 )
 
 fun createRefundRequest(refund: Refund, selectedItems: List<RefundItem>): RequestRefund {
-    val total = selectedItems.sumOf { it.refundQuantity * it.unitPrice }
+    val total = selectedItems.sumOf { it.refundQuantity * it.price }
     return RequestRefund(
         customRefundAmount = total,
         message = "",
