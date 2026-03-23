@@ -38,7 +38,8 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
 
         collect(
             flow = shopViewModel.getProductsCountNotifyFlow(
-                groupId, { flexibleProductAdapter?.items ?: emptyList() })
+                groupId
+            ) { flexibleProductAdapter?.items ?: emptyList() }
         ) {
             doUpdateProductCountUi(it)
         }
@@ -48,12 +49,15 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
         flexibleProductAdapter?.updateDataset(items) ?: run {
             flexibleProductAdapter = FlexibleAdapter(items.toMutableList())
                 .addListener(object : CountChangOnItemListener {
-                    override fun onCountChanged(position: Int, count: Int) {
-                        shopViewModel.addToCart(
-                            flexibleProductAdapter?.getItem(
-                                position
-                            )?.data ?: return, count
-                        )
+                    override fun onCountChanged(position: Int, count: Int): Boolean {
+                        val item = flexibleProductAdapter?.getItem(position)?.data ?: return false
+                        return if (item.isSingleSelection()) {
+                            shopViewModel.addToCart(item, count)
+                            true
+                        } else {
+                            doChangeCountForMultipleSelectionProduct(item, position)
+                            false
+                        }
                     }
 
                     override fun onClick(
@@ -100,6 +104,13 @@ class ProductsItemFragment : BaseFragment(R.layout.fragment_sells_products_item)
             }
         }
             .show(childFragmentManager)
+    }
+
+    private fun doChangeCountForMultipleSelectionProduct(
+        item: Product,
+        position: Int
+    ) {
+
     }
 
     companion object {

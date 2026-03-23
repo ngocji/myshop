@@ -26,8 +26,9 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     private var product: Product? = null
     private var onAdd: ((cart: Cart, cartId: String?) -> Unit)? = null
     private val onCountChangedListener = object : CountChangOnItemListener {
-        override fun onCountChanged(position: Int, count: Int) {
+        override fun onCountChanged(position: Int, count: Int): Boolean {
             doUpdatePrice()
+            return true
         }
 
         override fun onClick(
@@ -58,7 +59,7 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
 
     private fun initViews() {
         with(binding) {
-            toggleCountView?.setListener { doUpdatePrice() }
+            toggleCountView.setListener { doUpdatePrice() }
 
             selectionVariationItemsView.setListener(onCountChangedListener)
             groupModifiersView.setListener(onCountChangedListener)
@@ -70,7 +71,7 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
 
     private fun initData() {
         with(binding) {
-            toggleCountView?.setCount(currentCart?.count ?: 1)
+            toggleCountView.setCount(currentCart?.count ?: 1)
             tvProductName.text = product?.name ?: ""
             imageProduct.load(product?.images?.firstOrNull())
 
@@ -113,7 +114,7 @@ class AddProductDialog : BaseDialog(R.layout.dialog_add_product) {
     }
 
     private fun obtainCart(): Cart? {
-        val count = binding.toggleCountView?.currentCount ?: 1
+        val count = binding.toggleCountView.currentCount
         if (count <= 0) return null
         val size = binding.selectionVariationItemsView.getSelected()
         val modifiers = binding.groupModifiersView.getSelectedData()

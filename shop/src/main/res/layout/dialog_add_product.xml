@@ -74,6 +74,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="242dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_qty"
+                    style="@style/fontDemiBold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/text_qty"
+                    android:textSize="20sp" />
+
+                <ji.shop.widget.ToggleCountView
+                    android:id="@+id/toggle_count_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:tg_use_expanded_view="true" />
+            </LinearLayout>
+
             <ji.shop.widget.GradientStrokeLinearLayout
                 android:id="@+id/group_variations_view"
                 android:layout_width="match_parent"

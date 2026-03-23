@@ -363,18 +363,16 @@ class ShopViewModel(context: Application) : AndroidViewModel(context) {
                     products.forEach { it.count = 0 }
                     0 to products.size
                 } else {
-                    val index = carts.data.mapNotNull { cart ->
-                        val index =
-                            products.indexOfFirst { it.data.id == cart.product.id && it.data.isSingleSelection() }
-                        val item = products.getOrNull(index)
-                        if (item != null) {
-                            item.count = cart.count
-                            index
-                        } else {
-                            null
+                    val changedIndex = mutableListOf<Int>()
+                    products.forEachIndexed { index, product ->
+                        val count = carts.data.filter { it.product.id == product.data.id }
+                            .sumOf { it.count }
+                        if (product.count != count) {
+                            product.count = count
+                            changedIndex.add(index)
                         }
                     }
-                    index.minOrNull() to index.maxOrNull()
+                    changedIndex.minOrNull() to changedIndex.maxOrNull()
                 }
             }
             .filterNotNull()

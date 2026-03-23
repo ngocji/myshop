@@ -15,7 +15,6 @@ import ji.shop.utils.NumberFormater
 data class ProductItemUi(
     val data: Product,
     var count: Int = 0,
-    private val isSignSelectionProduct: Boolean = data.isSingleSelection()
 ) : ItemUI<ItemProductBinding>() {
     override fun createViewHolder(
         adapter: FlexibleAdapter<*>,
@@ -32,11 +31,14 @@ data class ProductItemUi(
             withBinding(this) {
                 toggleCountView.setHideWhenCountingZero(false)
                 toggleCountView.setListener { newCount ->
-                    val item = adapter.getItem(absoluteAdapterPosition) as? ProductItemUi
-                    item?.count = newCount
+                    val item = adapter.getItem(absoluteAdapterPosition) as? ProductItemUi ?: return@setListener
                     adapter.notifyListeners {
                         if (this is CountChangOnItemListener) {
-                            onCountChanged(absoluteAdapterPosition, newCount)
+                            if (onCountChanged(absoluteAdapterPosition, newCount)) {
+                                item.count = newCount
+                            } else {
+                                toggleCountView.setCount(item.count)
+                            }
                         }
                     }
                 }
@@ -67,7 +69,7 @@ data class ProductItemUi(
                 toggleCountView.isVisible = false
                 tvSold.isVisible = true
             } else {
-                if (isSignSelectionProduct) {
+                if (count > 0 || data.isSingleSelection()) {
                     toggleCountView.isVisible = true
                     toggleCountView.setCount(count)
                 } else {

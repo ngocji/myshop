@@ -32,8 +32,9 @@ class GroupModifiersView @JvmOverloads constructor(
                 selectedData = selectedData[item]
             )
             binding.selectionAdditionalItemsView.setListener(object : CountChangOnItemListener {
-                override fun onCountChanged(position: Int, count: Int) {
+                override fun onCountChanged(position: Int, count: Int): Boolean {
                     onCountChangedListener?.onCountChanged(position, count)
+                    return true
                 }
 
                 override fun onClick(

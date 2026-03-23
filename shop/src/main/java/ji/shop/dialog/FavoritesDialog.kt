@@ -68,9 +68,10 @@ class FavoritesDialog : BaseDialog(R.layout.dialog_favorite) {
                 flexibleAdapter =
                     FlexibleAdapter(results.data.toMutableList())
                         .addListener(object : CountChangOnItemListener {
-                            override fun onCountChanged(position: Int, count: Int) {
+                            override fun onCountChanged(position: Int, count: Int): Boolean {
                                 addToCart(flexibleAdapter?.getItem(position), count)
                                 doUpdatePrice()
+                                return true
                             }
 
                             override fun onClick(
