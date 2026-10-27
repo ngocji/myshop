@@ -20,6 +20,6 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "Shop"
+rootProject.name = "WindowInset"
 include(":app")
 include(":shop")
